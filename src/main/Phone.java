@@ -16,7 +16,8 @@ public class Phone extends JPanel {
 	
 	public static final String[] appNames = {
 		"helloworld.HelloWorldApp",
-		"tictactoe.TicTacToe"
+		"tictactoe.TicTacToe",
+		"calendar.calendarApp"
 	};
 
 	public static final int PHONE_SCREEN_WIDTH = 450;
