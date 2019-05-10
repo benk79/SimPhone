@@ -20,7 +20,6 @@ public class TicTacToe extends Application
 	{
 		super("Tic Tac Toe");
 
-
 		//
 		screen.setLayout(new BorderLayout());
 

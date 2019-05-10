@@ -25,8 +25,7 @@ public abstract class Application
 	
 	public Application (String name)
 	{
-		this.name = name;
-		
+		this.name = name;	
 		screen = new JPanel();			
 	}
 

@@ -7,18 +7,21 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame
 {
-	
-	private JButton buttonTurn = new JButton("Tourner");
-
-	private Phone phone = new Phone();
 	 
 	public MainFrame()
 	{
+		
+		JButton buttonTurn = new JButton("Tourner");
+		Phone phone = new Phone();
+		
+		//
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
+		//
 		add(buttonTurn);
 		add(phone, BorderLayout.SOUTH);		
 		
+		//
 		pack();
 	}
 

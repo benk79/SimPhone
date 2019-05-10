@@ -6,6 +6,10 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime; 
+import javax.swing.Timer; 
+//import java.util.TimerTask; 
 
 @SuppressWarnings("serial")
 public class Phone extends JPanel {
@@ -29,7 +33,6 @@ public class Phone extends JPanel {
 	
 	private ArrayList<Application> applications = new ArrayList<Application>();
 
-	private JPanel  mainButtonPanel = new JPanel();
 	private JButton mainButton = new JButton("Home");
 	private JPanel  screenPanel = new JPanel(new BorderLayout());
 
@@ -48,26 +51,27 @@ public class Phone extends JPanel {
 		 */
 		addDeviceBorders();
 		addDeviceScreen();
-		addDeviceButton();
+
 		
 		/*
-		 * Screen containers
+		 * Screen containers and home screen
+		 * 
+		 * Initialize the main screen element parts
+		 * and launch the home screen
 		 */
 		addNotificationBar();
 		addAppScreenContainer();
-		
-		
-		/*
-		 * Home screen (app launcher)
-		 */
 		addHomeScreen();
 
 		
 		/*
 		 *  Load applications
+		 *  
+		 *  this will check if applications listed are of the right type, 
+		 *  and load those who are correct from Phone point of view
 		 */
 		for (String app: appNames) {			
-			addApp(app);
+			loadApp(app);
 		}
 
 		//
@@ -81,20 +85,36 @@ public class Phone extends JPanel {
 
 	private void addDeviceBorders ()
 	{
+		/*
+		 * Define variables
+		 */
 		JPanel topBorder    = new JPanel();
 		JPanel leftBorder   = new JPanel();
-		JPanel bottomBorder = mainButtonPanel;	
+		JPanel bottomBorder = new JPanel();	
 		JPanel rightBorder  = new JPanel();
 
+		//
 		int pWidth  = PHONE_SCREEN_WIDTH;
 		int pHeight = PHONE_SCREEN_HEIGHT;
 		int border  = PHONE_BORDER;
 
-		
+
+		/*
+		 * Add all device borders
+		 */
 		addDeviceBorderPanel(topBorder, border * 2 + pWidth, border, BorderLayout.NORTH);
 		addDeviceBorderPanel(leftBorder, border, pHeight, BorderLayout.WEST);
 		addDeviceBorderPanel(bottomBorder, border * 2 + pWidth, PHONE_BUTTON_BORDER, BorderLayout.SOUTH);
 		addDeviceBorderPanel(rightBorder, border, pHeight, BorderLayout.EAST);	
+
+		
+		/*
+		 * Add  main button to bottom border
+		 */
+		AppBouttonListener abl = new AppBouttonListener(homeScreen);		
+		mainButton.addActionListener(abl);
+		
+		bottomBorder.add(mainButton);
 	}
 	
 	
@@ -123,27 +143,20 @@ public class Phone extends JPanel {
 
 		add(screenPanel);		
 	}
-
 	
-	private void addDeviceButton ()
+	
+	private void loadApp (String appName)	
 	{
-		Dimension dimension = new Dimension(
-			PHONE_SCREEN_WIDTH, 40
-		);
+		Application app;
 		
-		mainButtonPanel.setPreferredSize(dimension);
-		mainButtonPanel.setBackground(Color.red);
-
-		add(mainButtonPanel, BorderLayout.SOUTH);		
-		
-		
-		//
-		AppBouttonListener abl = new AppBouttonListener(homeScreen);		
-		mainButton.addActionListener(abl);
-		
-		mainButtonPanel.add(mainButton);
+		try {
+			app = (Application) Class.forName(appName).newInstance();
+			applications.add(app);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
 	
 	private void addNotificationBar ()
 	{
@@ -151,11 +164,40 @@ public class Phone extends JPanel {
 			PHONE_SCREEN_WIDTH, 30
 		);
 
+		notificationBar.setLayout(new BorderLayout());
 		notificationBar.setPreferredSize(dimension);
 		notificationBar.setBackground(Color.black);
 		
-		screenPanel.add(notificationBar, BorderLayout.NORTH);		
+		screenPanel.add(notificationBar, BorderLayout.NORTH);
+		
+		JLabel timeLabel = new JLabel("");
+		notificationBar.add(timeLabel, BorderLayout.EAST);
+
+		timeLabel.setForeground(Color.white);
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");		
+		
+		ActionListener taskPerformer = new ActionListener() {
+			      public void actionPerformed(ActionEvent evt) {
+				      updateTime(timeLabel, dtf);
+			      }
+			  };
+		
+		new Timer(1000, taskPerformer).start();
+		// timer.
+		
+			
+		
 	}
+	
+	private void updateTime (JLabel label, DateTimeFormatter dtf)
+	{
+		LocalDateTime now = LocalDateTime.now();  
+		// System.out.println(dtf.format(now)); 	
+		label.setText(dtf.format(now));
+	}
+	
+	
 
 	
 	private void addAppScreenContainer ()
@@ -173,28 +215,21 @@ public class Phone extends JPanel {
 	
 	private void addHomeScreen ()
 	{
-		GridLayout homeScreenLayout = new GridLayout(HOME_GRID_ROWS, HOME_GRID_COLS, 10, 10);
+		GridLayout homeScreenLayout = new GridLayout(
+				HOME_GRID_ROWS, 
+				HOME_GRID_COLS, 
+				10, 
+				10);
+
+		//
 		homeScreen.setLayout(homeScreenLayout);
-		
 		homeScreen.setPreferredSize(new Dimension(PHONE_SCREEN_WIDTH, 770));
 		homeScreen.setBackground(Color.green);
-		
+
+		//
 		appLayeredPane.add(homeScreen);	
 	}
-	
-	
-	private void addApp (String appName)	
-	{
-		Application app;
-		
-		try {
-			app = (Application) Class.forName(appName).newInstance();
-			applications.add(app);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
 
 	
 	private void addApps ()
@@ -247,3 +282,5 @@ public class Phone extends JPanel {
 	} 		
 
 }
+
+
