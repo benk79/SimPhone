@@ -271,6 +271,7 @@ public class Phone extends JPanel {
 	}
 
 	
+	
 	public class AppBouttonListener implements ActionListener
 	{
 		private String screenName;
