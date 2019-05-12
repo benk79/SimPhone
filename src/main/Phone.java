@@ -29,7 +29,7 @@ public class Phone extends JPanel {
 	public static final int HOME_GRID_ROWS = 6;
 	
 	
-	private JPanel currentScreen;
+	// private JPanel currentScreen;
 	
 	
 	private ArrayList<Application> applications = new ArrayList<Application>();
@@ -37,9 +37,11 @@ public class Phone extends JPanel {
 	private JButton mainButton = new JButton("Home");
 	private JPanel  screenPanel = new JPanel(new BorderLayout());
 
-	private JPanel  appLayeredPane = new JPanel();
-	private JPanel  homeScreen     = new JPanel();
+	private JPanel  appCards = new JPanel();
 	
+	
+	
+	private JPanel  homeScreen     = new JPanel();
 	private JPanel notificationBar = new JPanel(new BorderLayout());
 	
 		
@@ -78,8 +80,7 @@ public class Phone extends JPanel {
 		//
 		addApps();
 		
-		
-		currentScreen = homeScreen;
+		showAppScreen("home");
 		
 	}
 	
@@ -112,7 +113,7 @@ public class Phone extends JPanel {
 		/*
 		 * Add  main button to bottom border
 		 */
-		AppBouttonListener abl = new AppBouttonListener(homeScreen);		
+		AppBouttonListener abl = new AppBouttonListener("home");		
 		mainButton.addActionListener(abl);
 		
 		bottomBorder.add(mainButton);
@@ -158,6 +159,7 @@ public class Phone extends JPanel {
 			e.printStackTrace();
 		}
 	}
+
 	
 	private void addNotificationBar ()
 	{
@@ -194,7 +196,6 @@ public class Phone extends JPanel {
 	private void updateTime (JLabel label, DateTimeFormatter dtf)
 	{
 		LocalDateTime now = LocalDateTime.now();  
-		// System.out.println(dtf.format(now)); 	
 		label.setText(dtf.format(now));
 	}
 	
@@ -207,10 +208,11 @@ public class Phone extends JPanel {
 			PHONE_SCREEN_WIDTH, 770
 		);
 
-		appLayeredPane.setPreferredSize(dimension);
-		appLayeredPane.setBackground(Color.CYAN);
+		appCards.setLayout(new CardLayout());
+		appCards.setPreferredSize(dimension);
+		appCards.setBackground(Color.CYAN);
 		
-		screenPanel.add(appLayeredPane, BorderLayout.SOUTH);		
+		screenPanel.add(appCards, BorderLayout.SOUTH);		
 	}	
 	
 	
@@ -228,7 +230,7 @@ public class Phone extends JPanel {
 		homeScreen.setBackground(Color.green);
 
 		//
-		appLayeredPane.add(homeScreen);	
+		appCards.add(homeScreen, "home");	
 	}
 
 
@@ -238,14 +240,14 @@ public class Phone extends JPanel {
 		
 		for (Application app: applications) {
 
+			String screenName = "app." + app.getName();
 			JButton runAppButton = new JButton(app.getName());
-			AppBouttonListener abl = new AppBouttonListener(app.screen);
+			
+			AppBouttonListener abl = new AppBouttonListener(screenName);
 			runAppButton.addActionListener(abl);
 			
-			app.screen.setVisible(false);
-			
 			homeScreen.add(runAppButton);
-			appLayeredPane.add(app.screen);
+			appCards.add(app.screen, screenName);
 
 		}
 
@@ -262,22 +264,26 @@ public class Phone extends JPanel {
 	}
 
 	
+	public void showAppScreen(String screenName)
+	{
+		CardLayout cl = (CardLayout)(appCards.getLayout());
+	        cl.show(appCards, screenName);
+	}
+
+	
 	public class AppBouttonListener implements ActionListener
 	{
-	
-		private JPanel screen;
+		private String screenName;
 		
-		public AppBouttonListener (JPanel screen)
+		public AppBouttonListener (String screenName)
 		{
-			this.screen = screen;
+			this.screenName = screenName;
 		}
 		
 		@Override
 		public void actionPerformed (ActionEvent e)
 		{
-			currentScreen.setVisible(false);
-			screen.setVisible(true);
-			currentScreen = screen;			
+			showAppScreen(screenName);
 		}
 	
 	} 		

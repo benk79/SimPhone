@@ -8,7 +8,7 @@ public class HelloWorldApp extends Application {
 	
 	public HelloWorldApp()
 	{
-		super("Hello World");
+		super("HelloWorld");
 
 		//
 		JLabel titleLabel = new JLabel("<html><h1>" + getName() + "</h1></html>");
