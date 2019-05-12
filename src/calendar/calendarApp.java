@@ -8,7 +8,7 @@ public class calendarApp extends Application {
 	
 	public calendarApp()
 	{
-		super("Calendrier");
+		super("Calendrier", "");
 
 		//
 		JLabel titleLabel = new JLabel("<html><h1>" + getName() + "</h1></html>");

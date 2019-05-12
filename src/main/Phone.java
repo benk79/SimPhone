@@ -193,6 +193,7 @@ public class Phone extends JPanel {
 		
 	}
 	
+	
 	private void updateTime (JLabel label, DateTimeFormatter dtf)
 	{
 		LocalDateTime now = LocalDateTime.now();  
@@ -237,13 +238,23 @@ public class Phone extends JPanel {
 	
 	private void addApps ()
 	{		
+		String appName;
+		String appIcon;
+		String screenName;
+		
+		JButton runAppButton;
+		AppBouttonListener abl;
 		
 		for (Application app: applications) {
 
-			String screenName = "app." + app.getName();
-			JButton runAppButton = new JButton(app.getName());
+			appName = app.getName();
+			appIcon = app.getIcon();
 			
-			AppBouttonListener abl = new AppBouttonListener(screenName);
+			screenName = "app." + appName;
+			
+			runAppButton = new JButton(appName);
+			abl = new AppBouttonListener(screenName);
+			
 			runAppButton.addActionListener(abl);
 			
 			homeScreen.add(runAppButton);
