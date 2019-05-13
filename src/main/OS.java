@@ -16,7 +16,9 @@ public class OS {
 	public static final String[] appNames = {
 			"helloworld.HelloWorldApp",
 			"tictactoe.TicTacToe",
-			"calendar.calendarApp"
+			"calendar.calendarApp",
+			"contact.ContactApp",
+			"gallerry.GallerryApp"
 		};
 	
 	private Phone phone;
