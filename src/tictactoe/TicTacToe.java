@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import main.Phone;
 import main.Application;
+import main.Config;
 
 public class TicTacToe extends Application
 {
@@ -25,7 +26,7 @@ public class TicTacToe extends Application
 
 		screen.add(new JLabel("<html><h1>" + getName() + "</h1></html>"));
 
-		int phoneWidth = Phone.PHONE_SCREEN_WIDTH;
+		int phoneWidth = Config.SCREEN_WIDTH;
 
 		gamePanel.setPreferredSize(new Dimension(phoneWidth, phoneWidth));
 
