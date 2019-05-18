@@ -54,7 +54,7 @@ public class HomeScreen extends JPanel {
 			
 			screenName = os.getAppScreenName(app);
 			
-			runAppButton = new JButton(appName);
+			runAppButton = new ButtonIcon(appIcon, appName);
 			abl = os.getAppBouttonListener(screenName);
 			
 			runAppButton.addActionListener(abl);

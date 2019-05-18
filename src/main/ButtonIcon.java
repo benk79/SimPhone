@@ -8,24 +8,16 @@ public class ButtonIcon extends JButton {
 	
 	  
 	
-	public ButtonIcon(String way) {
-		
-		
-		
-        // bouton transparent
+	public ButtonIcon(String way, String appName) {
+	
         setOpaque(false);
         setContentAreaFilled(false);
         setBorderPainted(false);
         
-        // icone ajoutée
         setIcon(new ImageIcon(way));
         
-    
 
 	}
-	
-	
-	
 	
 }
 
