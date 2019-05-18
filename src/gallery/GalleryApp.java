@@ -1,12 +1,12 @@
-package gallerry;
+package gallery;
 
 import javax.swing.JLabel;
 
 import main.Application;
 
-public class GallerryApp extends Application {
+public class GalleryApp extends Application {
 	
-	public GallerryApp()
+	public GalleryApp()
 	{
 		super("Gallerie", "");
 
