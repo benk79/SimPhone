@@ -1,19 +1,19 @@
-package helloworld;
+package calendar;
 
 import javax.swing.JLabel;
 
 import main.Application;
 
-public class HelloWorldApp extends Application {
+public class calendarApp extends Application {
 	
-	public HelloWorldApp()
+	public calendarApp()
 	{
-		super("HelloWorld", "");
+		super("Calendrier", "");
 
 		//
 		JLabel titleLabel = new JLabel("<html><h1>" + getName() + "</h1></html>");
 		
-		screen.add(titleLabel);		
+		screen.add(titleLabel);
 	}
 
 }

@@ -23,10 +23,10 @@ public abstract class Application
 	private String icon;
 	
 	
-	public Application (String name)
+	public Application (String name, String icon)
 	{
 		this.name = name;
-		
+		this.icon = icon;
 		screen = new JPanel();			
 	}
 

@@ -3,98 +3,113 @@ package main;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.*;
 
+
 @SuppressWarnings("serial")
 public class Phone extends JPanel {
-	
-	public static final String[] appNames = {
-		"helloworld.HelloWorldApp",
-		"tictactoe.TicTacToe"
-	};
 
-	public static final int PHONE_SCREEN_WIDTH = 450;
-	public static final int PHONE_SCREEN_HEIGHT = 800;
-	public static final int PHONE_BORDER = 10;
-	public static final int PHONE_BUTTON_BORDER = 40;
+	public JPanel  screen;
+	public JButton mainButton;
 	
-	public static final int HOME_GRID_COLS = 2;
-	public static final int HOME_GRID_ROWS = 6;
+	private boolean powerState;
 	
-	
-	private JPanel currentScreen;
-	
-	
-	private ArrayList<Application> applications = new ArrayList<Application>();
-
-	private JPanel  mainButtonPanel = new JPanel();
-	private JButton mainButton = new JButton("Home");
-	private JPanel  screenPanel = new JPanel(new BorderLayout());
-
-	private JPanel  appLayeredPane = new JPanel();
-	private JPanel  homeScreen     = new JPanel();
-	
-	private JPanel notificationBar = new JPanel(new BorderLayout());
-	
+	private OS os;
 		
 	public Phone ()
 	{
 		super(new BorderLayout());
 
-		/*
-		 * Main device parts
-		 */
+		//
 		addDeviceBorders();
 		addDeviceScreen();
-		addDeviceButton();
-		
-		/*
-		 * Screen containers
-		 */
-		addNotificationBar();
-		addAppScreenContainer();
-		
-		
-		/*
-		 * Home screen (app launcher)
-		 */
-		addHomeScreen();
-
-		
-		/*
-		 *  Load applications
-		 */
-		for (String app: appNames) {			
-			addApp(app);
-		}
 
 		//
-		addApps();
-		
-		
-		currentScreen = homeScreen;
-		
+		new OS(this);
 	}
 	
+	
+	/*
+	public void powerOnOff ()
+	{
+		if (os instanceof OS)
+			powerOff();
+		else
+			powerOn();
+	}
+	
+	private void powerOn()
+	{
+		os = new OS(this);
+	}
+	
+	
+	private void powerOff()
+	{
+		os = null;
+	}
+	*/
 
+	/**********************************************************************
+	 * 
+	 *   General device elements
+	 *   
+	 *********************************************************************/
+	
 	private void addDeviceBorders ()
 	{
+
+		/*
+		 * Define variables
+		 */
+		
 		JPanel topBorder    = new JPanel();
 		JPanel leftBorder   = new JPanel();
-		JPanel bottomBorder = mainButtonPanel;	
+		JPanel bottomBorder = new JPanel();	
 		JPanel rightBorder  = new JPanel();
 
-		int pWidth  = PHONE_SCREEN_WIDTH;
-		int pHeight = PHONE_SCREEN_HEIGHT;
-		int border  = PHONE_BORDER;
 
+		/*
+		 * Add main button and device borders
+		 */
+
+		//
+		int pWidth  = Config.SCREEN_WIDTH;
+		int pHeight = Config.SCREEN_HEIGHT;
+		int border  = Config.BORDER;
+
+
+		//
+		addDeviceBorderPanel(
+				topBorder, 
+				border * 2 + pWidth,
+				border, 
+				BorderLayout.NORTH);
 		
-		addDeviceBorderPanel(topBorder, border * 2 + pWidth, border, BorderLayout.NORTH);
-		addDeviceBorderPanel(leftBorder, border, pHeight, BorderLayout.WEST);
-		addDeviceBorderPanel(bottomBorder, border * 2 + pWidth, PHONE_BUTTON_BORDER, BorderLayout.SOUTH);
-		addDeviceBorderPanel(rightBorder, border, pHeight, BorderLayout.EAST);	
+		addDeviceBorderPanel(
+				leftBorder, 
+				border, 
+				pHeight, 
+				BorderLayout.WEST);
+		
+		addDeviceBorderPanel(
+				bottomBorder, 
+				border * 2 + pWidth, 
+				Config.BUTTON_BORDER , 
+				BorderLayout.SOUTH);
+		
+		addDeviceBorderPanel(
+				rightBorder, 
+				border, 
+				pHeight, 
+				BorderLayout.EAST);
+
+
+		//
+		mainButton = new JButton("Home");
+		bottomBorder.add(mainButton);		
+
 	}
 	
 	
@@ -113,137 +128,24 @@ public class Phone extends JPanel {
 
 	private void addDeviceScreen ()
 	{
-		Dimension screenSize = new Dimension(
-			PHONE_SCREEN_WIDTH, 
-			PHONE_SCREEN_HEIGHT
-		);
-		
-		screenPanel.setPreferredSize(screenSize);
-		screenPanel.setBackground(Color.blue);
+		Dimension screenSize;
 
-		add(screenPanel);		
-	}
-
-	
-	private void addDeviceButton ()
-	{
-		Dimension dimension = new Dimension(
-			PHONE_SCREEN_WIDTH, 40
-		);
-		
-		mainButtonPanel.setPreferredSize(dimension);
-		mainButtonPanel.setBackground(Color.red);
-
-		add(mainButtonPanel, BorderLayout.SOUTH);		
-		
-		
 		//
-		AppBouttonListener abl = new AppBouttonListener(homeScreen);		
-		mainButton.addActionListener(abl);
+		screen = new JPanel(new BorderLayout());
 		
-		mainButtonPanel.add(mainButton);
-	}
-
-	
-	private void addNotificationBar ()
-	{
-		Dimension dimension = new Dimension(
-			PHONE_SCREEN_WIDTH, 30
+		screenSize = new Dimension(
+			Config.SCREEN_WIDTH, 
+			Config.SCREEN_HEIGHT
 		);
 
-		notificationBar.setPreferredSize(dimension);
-		notificationBar.setBackground(Color.black);
-		
-		screenPanel.add(notificationBar, BorderLayout.NORTH);		
-	}
+		//
+		screen.setPreferredSize(screenSize);
+		screen.setBackground(Color.blue);
 
-	
-	private void addAppScreenContainer ()
-	{
-		Dimension dimension = new Dimension(
-			PHONE_SCREEN_WIDTH, 770
-		);
-
-		appLayeredPane.setPreferredSize(dimension);
-		appLayeredPane.setBackground(Color.CYAN);
-		
-		screenPanel.add(appLayeredPane, BorderLayout.SOUTH);		
-	}	
-	
-	
-	private void addHomeScreen ()
-	{
-		GridLayout homeScreenLayout = new GridLayout(HOME_GRID_ROWS, HOME_GRID_COLS, 10, 10);
-		homeScreen.setLayout(homeScreenLayout);
-		
-		homeScreen.setPreferredSize(new Dimension(PHONE_SCREEN_WIDTH, 770));
-		homeScreen.setBackground(Color.green);
-		
-		appLayeredPane.add(homeScreen);	
+		add(screen);	
 	}
 	
-	
-	private void addApp (String appName)	
-	{
-		Application app;
-		
-		try {
-			app = (Application) Class.forName(appName).newInstance();
-			applications.add(app);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	
-	private void addApps ()
-	{		
-		
-		for (Application app: applications) {
-
-			JButton runAppButton = new JButton(app.getName());
-			AppBouttonListener abl = new AppBouttonListener(app.screen);
-			runAppButton.addActionListener(abl);
-			
-			app.screen.setVisible(false);
-			
-			homeScreen.add(runAppButton);
-			appLayeredPane.add(app.screen);
-
-		}
-
-
-		/*
-		 * Add empty labels to fill home screen grid layout
-		 */
-		int gridEmptyPlaces = HOME_GRID_COLS * HOME_GRID_ROWS - applications.size();
-		
-		for (int i = 0; i < gridEmptyPlaces; i++) {
-			homeScreen.add(new JLabel(""));
-		}
-		
-	}
-
-	
-	public class AppBouttonListener implements ActionListener
-	{
-	
-		private JPanel screen;
-		
-		public AppBouttonListener (JPanel screen)
-		{
-			this.screen = screen;
-		}
-		
-		@Override
-		public void actionPerformed (ActionEvent e)
-		{
-			currentScreen.setVisible(false);
-			screen.setVisible(true);
-			currentScreen = screen;			
-		}
-	
-	} 		
 
 }
+
+
