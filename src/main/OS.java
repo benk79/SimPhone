@@ -49,6 +49,8 @@ public class OS {
 		 * Launcher
 		 */
 		HomeScreen homeScreen = new HomeScreen(this);
+		
+		
 		appCards.add(homeScreen, "home");
 		
 		//
@@ -204,6 +206,11 @@ public class OS {
 			showAppScreen(screenName);
 		}
 	
-	} 		
+	}
+	
+	public class AppLauncher implements AppListener
+	{
+		
+	}
 
 }
