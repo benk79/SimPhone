@@ -16,12 +16,19 @@ public class OS {
 	public static final String[] appNames = {
 			"helloworld.HelloWorldApp",
 			"tictactoe.TicTacToe",
-			"calendar.calendarApp"
+			"calendar.calendarApp",
+			"contact.ContactApp",
+			"gallerry.GallerryApp"
 		};
 	
 	private Phone phone;
 	
 	private JPanel  appCards;
+
+	private int appScreenWidth; 
+
+
+	private int appScreenHeight; 
 	
 	private ArrayList<Application> applications;
 	
@@ -42,6 +49,8 @@ public class OS {
 		 * Launcher
 		 */
 		HomeScreen homeScreen = new HomeScreen(this);
+		
+		
 		appCards.add(homeScreen, "home");
 		
 		//
@@ -64,6 +73,22 @@ public class OS {
 		showAppScreen("home");		
 	}
 
+	
+	/**
+	 * @return the appScreenWidth
+	 */
+	public int getAppScreenWidth() {
+		return appScreenWidth;
+	}
+
+	
+	/**
+	 * @return the appScreenHeight
+	 */
+	public int getAppScreenHeight() {
+		return appScreenHeight;
+	}
+
 	/**********************************************************************
 	 * 
 	 *   Phone screen containers (notification bar and application
@@ -75,6 +100,9 @@ public class OS {
 	
 	private void addScreenContainers ()
 	{
+		appScreenWidth = Config.SCREEN_WIDTH;
+		appScreenHeight = Config.SCREEN_HEIGHT - Config.NOTIFICATION_BAR_HEIGHT;
+		
 		/*
 		 * Notification bar
 		 */
@@ -87,7 +115,8 @@ public class OS {
 		 * JPanel with CardLayout for applications
 		 */
 		Dimension dimension = new Dimension(
-			Config.SCREEN_WIDTH, 770
+				appScreenWidth, 
+				appScreenHeight
 		);
 
 		appCards.setLayout(new CardLayout());
@@ -121,8 +150,13 @@ public class OS {
 		
 		try {
 			app = (Application) Class.forName(appName).newInstance();
+			
+			app.setOs(this);
+			
 			applications.add(app);
-			appCards.add(app.screen, getAppScreenName(app));	
+			appCards.add(app.screen, getAppScreenName(app));
+			
+			app.onInit();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -172,6 +206,11 @@ public class OS {
 			showAppScreen(screenName);
 		}
 	
-	} 		
+	}
+	
+	public class AppLauncher implements AppListener
+	{
+		
+	}
 
 }
