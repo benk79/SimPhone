@@ -1,3 +1,5 @@
+package main;
+
 import java.awt.Dimension;
 
 import javax.swing.*;
@@ -15,7 +17,7 @@ public class ButtonIcon extends JButton {
         setContentAreaFilled(false);
         setBorderPainted(false);
         
-     // icone ajoutée
+        // icone ajoutée
         setIcon(new ImageIcon(way));
         
     
