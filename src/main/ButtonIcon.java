@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class ButtonIcon extends JButton {
 	
-	  
+	  private String imagePath = "C:/Users/Louise/git/SimPhone/ressourcesSystem/";
 	
 	public ButtonIcon(String way, String appName) {
 	
@@ -14,7 +14,7 @@ public class ButtonIcon extends JButton {
         setContentAreaFilled(false);
         setBorderPainted(false);
         
-        setIcon(new ImageIcon(way));
+        setIcon(new ImageIcon(imagePath + way));
         
 
 	}
