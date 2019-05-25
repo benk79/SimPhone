@@ -1,4 +1,4 @@
-package calendar;
+gipackage calendar;
 
 import java.awt.BorderLayout;
 import java.awt.Button;
@@ -37,7 +37,8 @@ public class calendarApp extends Application implements ActionListener {
 		Calendar cal = new GregorianCalendar();
 		int annee = cal.get(Calendar.YEAR);
 		int moiscourant = cal.get(Calendar.MONTH);
-
+		cal.add(Calendar.MONTH, -1);
+		
 		int moisavant = cal.get(Calendar.MONTH);
 		moisavant = moisavant - 1;
 
@@ -259,6 +260,8 @@ public class calendarApp extends Application implements ActionListener {
 
 	public static int tabpourlettre(int numero) {
 
+		// fabrique le chiffre pour le tableau de lettre
+		
 		Calendar calendar = new GregorianCalendar();
 
 		int cannee = calendar.get(Calendar.YEAR);
@@ -291,6 +294,8 @@ public class calendarApp extends Application implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
+		// gestion d'evenement
+		
 		System.out.println("click avant");
 
 		if (e.getSource() == avant) {
@@ -303,8 +308,8 @@ public class calendarApp extends Application implements ActionListener {
 	}
 	public static void raffraichir(JPanel superieur1,JPanel superieur2, JPanel central) {
 		
-		screen.remove(superieur1);
-		screen.remove(superieur2);
-		screen.remove(central);
+	//	screen.remove(superieur1);
+	//	screen.remove(superieur2);
+	//	screen.remove(central);
 	}
 }
