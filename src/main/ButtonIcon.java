@@ -5,8 +5,7 @@ import java.awt.Dimension;
 import javax.swing.*;
 
 public class ButtonIcon extends JButton {
-	
-	  private String imagePath = "C:/Users/Louise/git/SimPhone/ressourcesSystem/";
+		private String imagePath = "C:/Users/Louise/git/SimPhone/ressourcesSystem/";
 	
 	public ButtonIcon(String way, String appName) {
 	
