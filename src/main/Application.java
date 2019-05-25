@@ -18,14 +18,15 @@ public abstract class Application
 	 */
 	protected JPanel screen = new JPanel();
 	
-	
+	protected OS os;
 	private String name;
 	private String icon;
 	
 	
-	public Application (String name)
+	public Application (String name, String icon)
 	{
-		this.name = name;	
+		this.name = name;
+		this.icon = icon;
 		screen = new JPanel();			
 	}
 
@@ -45,5 +46,12 @@ public abstract class Application
 	public String getName() {
 		return name;
 	}
+	
+	public void setOs(OS os)
+	{
+		this.os = os;
+	}
+	
+	public void onInit() {}
 
 }
