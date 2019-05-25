@@ -19,7 +19,7 @@ public class TicTacToe extends Application
 
 	public TicTacToe()
 	{
-		super("Tic Tac Toe", "");
+		super("Tic Tac Toe", "tictactoe.png");
 
 		//
 		screen.setLayout(new BorderLayout());

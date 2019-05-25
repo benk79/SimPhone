@@ -28,7 +28,7 @@ public class ContactApp extends Application {
 	
 	public ContactApp()
 	{
-		super("Contacts", "");
+		super("Contacts", "contact.png");
 
 		//
 		contactList = new Contact[200];
