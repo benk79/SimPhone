@@ -27,10 +27,9 @@ public class calendarApp extends Application implements ActionListener {
 	private JButton apres = new JButton("suivant");
 
 	//	private JPanel   m superieur1;
-	
-	
-	public calendarApp() {
-		super("Calendrier");
+	public calendarApp()
+	{
+		super("Calendrier", "calendrier.png");
 
 		// donnée sur les chiffres
 
