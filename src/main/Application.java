@@ -1,6 +1,7 @@
 package main;
 
 import javax.swing.JPanel;
+import java.io.File;
 
 
 /**
@@ -17,12 +18,28 @@ public abstract class Application
 	 * application button from home screen
 	 */
 	protected JPanel screen = new JPanel();
-	
+
+	/**
+	 * Reference to OS which launched the application
+	 */
 	protected OS os;
+
+	/**
+	 * Name of application which can be used when listing applications
+	 */
 	private String name;
+
+	/**
+	 * Icon to use in home screen as button to launch application
+	 */
 	private String icon;
-	
-	
+
+	private String dataPath;
+
+	/**
+	 * @param name Name of application
+	 * @param icon Icon of application
+	 */
 	public Application (String name, String icon)
 	{
 		this.name = name;

@@ -1,69 +1,163 @@
 package contact;
 
-public class Contact {
+import java.io.Serializable;
 
+import main.Serializer;
+
+
+/**
+ * The Contact class is used to manage contacts in ContactApp
+ *
+ * @author Benjamin Keller
+ * @version 1.0.0
+ */
+public class Contact implements Serializable
+{
+	/**
+	 * Serial number for serialization
+	 */
+	public static final Long serialVersionUID = 1L;
+
+	/**
+	 * Unique id
+	 */
+	private int id = -1;
+
+	/**
+	 * First name
+	 */
 	private String firstName;
+
+	/**
+	 * Last name
+	 */
 	private String lastName;
+
+	/**
+	 * Email address
+	 */
 	private String email;
+
+	/**
+	 * Phone number
+	 */
 	private String phoneNumber;
-	
-	public Contact() {
-		
+
+
+	/**
+	 * @return Unique id
+	 */
+	public Integer getId ()
+	{
+		return id;
 	}
 
 	/**
-	 * @return
+	 * Set unique id for a new contact to save
+	 *
+	 * @return Unique id
 	 */
-	public String getFirstName() {
+	public Integer insertId ()
+	{
+		if (id != -1)
+			return id;
+
+		Integer contactIdIncrement = 0;
+
+		String incrementIdFile = ContactApp.getDataPath() + "contactIdIncrement.ser";
+
+		try {
+			contactIdIncrement = (Integer) Serializer.get(incrementIdFile);
+		} catch (Exception e) {
+			System.out.println("oops");
+		}
+
+		id = contactIdIncrement;
+		contactIdIncrement++;
+
+		try {
+			Serializer.set(incrementIdFile, contactIdIncrement);
+		} catch (Exception e) {
+			System.out.println("oops");
+			e.printStackTrace();
+		}
+
+		return id;
+	}
+
+	/**
+	 * @return First name
+	 */
+	public String getFirstName ()
+	{
 		return firstName;
 	}
 
 	/**
-	 * @param firstName
+	 * @param firstName First name
 	 */
-	public void setFirstName(String firstName) {
+	public void setFirstName (String firstName)
+	{
 		this.firstName = firstName;
 	}
 
 	/**
-	 * @return
+	 * @return Last name
 	 */
-	public String getLastName() {
+	public String getLastName ()
+	{
 		return lastName;
 	}
 
 	/**
-	 * @param lastName
+	 * @param lastName Last name
 	 */
-	public void setLastName(String lastName) {
+	public void setLastName (String lastName)
+	{
 		this.lastName = lastName;
 	}
 
 	/**
-	 * @return
+	 * @return Email address
 	 */
-	public String getEmail() {
+	public String getEmail ()
+	{
 		return email;
 	}
 
 	/**
-	 * @param email
+	 * @param email Email address
 	 */
-	public void setEmail(String email) {
+	public void setEmail (String email)
+	{
 		this.email = email;
 	}
 
 	/**
-	 * @return
+	 * @return Phone number
 	 */
-	public String getPhoneNumber() {
+	public String getPhoneNumber ()
+	{
 		return phoneNumber;
 	}
 
 	/**
-	 * @param phoneNumber
+	 * @param phoneNumber Phone number
 	 */
-	public void setPhoneNumber(String phoneNumber) {
+	public void setPhoneNumber (String phoneNumber)
+	{
 		this.phoneNumber = phoneNumber;
+	}
+
+	/**
+	 * @return String representing the contact
+	 */
+	@Override
+	public String toString ()
+	{
+		return "First name: " + firstName
+			+ "\nLast name: " + lastName
+			+ "\nPhone number: " + phoneNumber
+			+ "\nEmail: " + email;
 	}
 }

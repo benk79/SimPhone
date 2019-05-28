@@ -150,9 +150,9 @@ public class OS {
 		
 		try {
 			app = (Application) Class.forName(appName).newInstance();
-			
+
 			app.setOs(this);
-			
+
 			applications.add(app);
 			appCards.add(app.screen, getAppScreenName(app));
 			
