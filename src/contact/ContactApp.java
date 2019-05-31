@@ -1,7 +1,6 @@
 package contact;
 
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,15 +10,16 @@ import main.Application;
 import main.Config;
 import main.Serializer;
 
+import javax.swing.*;
+
 /**
  * Application de gestion des contacts
  *
  * @author Benjamin Keller
- * @version 0.1.0
- * @// TODO: 28.05.2019 Finaliser le nettoyage de code
- * @see main.Application
+ * @version 0.2.0
  */
-public class ContactApp extends Application {
+public class ContactApp extends Application
+{
 
 	private static final String LIST_VIEW = "LIST";
 
@@ -33,10 +33,11 @@ public class ContactApp extends Application {
 
 	private EditView detailView;
 
+
 	/**
-	 *
+	 * Constructor of the ContactApp class
 	 */
-	public ContactApp()
+	public ContactApp ()
 	{
 		super("Contacts", "contact.png");
 
@@ -55,12 +56,14 @@ public class ContactApp extends Application {
 	}
 
 
-	public void onInit()
+	/**
+	 * Initialization of the class when os property has been set
+	 */
+	public void onInit ()
 	{
 		layout = new CardLayout();
 
 		screen.setLayout(layout);
-
 
 		int w = os.getAppScreenWidth();
 		int h = os.getAppScreenHeight();
@@ -69,60 +72,64 @@ public class ContactApp extends Application {
 		screen.setPreferredSize(dim);
 
 
-		/**
+		/*
 		 * List View
 		 */
-
-		listView = new ListView(contactList);
 
 		AddBouttonListener newContact = new AddBouttonListener();
 		EditBouttonListener editBouttonListener = new EditBouttonListener();
 		DeleteListener deleteListener = new DeleteListener();
 
-		listView.setMainMode(newContact, editBouttonListener, deleteListener);
+		listView = new ListMainView(contactList, newContact, editBouttonListener, deleteListener);
 
 
-		/**
+		/*
 		 * Detail View
 		 */
 
-		detailView = new EditView();
-
 		SaveContactListener saveContactListener = new SaveContactListener();
-		detailView.addSaveListener(saveContactListener);
-
 		CancelListener cancelListener = new CancelListener();
-		detailView.addCancelListener(cancelListener);
+
+		detailView = new EditView(saveContactListener, cancelListener);
+
+
+		/*
+		 * Finalisation of display
+		 */
 
 		screen.add(listView, LIST_VIEW);
 		screen.add(detailView, DETAIL_VIEW);
 
-
 		showView(LIST_VIEW);
-
 	}
 
-	public ListView getSelectContactPanel (ActionListener selectListener, ActionListener cancelListener)
+
+	/**
+	 * Provide ListSelectView as JPanel to other applications to select a contact
+	 *
+	 * @param selectListener Listener for the select contact button
+	 * @param cancelListener Listener for the cancel button
+	 * @return JPanel with contact selection options
+	 */
+	public JPanel getSelectContactPanel (ActionListener selectListener, ActionListener cancelListener)
 	{
-		ListView selectPanel = new ListView(contactList);
-
-		selectPanel.setSelectMode(selectListener, cancelListener);
-
-		// selectPanel.addCancelListener(cancelListener);
-		// selectPanel.addSelectContactListener(selectListener);
-
-		//selectPanel.updateList();
-
-		return selectPanel;
+		return new ListSelectView(contactList, selectListener, cancelListener);
 	}
 
+
+	/**
+	 * Get the path for read/write files and data
+	 *
+	 * @return The path for read/write data dedicated to this application
+	 */
 	static String getDataPath ()
 	{
 		return Config.DATA_PATH + "/contact/";
 	}
 
+
 	/**
-	 *
+	 * Update the list view and show it
 	 */
 	private void showUpdatedList ()
 	{
@@ -130,11 +137,20 @@ public class ContactApp extends Application {
 		showView(LIST_VIEW);
 	}
 
+
+	/**
+	 * Show a predefined view in the card layout
+	 * @param viewName Name of the view
+	 */
 	private void showView (String viewName)
 	{
 		layout.show(screen, viewName);
 	}
 
+
+	/**
+	 * Write the list of contacts in it's file
+	 */
 	private void writeFile ()
 	{
 		try {
@@ -146,6 +162,11 @@ public class ContactApp extends Application {
 	}
 
 
+	/**
+	 * Create contact id and insert it into the list of contacts
+	 *
+	 * @param c Contact to add in the list
+	 */
 	private void insertContact (Contact c)
 	{
 		int id = c.insertId();
@@ -156,6 +177,9 @@ public class ContactApp extends Application {
 	}
 
 
+	/**
+	 * Listener for new contact in list view menu
+	 */
 	class AddBouttonListener implements ActionListener
 	{
 		@Override
@@ -166,6 +190,10 @@ public class ContactApp extends Application {
 		}
 	}
 
+
+	/**
+	 * Listener for edit contact in list
+	 */
 	class EditBouttonListener implements ActionListener
 	{
 		@Override
@@ -177,6 +205,10 @@ public class ContactApp extends Application {
 		}
 	}
 
+
+	/**
+	 * Listener for deleted contact in list
+	 */
 	class DeleteListener implements ActionListener
 	{
 		@Override
@@ -193,6 +225,10 @@ public class ContactApp extends Application {
 		}
 	}
 
+
+	/**
+	 * Listener for saved contact in edit form
+	 */
 	class SaveContactListener implements ActionListener
 	{
 		@Override
@@ -212,6 +248,9 @@ public class ContactApp extends Application {
 	}
 
 
+	/**
+	 * Listener for cancel button in edit form
+	 */
 	class CancelListener implements ActionListener
 	{
 		@Override
@@ -220,6 +259,5 @@ public class ContactApp extends Application {
 			showView(LIST_VIEW);
 		}
 	}
-
 
 }

@@ -16,27 +16,32 @@ public class Contact implements Serializable
 	/**
 	 * Serial number for serialization
 	 */
-	public static final Long serialVersionUID = 1L;
+	private static final Long serialVersionUID = 1L;
+
 
 	/**
 	 * Unique id
 	 */
-	private int id = -1;
+	private Integer id = -1;
+
 
 	/**
 	 * First name
 	 */
 	private String firstName;
 
+
 	/**
 	 * Last name
 	 */
 	private String lastName;
 
+
 	/**
 	 * Email address
 	 */
 	private String email;
+
 
 	/**
 	 * Phone number

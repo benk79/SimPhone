@@ -37,7 +37,7 @@ public class Serializer
 	 *
 	 * @param file
 	 * @param object
-	 * @throws IOException
+	 * @throws IOException When the file can not be written
 	 */
 	public static void set (String file, Object object) throws IOException
 	{

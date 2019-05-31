@@ -1,37 +1,23 @@
 package contact;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-class ListView extends JPanel
+
+/**
+ * Abstract class for building JPanel views with the list of contacts
+ *
+ * @author Benjamin Keller
+ * @version 1.0.1
+ */
+abstract class ListView extends JPanel
 {
-
-	/**
-	 * Text definitions
-	 */
-
-	private static final String LABEL_ADD = "New contact";
-	private static final String LABEL_EDIT = "Edit";
-	private static final String LABEL_DELETE = "Delete";
-	private static final String LABEL_SELECT = "Select";
-	private static final String LABEL_CANCEL = "Cancel";
-
-
 	/**
 	 * List of contacts to display
 	 */
 	private Contact[] contactList;
-
-
-	/**
-	 * The mode of the list view can be:
-	 * 0 - normal application mode
-	 * 1 - select contact mode
-	 */
-	private int mode = 0;
 
 
 	/**
@@ -41,33 +27,15 @@ class ListView extends JPanel
 
 
 	/**
-	 * New contact button (main mode)
+	 * Container for the menu under the list
 	 */
-	private JButton addButton;
+	private JPanel menu;
 
 
 	/**
-	 * Cancel button (select mode)
+	 * GridBagConstraints used for building the list
 	 */
-	private JButton cancelButton;
-
-
-	/**
-	 * Listener for the edit contact button (main mode)
-	 */
-	private ActionListener editContactListener;
-
-
-	/**
-	 * Listener for the delete contact button (main mode)
-	 */
-	private ActionListener deleteContactListener;
-
-
-	/**
-	 * Listener for the select contact button (select mode)
-	 */
-	private ActionListener selectContactListener;
+	private GridBagConstraints listGbc;
 
 
 	/**
@@ -82,52 +50,6 @@ class ListView extends JPanel
 
 
 	/**
-	 * Set the select mode for the list.
-	 * <p>
-	 * This mode is used when another application needs to select a contact
-	 *
-	 * @param selectListener Listener for the select contact button
-	 * @param cancelListener Listener for the cancel button
-	 */
-	void setSelectMode (ActionListener selectListener, ActionListener cancelListener)
-	{
-		mode = 1;
-
-		selectContactListener = selectListener;
-
-		initListView();
-
-		cancelButton.addActionListener(cancelListener);
-	}
-
-
-	/**
-	 * Set the main mode for the list.
-	 * <p>
-	 * In main mode it is possible to add, edit and delete contacts.
-	 * This is the default mode used by the Contact Application
-	 *
-	 * @param newListener    Listener for the new contact button
-	 * @param editListener   Listener for the edit contact button
-	 * @param deleteListener Listener for the delete contact button
-	 */
-	void setMainMode (
-		ActionListener newListener,
-		ActionListener editListener,
-		ActionListener deleteListener)
-	{
-		mode = 0;
-
-		editContactListener = editListener;
-		deleteContactListener = deleteListener;
-
-		initListView();
-
-		addButton.addActionListener(newListener);
-	}
-
-
-	/**
 	 * Update content of list with current array of contacts
 	 */
 	void updateList ()
@@ -135,22 +57,23 @@ class ListView extends JPanel
 		list.removeAll();
 
 		//
-		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.insets = new Insets(5, 5, 5, 5);
-		c.gridy = 0;
-		c.gridx = 0;
+		listGbc = new GridBagConstraints();
+		listGbc.fill = GridBagConstraints.HORIZONTAL;
+		listGbc.insets = new Insets(5, 5, 5, 5);
+		listGbc.gridy = 0;
+		listGbc.gridx = 0;
 
 		//
 		for (Contact contact : contactList) {
 			if (contact != null) {
-				addContact(contact, c);
+				addContact(contact);
+				listGbc.gridy++;
 			}
 		}
 
 		//
-		c.weighty = 1;
-		list.add(new JLabel(""), c);
+		listGbc.weighty = 1;
+		list.add(new JLabel(""), listGbc);
 
 		//
 		list.revalidate();
@@ -159,10 +82,61 @@ class ListView extends JPanel
 
 
 	/**
-	 * Initialize the list view.
-	 * The mode of the list should be defined before calling this function
+	 * Extending class should decide which buttons are added to menu
+	 * <p>
+	 * Method `addMenuButton` can be used for this purpose from the
+	 * overridden method.
 	 */
-	private void initListView ()
+	protected abstract void addMenuButtons ();
+
+
+	/**
+	 * Extending class should decide which buttons are attached to a Contact
+	 * <p>
+	 * Method `addContactButton` can be used for this purpose from the
+	 * overridden method.
+	 *
+	 * @param contact Contact to which attach buttons
+	 */
+	protected abstract void addContactButtons (Contact contact);
+
+
+	/**
+	 * Add a button for a Contact on it's right in the list
+	 *
+	 * @param contact        Concerned contact
+	 * @param label          Label for the button
+	 * @param actionListener Listener for the button
+	 */
+	void addContactButton (Contact contact, String label, ActionListener actionListener)
+	{
+		ContactButton contactButton = new ContactButton(contact, label);
+		contactButton.addActionListener(actionListener);
+
+		list.add(contactButton, listGbc);
+		listGbc.gridx++;
+	}
+
+
+	/**
+	 * Add a button to the bottom menu of the list
+	 *
+	 * @param label          Label for the button
+	 * @param actionListener ActionListener to add to the button
+	 */
+	void addMenuButton (String label, ActionListener actionListener)
+	{
+		JButton button = new JButton(label);
+		button.addActionListener(actionListener);
+
+		menu.add(button);
+	}
+
+
+	/**
+	 * Initialize the list view.
+	 */
+	void initListView ()
 	{
 		setLayout(new BorderLayout());
 
@@ -171,19 +145,8 @@ class ListView extends JPanel
 		add(new JScrollPane(list));
 
 		//
-		JPanel menu = new JPanel();
-
-		switch (mode) {
-			case 0:
-				addButton = new JButton(LABEL_ADD);
-				menu.add(addButton);
-				break;
-			case 1:
-				cancelButton = new JButton(LABEL_CANCEL);
-				menu.add(cancelButton);
-				break;
-		}
-
+		menu = new JPanel();
+		addMenuButtons();
 		add(menu, BorderLayout.SOUTH);
 
 		//
@@ -195,45 +158,21 @@ class ListView extends JPanel
 	 * Add a contact item to the list of contacts
 	 *
 	 * @param contact Contact to display
-	 * @param c       GridBagConstraint used for the list of contacts
 	 */
-	private void addContact (Contact contact, GridBagConstraints c)
+	private void addContact (Contact contact)
 	{
 		String name = contact.getFirstName() + " " + contact.getLastName();
 
 		//
-		c.gridx = 0;
-		c.weightx = 1;
-		list.add(new JLabel(name), c);
+		listGbc.gridx = 0;
+		listGbc.weightx = 1;
+		list.add(new JLabel(name), listGbc);
 
 		//
-		c.weightx = 0;
-		c.gridx = 1;
+		listGbc.weightx = 0;
+		listGbc.gridx = 1;
 
-		switch (mode) {
-			case 0:
-				JButton editButton = new ContactButton(contact, LABEL_EDIT);
-				JButton deleteButton = new ContactButton(contact, LABEL_DELETE);
-
-				list.add(editButton, c);
-
-				c.gridx = 2;
-				list.add(deleteButton, c);
-
-				editButton.addActionListener(editContactListener);
-				deleteButton.addActionListener(deleteContactListener);
-				break;
-			case 1:
-				JButton selectButton = new ContactButton(contact, LABEL_SELECT);
-
-				list.add(selectButton, c);
-
-				selectButton.addActionListener(selectContactListener);
-				break;
-
-		}
-
-		//
-		c.gridy++;
+		addContactButtons(contact);
 	}
+
 }
