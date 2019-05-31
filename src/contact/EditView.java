@@ -1,10 +1,11 @@
 package contact;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class EditView extends JPanel
+class EditView extends JPanel
 {
 	private Contact contact;
 
@@ -22,22 +23,15 @@ public class EditView extends JPanel
 
 	private ActionListener savedContactListener;
 
-	public EditView ()
+	EditView ()
 	{
 		this.contact = new Contact();
 
 		initView();
 	}
 
-	public EditView (Contact contact)
-	{
-		this.contact = contact;
 
-		initView();
-	}
-
-
-	public void setContact (Contact contact)
+	void setContact (Contact contact)
 	{
 		this.contact = contact;
 
@@ -45,13 +39,13 @@ public class EditView extends JPanel
 	}
 
 
-	public Contact getContact ()
+	Contact getContact ()
 	{
 		return contact;
 	}
 
 
-	public void addSaveListener (ActionListener saveListener)
+	void addSaveListener (ActionListener saveListener)
 	{
 		//saveButton.addActionListener(saveListener);
 		savedContactListener = saveListener;
@@ -60,7 +54,7 @@ public class EditView extends JPanel
 	/**
 	 * @param cancelListener
 	 */
-	public void addCancelListener (ActionListener cancelListener)
+	void addCancelListener (ActionListener cancelListener)
 	{
 		cancelButton.addActionListener(cancelListener);
 
@@ -72,6 +66,11 @@ public class EditView extends JPanel
 	 */
 	private void initView ()
 	{
+		setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+
+		gbc.insets = new Insets(5, 5, 5, 5);
+
 		firstNameField = new JTextField(20);
 		lastNameField = new JTextField(20);
 		emailField = new JTextField(20);
@@ -84,14 +83,40 @@ public class EditView extends JPanel
 
 		cancelButton = new JButton("Cancel");
 
-		add(new JLabel("First name: "));
-		add(firstNameField);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		add(new JLabel("First name: "), gbc);
 
-		add(new JLabel("Last name: "));
-		add(lastNameField);
+		gbc.gridx = 1;
+		add(firstNameField, gbc);
 
-		add(saveButton);
-		add(cancelButton);
+
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		add(new JLabel("Last name: "), gbc);
+
+		gbc.gridx = 1;
+		add(lastNameField, gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		add(new JLabel("Phone number: "), gbc);
+
+		gbc.gridx = 1;
+		add(phoneNumberField, gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		add(new JLabel("Email address: "), gbc);
+
+		gbc.gridx = 1;
+		add(emailField, gbc);
+
+		gbc.gridy = 4;
+		gbc.gridx = 1;
+		add(saveButton, gbc);
+		gbc.gridx = 0;
+		add(cancelButton, gbc);
 	}
 
 	private void setViewValues ()

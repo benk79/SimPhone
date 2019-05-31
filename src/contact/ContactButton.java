@@ -2,6 +2,7 @@ package contact;
 
 import javax.swing.JButton;
 
+
 /**
  * The ContactButton extends JButton and has a Contact linked to it
  * allowing a simpler use of ActionEvent from controller code
@@ -16,7 +17,10 @@ public class ContactButton extends JButton
 	 */
 	private Contact contact;
 
+
 	/**
+	 * Constructor of the ContactButton
+	 *
 	 * @param contact Contact to attach to the button
 	 * @param text    Text to display in the button
 	 */
@@ -26,7 +30,10 @@ public class ContactButton extends JButton
 		this.contact = contact;
 	}
 
+
 	/**
+	 * Get the Contact linked to the ContactButton
+	 *
 	 * @return Contact attached to button
 	 */
 	public Contact getContact ()

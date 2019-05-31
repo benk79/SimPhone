@@ -68,9 +68,24 @@ public class ContactApp extends Application {
 		Dimension dim = new Dimension(w, h);
 		screen.setPreferredSize(dim);
 
+
+		/**
+		 * List View
+		 */
+
 		listView = new ListView(contactList);
-		//listView.add(new JLabel("vue liste"));
-		listView.setBackground(Color.BLUE);
+
+		AddBouttonListener newContact = new AddBouttonListener();
+		EditBouttonListener editBouttonListener = new EditBouttonListener();
+		DeleteListener deleteListener = new DeleteListener();
+
+		listView.setMainMode(newContact, editBouttonListener, deleteListener);
+
+
+		/**
+		 * Detail View
+		 */
+
 		detailView = new EditView();
 
 		SaveContactListener saveContactListener = new SaveContactListener();
@@ -79,24 +94,26 @@ public class ContactApp extends Application {
 		CancelListener cancelListener = new CancelListener();
 		detailView.addCancelListener(cancelListener);
 
-
-		//detailView.setBackground(Color.black);
-
-		AddBouttonListener newContact = new AddBouttonListener();
-		listView.addNewContactListener(newContact);
-
-		EditBouttonListener editBouttonListener = new EditBouttonListener();
-		listView.addEditContactListener(editBouttonListener);
-
-		DeleteListener deleteListener = new DeleteListener();
-		listView.addDeleteContactListener(deleteListener);
-
 		screen.add(listView, LIST_VIEW);
 		screen.add(detailView, DETAIL_VIEW);
 
 
-		showListView();
+		showView(LIST_VIEW);
 
+	}
+
+	public ListView getSelectContactPanel (ActionListener selectListener, ActionListener cancelListener)
+	{
+		ListView selectPanel = new ListView(contactList);
+
+		selectPanel.setSelectMode(selectListener, cancelListener);
+
+		// selectPanel.addCancelListener(cancelListener);
+		// selectPanel.addSelectContactListener(selectListener);
+
+		//selectPanel.updateList();
+
+		return selectPanel;
 	}
 
 	static String getDataPath ()
@@ -107,7 +124,7 @@ public class ContactApp extends Application {
 	/**
 	 *
 	 */
-	private void showListView ()
+	private void showUpdatedList ()
 	{
 		listView.updateList();
 		showView(LIST_VIEW);
@@ -172,7 +189,7 @@ public class ContactApp extends Application {
 			contactList[c.getId()] = null;
 
 			writeFile();
-			showListView();
+			showUpdatedList();
 		}
 	}
 
@@ -190,7 +207,7 @@ public class ContactApp extends Application {
 			}
 
 			writeFile();
-			showListView();
+			showUpdatedList();
 		}
 	}
 
@@ -200,7 +217,7 @@ public class ContactApp extends Application {
 		@Override
 		public void actionPerformed (ActionEvent actionEvent)
 		{
-			showListView();
+			showView(LIST_VIEW);
 		}
 	}
 

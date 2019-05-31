@@ -45,12 +45,15 @@ public class Contact implements Serializable
 
 
 	/**
+	 * Get unique id of contact
+	 *
 	 * @return Unique id
 	 */
 	public Integer getId ()
 	{
 		return id;
 	}
+
 
 	/**
 	 * Set unique id for a new contact to save
@@ -85,6 +88,7 @@ public class Contact implements Serializable
 		return id;
 	}
 
+
 	/**
 	 * @return First name
 	 */
@@ -92,6 +96,7 @@ public class Contact implements Serializable
 	{
 		return firstName;
 	}
+
 
 	/**
 	 * @param firstName First name
@@ -101,6 +106,7 @@ public class Contact implements Serializable
 		this.firstName = firstName;
 	}
 
+
 	/**
 	 * @return Last name
 	 */
@@ -108,6 +114,7 @@ public class Contact implements Serializable
 	{
 		return lastName;
 	}
+
 
 	/**
 	 * @param lastName Last name
@@ -117,6 +124,7 @@ public class Contact implements Serializable
 		this.lastName = lastName;
 	}
 
+
 	/**
 	 * @return Email address
 	 */
@@ -124,6 +132,7 @@ public class Contact implements Serializable
 	{
 		return email;
 	}
+
 
 	/**
 	 * @param email Email address
@@ -133,6 +142,7 @@ public class Contact implements Serializable
 		this.email = email;
 	}
 
+
 	/**
 	 * @return Phone number
 	 */
@@ -141,6 +151,7 @@ public class Contact implements Serializable
 		return phoneNumber;
 	}
 
+
 	/**
 	 * @param phoneNumber Phone number
 	 */
@@ -148,6 +159,7 @@ public class Contact implements Serializable
 	{
 		this.phoneNumber = phoneNumber;
 	}
+
 
 	/**
 	 * @return String representing the contact
