@@ -2,6 +2,7 @@ package calendar;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -16,16 +17,23 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.ListCellRenderer;
 
+import contact.Contact;
+import contact.ContactApp;
 import main.Application;
 
 public class calendarApp extends Application implements ActionListener {
+
+	private ContactApp contactApp;
 
 	private LocalDate moiscourant;
 	private JButton avant = new JButton("précédent");
 	private JButton apres = new JButton("suivant");
 	private JLabel jLabelmoiscourant;
 	private JLabel[] jLabeljours;
+
+	private JList<String> anniversaires;
 
 	// private JPanel m superieur1;
 	public calendarApp() {
@@ -48,9 +56,7 @@ public class calendarApp extends Application implements ActionListener {
 		superieur1.add(jLabelmoiscourant);
 		superieur1.add(apres);
 
-		// jpanel central
-		// creer liste anniversaires
-		JList<JLabel> anniversaires = new JList<JLabel>();
+		anniversaires = new JList<String>();
 
 		// jpanel du bas
 		// creer le panel
@@ -75,6 +81,7 @@ public class calendarApp extends Application implements ActionListener {
 		}
 
 		screen.add(superieur1, BorderLayout.NORTH);
+		screen.add(anniversaires, BorderLayout.CENTER);
 		screen.add(calendrier, BorderLayout.SOUTH);
 
 		apres.addActionListener(this);
@@ -119,6 +126,38 @@ public class calendarApp extends Application implements ActionListener {
 			int index = joursemainedu1er - 1 + jourdumois - 1;
 			jLabeljours[index].setForeground(Color.green);
 		}
+
+		afficheanniversaires();
+	}
+
+	public void onInit() {
+		LoadedAppsListener loadedAppsListener = new LoadedAppsListener();
+		os.addLoadedAppsListener(loadedAppsListener);
+	}
+
+	private class LoadedAppsListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+
+			try {
+				contactApp = (ContactApp) os.getLoadedApp(ContactApp.class);
+				afficheanniversaires();
+			} catch (ClassNotFoundException e) {
+				System.out.println("Could not find ");
+			}
+
+		}
+	}
+
+	private void afficheanniversaires() {
+		if (contactApp == null) {
+			// les contacts ne sont pas encore chargés
+			return;
+		}
+
+		// contactApp.getContacts();
+		String[] annis = new String[1];
+		annis[0] = "3. Bastien";
+		anniversaires.setListData(annis);
 	}
 
 }
