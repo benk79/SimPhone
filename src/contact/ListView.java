@@ -1,35 +1,178 @@
 package contact;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
-public class ListView extends JPanel {
-	
 
-	public ListView (Contact[] contactList)
+/**
+ * Abstract class for building JPanel views with the list of contacts
+ *
+ * @author Benjamin Keller
+ * @version 1.0.1
+ */
+abstract class ListView extends JPanel
+{
+	/**
+	 * List of contacts to display
+	 */
+	private Contact[] contactList;
+
+
+	/**
+	 * Container for the contact items
+	 */
+	private JPanel list;
+
+
+	/**
+	 * Container for the menu under the list
+	 */
+	private JPanel menu;
+
+
+	/**
+	 * GridBagConstraints used for building the list
+	 */
+	private GridBagConstraints listGbc;
+
+
+	/**
+	 * Constructor of the list view
+	 *
+	 * @param contactList List of contacts to display in the list view
+	 */
+	ListView (Contact[] contactList)
 	{
-		JPanel menu = new JPanel();
-		JPanel list = new JPanel();
-		
-		JButton addBoutton = new JButton("New contact");
-		
-		
-		setLayout(new BorderLayout());
-		
-		add(list);
-		add(menu, BorderLayout.SOUTH);
-		
-		list.add(new JLabel("liste"));
-		menu.add(new JLabel("menu"));
-		
+		this.contactList = contactList;
 	}
-	
-	/*class AddBouttonListener implements ActionListener
+
+
+	/**
+	 * Update content of list with current array of contacts
+	 */
+	void updateList ()
 	{
-		
-	}*/
+		list.removeAll();
+
+		//
+		listGbc = new GridBagConstraints();
+		listGbc.fill = GridBagConstraints.HORIZONTAL;
+		listGbc.insets = new Insets(5, 5, 5, 5);
+		listGbc.gridy = 0;
+		listGbc.gridx = 0;
+
+		//
+		for (Contact contact : contactList) {
+			if (contact != null) {
+				addContact(contact);
+				listGbc.gridy++;
+			}
+		}
+
+		//
+		listGbc.weighty = 1;
+		list.add(new JLabel(""), listGbc);
+
+		//
+		list.revalidate();
+		list.repaint();
+	}
+
+
+	/**
+	 * Extending class should decide which buttons are added to menu
+	 * <p>
+	 * Method `addMenuButton` can be used for this purpose from the
+	 * overridden method.
+	 */
+	protected abstract void addMenuButtons ();
+
+
+	/**
+	 * Extending class should decide which buttons are attached to a Contact
+	 * <p>
+	 * Method `addContactButton` can be used for this purpose from the
+	 * overridden method.
+	 *
+	 * @param contact Contact to which attach buttons
+	 */
+	protected abstract void addContactButtons (Contact contact);
+
+
+	/**
+	 * Add a button for a Contact on it's right in the list
+	 *
+	 * @param contact        Concerned contact
+	 * @param label          Label for the button
+	 * @param actionListener Listener for the button
+	 */
+	void addContactButton (Contact contact, String label, ActionListener actionListener)
+	{
+		ContactButton contactButton = new ContactButton(contact, label);
+		contactButton.addActionListener(actionListener);
+
+		list.add(contactButton, listGbc);
+		listGbc.gridx++;
+	}
+
+
+	/**
+	 * Add a button to the bottom menu of the list
+	 *
+	 * @param label          Label for the button
+	 * @param actionListener ActionListener to add to the button
+	 */
+	void addMenuButton (String label, ActionListener actionListener)
+	{
+		JButton button = new JButton(label);
+		button.addActionListener(actionListener);
+
+		menu.add(button);
+	}
+
+
+	/**
+	 * Initialize the list view.
+	 */
+	void initListView ()
+	{
+		setLayout(new BorderLayout());
+
+		//
+		list = new JPanel(new GridBagLayout());
+		add(new JScrollPane(list));
+
+		//
+		menu = new JPanel();
+		addMenuButtons();
+		add(menu, BorderLayout.SOUTH);
+
+		//
+		updateList();
+	}
+
+
+	/**
+	 * Add a contact item to the list of contacts
+	 *
+	 * @param contact Contact to display
+	 */
+	private void addContact (Contact contact)
+	{
+		String name = contact.getFirstName() + " " + contact.getLastName();
+
+		//
+		listGbc.gridx = 0;
+		listGbc.weightx = 1;
+		list.add(new JLabel(name), listGbc);
+
+		//
+		listGbc.weightx = 0;
+		listGbc.gridx = 1;
+
+		addContactButtons(contact);
+	}
+
 }

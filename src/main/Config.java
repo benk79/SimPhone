@@ -12,5 +12,7 @@ public abstract class Config
 
 	public static final int HOME_GRID_COLS = 3;
 	public static final int HOME_GRID_ROWS = 6;
+
+	public static final String DATA_PATH = "ressourcesSystem";
 	
 }
