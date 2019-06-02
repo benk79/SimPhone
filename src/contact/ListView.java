@@ -15,9 +15,9 @@ import javax.swing.*;
 abstract class ListView extends JPanel
 {
 	/**
-	 * List of contacts to display
+	 * Reference to application
 	 */
-	private Contact[] contactList;
+	private ContactApp contactApp;
 
 
 	/**
@@ -41,11 +41,11 @@ abstract class ListView extends JPanel
 	/**
 	 * Constructor of the list view
 	 *
-	 * @param contactList List of contacts to display in the list view
+	 * @param contactApp Reference to the application
 	 */
-	ListView (Contact[] contactList)
+	ListView (ContactApp contactApp)
 	{
-		this.contactList = contactList;
+		this.contactApp = contactApp;
 	}
 
 
@@ -64,7 +64,7 @@ abstract class ListView extends JPanel
 		listGbc.gridx = 0;
 
 		//
-		for (Contact contact : contactList) {
+		for (Contact contact : contactApp.getContactList()) {
 			if (contact != null) {
 				addContact(contact);
 				listGbc.gridy++;

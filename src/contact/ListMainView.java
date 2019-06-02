@@ -36,17 +36,17 @@ public class ListMainView extends ListView
 	/**
 	 * Constructor of the list main view
 	 *
-	 * @param contactList    List of contacts to display in the list view
+	 * @param contactApp     Reference to the application
 	 * @param newListener    Listener for the new contact button
 	 * @param editListener   Listener for the edit contact button
 	 * @param deleteListener Listener for the delete contact button
 	 */
-	ListMainView (Contact[] contactList,
+	ListMainView (ContactApp contactApp,
 		      ActionListener newListener,
 		      ActionListener editListener,
 		      ActionListener deleteListener)
 	{
-		super(contactList);
+		super(contactApp);
 
 		this.newListener = newListener;
 		this.editListener = editListener;

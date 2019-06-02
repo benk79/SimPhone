@@ -16,21 +16,49 @@ import javax.swing.*;
  * Application de gestion des contacts
  *
  * @author Benjamin Keller
- * @version 0.2.0
+ * @version 1.0.0
  */
 public class ContactApp extends Application
 {
-
+	/**
+	 * Name of list view for card layout
+	 */
 	private static final String LIST_VIEW = "LIST";
 
+
+	/**
+	 * Name of detail view for card layout
+	 */
 	private static final String DETAIL_VIEW = "DETAIL";
 
+
+	/**
+	 *  List of contacts
+	 */
 	private Contact[] contactList;
 
+
+	/**
+	 * Quantity to increment list of contacts
+	 */
+	private int incrementListQty = 10;
+
+
+	/**
+	 *  Card layout to switch between views
+	 */
 	private CardLayout layout;
 
+
+	/**
+	 *  List view to manage contacts
+	 */
 	private ListView listView;
 
+
+	/**
+	 *  Detail view of contact to edit
+	 */
 	private EditView detailView;
 
 
@@ -42,7 +70,7 @@ public class ContactApp extends Application
 		super("Contacts", "contact.png");
 
 		//
-		contactList = new Contact[200];
+		contactList = new Contact[incrementListQty];
 		try {
 			System.out.println(getDataPath() + "contacts.ser");
 			contactList = (Contact[]) Serializer.get(getDataPath() + "contacts.ser");
@@ -80,7 +108,7 @@ public class ContactApp extends Application
 		EditBouttonListener editBouttonListener = new EditBouttonListener();
 		DeleteListener deleteListener = new DeleteListener();
 
-		listView = new ListMainView(contactList, newContact, editBouttonListener, deleteListener);
+		listView = new ListMainView(this, newContact, editBouttonListener, deleteListener);
 
 
 		/*
@@ -113,7 +141,7 @@ public class ContactApp extends Application
 	 */
 	public JPanel getSelectContactPanel (ActionListener selectListener, ActionListener cancelListener)
 	{
-		return new ListSelectView(contactList, selectListener, cancelListener);
+		return new ListSelectView(this, selectListener, cancelListener);
 	}
 
 
@@ -125,6 +153,17 @@ public class ContactApp extends Application
 	static String getDataPath ()
 	{
 		return Config.DATA_PATH + "/contact/";
+	}
+
+
+	/**
+	 * Get the contact list from the application
+	 *
+	 * @return contact list
+	 */
+	Contact[] getContactList ()
+	{
+		return contactList;
 	}
 
 
@@ -170,10 +209,14 @@ public class ContactApp extends Application
 	private void insertContact (Contact c)
 	{
 		int id = c.insertId();
+
+		if (contactList.length <= id) {
+			Contact[] newList = new Contact[contactList.length + incrementListQty];
+			System.arraycopy(contactList, 0, newList, 0, contactList.length);
+			contactList = newList;
+		}
+
 		contactList[id] = c;
-		/**
-		 * @// TODO: 28.05.2019 Allonger le tableau si nécessaire 
-		 */
 	}
 
 

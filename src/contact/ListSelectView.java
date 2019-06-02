@@ -30,15 +30,15 @@ class ListSelectView extends ListView
 	/**
 	 * Constructor of the list select view
 	 *
-	 * @param contactList    List of contacts to display in the list view
+	 * @param contactApp     Reference to the application
 	 * @param selectListener Listener for the select contact button
 	 * @param cancelListener Listener for the cancel button
 	 */
-	ListSelectView (Contact[] contactList,
+	ListSelectView (ContactApp contactApp,
 			ActionListener selectListener,
 			ActionListener cancelListener)
 	{
-		super(contactList);
+		super(contactApp);
 
 		this.selectListener = selectListener;
 		this.cancelListener = cancelListener;
