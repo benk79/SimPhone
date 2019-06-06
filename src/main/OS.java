@@ -31,13 +31,14 @@ public class OS {
 	private int appScreenHeight; 
 	
 	private ArrayList<Application> applications;
-	
+
 	public OS (Phone p)
 	{
 		phone        = p;
 		appCards     = new JPanel();
 		applications = new ArrayList<Application>();
-		
+		loadedAppsListeners = new ArrayList<ActionListener>();
+
 		
 		/*
 		 * Screen containers
@@ -67,6 +68,14 @@ public class OS {
 		for (String app: appNames) {			
 			loadApp(app);
 		}
+
+		ActionEvent loadedApps = new ActionEvent(this,
+			ActionEvent.ACTION_PERFORMED, "Loaded applications");
+
+		for (ActionListener listener : loadedAppsListeners) {
+			listener.actionPerformed(loadedApps);
+		}
+
 
 		//
 		homeScreen.addApps();		
@@ -150,9 +159,9 @@ public class OS {
 		
 		try {
 			app = (Application) Class.forName(appName).newInstance();
-			
+
 			app.setOs(this);
-			
+
 			applications.add(app);
 			appCards.add(app.screen, getAppScreenName(app));
 			
@@ -161,6 +170,24 @@ public class OS {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private ArrayList<ActionListener> loadedAppsListeners;
+
+	public void addLoadedAppsListener (ActionListener loadedAppsListener)
+	{
+		loadedAppsListeners.add(loadedAppsListener);
+	}
+
+	public Application getLoadedApp (Class c) throws ClassNotFoundException
+	{
+		for (Application a : applications) {
+			if (a.getClass() == c) {
+				return a;
+			}
+		}
+
+		throw new ClassNotFoundException("Class not Found");
 	}
 	
 	
