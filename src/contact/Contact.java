@@ -1,6 +1,8 @@
 package contact;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Date;
 
 import main.Serializer;
 
@@ -47,6 +49,12 @@ public class Contact implements Serializable
 	 * Phone number
 	 */
 	private String phoneNumber;
+
+
+	/**
+	 * Birth date
+	 */
+	private Date birthDate;
 
 
 	/**

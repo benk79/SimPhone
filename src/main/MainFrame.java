@@ -14,19 +14,19 @@ public class MainFrame extends JFrame
 	private Phone phone; 
 	public MainFrame()
 	{
-		
-		JButton buttonTurn = new JButton("Tourner");
+
+		//JButton buttonTurn = new JButton("Tourner");
 		phone = new Phone();
 		
 		//
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		//
-		add(buttonTurn);
+		//add(buttonTurn);
 		add(phone, BorderLayout.SOUTH);		
 
 		MainBouttonListener abl = new MainBouttonListener();
-		buttonTurn.addActionListener(abl);
+		//buttonTurn.addActionListener(abl);
 
 		//
 		pack();

@@ -161,7 +161,7 @@ public class ContactApp extends Application
 	 *
 	 * @return contact list
 	 */
-	Contact[] getContactList ()
+	public Contact[] getContactList ()
 	{
 		return contactList;
 	}

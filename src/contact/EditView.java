@@ -4,6 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -44,6 +49,11 @@ class EditView extends JPanel
 	private JTextField phoneNumberField;
 
 
+	private JTextField dateTextField;
+
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+
 	/**
 	 * GridBagConstraints used to build the form
 	 */
@@ -79,6 +89,9 @@ class EditView extends JPanel
 		emailField = new JTextField(20);
 		phoneNumberField = new JTextField(20);
 
+		dateTextField = new JTextField(20);
+		dateTextField.setColumns(20);
+
 		//
 		JButton saveButton = new JButton("Save");
 		SaveContactListener saveContactListener = new SaveContactListener();
@@ -105,6 +118,7 @@ class EditView extends JPanel
 		addTextField(lastNameField, "Last name: ");
 		addTextField(phoneNumberField, "Phone number: ");
 		addTextField(emailField, "Email address: ");
+		addTextField(dateTextField, "Birth date: ");
 
 		//
 		gbc.gridx = 0;
@@ -167,8 +181,29 @@ class EditView extends JPanel
 		lastNameField.setText(contact.getLastName());
 		emailField.setText(contact.getEmail());
 		phoneNumberField.setText(contact.getPhoneNumber());
+		// dateTextField.setValue(new Date());
 	}
 
+
+	private boolean validDate (String test)
+	{
+		//String test = "02/01/20";
+		//String format = "dd/MM/yyyy";
+		//SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+		dateFormat.setLenient(false);
+		try {
+			Date date = dateFormat.parse(test);
+			if (!dateFormat.format(date).equals(test)) {
+				return false;
+				//throw new ParseException(test + " is not a valid format for " + format, 0);
+			}
+			return true;
+		} catch (ParseException ex) {
+			return false;
+			//ex.printStackTrace();
+		}
+
+	}
 
 	/**
 	 * When clicking on save button, set contact properties with
@@ -179,10 +214,26 @@ class EditView extends JPanel
 		@Override
 		public void actionPerformed (ActionEvent actionEvent)
 		{
+			ArrayList<String> errors = new ArrayList<String>();
+
+			String dateString = dateTextField.getText();
+
+			if (!dateString.equals("")) {
+				if (!validDate(dateString)) {
+					errors.add("Birth date is not in a valid format (dd.mm.yyyy)");
+					System.out.println("Birth date is not in a valid format (dd.mm.yyyy)");
+					return;
+				}
+				// contact.setDate()
+			}
+
 			contact.setEmail(emailField.getText());
 			contact.setFirstName(firstNameField.getText());
 			contact.setPhoneNumber(phoneNumberField.getText());
 			contact.setLastName(lastNameField.getText());
+
+
+			System.out.println(dateTextField.getText());
 
 			savedContactListener.actionPerformed(actionEvent);
 		}
