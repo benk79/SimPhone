@@ -32,7 +32,7 @@ public class MainView extends JPanel {
 	MainView (ArrayList<String> imageList, int size){
 
 		//setPreferredSize(dim);
-		
+		setLayout(new BorderLayout());
 		
 		setBorder(new EmptyBorder(20, 5, 5, 5));
 		setBackground(Color.BLACK);
