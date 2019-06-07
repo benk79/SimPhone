@@ -16,6 +16,18 @@ import main.Application;
 
 public class GalleryApp extends Application {
 
+
+	/**
+	 * Card layout to switch between views
+	 */
+	private CardLayout layout;
+
+	private static final String VIEW_MAIN = "MAIN_VIEW";
+	private static final String VIEW_IMAGE = "DETAIL_VIEW";
+
+	private JPanel routerPanel;
+	JPanel imageView;
+
 	private ArrayList<String> imageList = new ArrayList<String>();
 	
 
@@ -25,7 +37,6 @@ public class GalleryApp extends Application {
 
 	public void onInit()
 	{
-		
 		screen.setLayout(new BorderLayout());
 		
 		// on gère le titre de l'application		
@@ -41,12 +52,45 @@ public class GalleryApp extends Application {
 		imageList.add("ressourcesContenu/Images/beach.jpg");
 		imageList.add("ressourcesContenu/Images/bmx.jpg");
 		imageList.add("ressourcesContenu/Images/hokkaido.jpg");
-		
+
+
+		layout = new CardLayout();
+
+
+		routerPanel = new JPanel();
+		ImageBouttonListener ibl = new ImageBouttonListener();
+		routerPanel.setLayout(layout);
+
 		int size = os.getAppScreenWidth() / 2;
-		
-		MainView mainView = new MainView(imageList, size);
-		
-		screen.add(mainView, BorderLayout.CENTER);
+
+		MainView mainView = new MainView(imageList, size, ibl);
+
+		imageView = new JPanel();
+
+		screen.add(routerPanel, BorderLayout.CENTER);
+
+		routerPanel.add(mainView, VIEW_MAIN);
+		routerPanel.add(imageView, VIEW_IMAGE);
+	}
+
+	private void showImageDetail (String path)
+	{
+		// imageView.setImage(path);
+		layout.show(routerPanel, VIEW_IMAGE);
+	}
+
+	/**
+	 * Listener for edit contact in list
+	 */
+	class ImageBouttonListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed (ActionEvent actionEvent)
+		{
+			ImageButton cb = (ImageButton) actionEvent.getSource();
+
+			showImageDetail(cb.getPath());
+		}
 	}
 	
 }

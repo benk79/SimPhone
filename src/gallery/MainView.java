@@ -1,9 +1,6 @@
 package gallery;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
@@ -25,12 +22,17 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class MainView extends JPanel {
-	
-	//Filtre utilisé pour ne montre qu'un certain type de fichier dans la fenêtre
-	FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
-	
-	MainView (ArrayList<String> imageList, int size){
 
+	private ActionListener imageListener;
+
+
+	//Filtre utilisï¿½ pour ne montre qu'un certain type de fichier dans la fenï¿½tre
+	FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
+
+	MainView (ArrayList<String> imageList, int size, ActionListener imageListener)
+	{
+
+		this.imageListener = imageListener;
 		//setPreferredSize(dim);
 		setLayout(new BorderLayout());
 		
@@ -38,28 +40,29 @@ public class MainView extends JPanel {
 		setBackground(Color.BLACK);
 
 
-		//On crée un JPanel contenant les images et on lui attribue un Gridlayout de 3x3
+		//On crï¿½e un JPanel contenant les images et on lui attribue un Gridlayout de 3x3
 		JPanel panel = new JPanel(new GridLayout(3,3));
 		
 		panel.setLayout (new GridLayout(3, 3));
 		add(new JScrollPane(panel), BorderLayout.CENTER);
 		panel.setBackground(Color.BLACK);
 		
-		//on crée un JPanel contenant les boutons de l'application
+		//on crï¿½e un JPanel contenant les boutons de l'application
 		JPanel panel_button = new JPanel();
 		add(panel_button, BorderLayout.SOUTH);
 		panel_button.setBackground(Color.BLACK);
 		
 		
 		/*
-		 * On parcours la liste d'images et on crée un JButton ainsi qu'une ImageIcon qu'on passe en 
-		 * paramètre du JButton pour chaque images présentes dans la liste
+		 * On parcours la liste d'images et on crï¿½e un JButton ainsi qu'une ImageIcon qu'on passe en 
+		 * paramï¿½tre du JButton pour chaque images prï¿½sentes dans la liste
 		 */
 
 		for (String imgpath : imageList)
 		{
 			ImageButton image = new ImageButton(imgpath, size);
 			//image.setPreferredSize(new Dimension(size, size));
+			image.addActionListener(imageListener);
 			panel.add(image);
 		}
 
@@ -72,28 +75,28 @@ public class MainView extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				//On instancie un JFileChooser pour pouvoir sélectionner un fichier
+				//On instancie un JFileChooser pour pouvoir sï¿½lectionner un fichier
 				JFileChooser fileChooser = new JFileChooser();
 
-				//On permet à l'utilisateur de sélectionner plusieurs fichier dans la fenêtre
+				//On permet ï¿½ l'utilisateur de sï¿½lectionner plusieurs fichier dans la fenï¿½tre
 				fileChooser.setMultiSelectionEnabled(true);
 
-				//On applique un filtre sur l'extension du fichier comme définit en haut de cette classe
+				//On applique un filtre sur l'extension du fichier comme dï¿½finit en haut de cette classe
 				fileChooser.setFileFilter(filter);
 
 				//Si l'utilisateur valide la selection, on continue
 				if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 					/*
-					 *On crée un tableau d'image avec les fichiers selectionnés
-					 *(On est obligé d'utiliser un tableau File[] car nous permettons la selection de plusieurs fichiers plus haut dans le code)
-					 *Si l'on ne permettait la selection que d'un fichier, File aurait suffit avec la méthode getSelectedFile() au lieu de getSelectedFileS()
+					 *On crï¿½e un tableau d'image avec les fichiers selectionnï¿½s
+					 *(On est obligï¿½ d'utiliser un tableau File[] car nous permettons la selection de plusieurs fichiers plus haut dans le code)
+					 *Si l'on ne permettait la selection que d'un fichier, File aurait suffit avec la mï¿½thode getSelectedFile() au lieu de getSelectedFileS()
 					 */
 					File[] selectedImages = fileChooser.getSelectedFiles();
 
-					//On parcours tous les éléments du tableau précédemment créé
+					//On parcours tous les ï¿½lï¿½ments du tableau prï¿½cï¿½demment crï¿½ï¿½
 					for(File selectedImage : selectedImages) {
 
-						//Pour chaque fichier selectionné, on crée un JButton avec pour apparence une ImageIcon qui prend en paramètre le chemin absolut du fichier sur notre disque
+						//Pour chaque fichier selectionnï¿½, on crï¿½e un JButton avec pour apparence une ImageIcon qui prend en paramï¿½tre le chemin absolut du fichier sur notre disque
 						//JButton imageButton = new JButton(new ImageIcon(selectedImage.getAbsolutePath()));
 						ImageButton image = new ImageButton(selectedImage.getAbsolutePath(), size);
 						//image.setPreferredSize(new Dimension(size, size));
