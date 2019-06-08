@@ -13,11 +13,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -25,13 +21,19 @@ public class MainView extends JPanel {
 
 	private ActionListener imageListener;
 
+	private int thumbSize;
 
+	private ArrayList<GalleryImage> imageList;
+
+	private JPanel panel;
 	//Filtre utilis� pour ne montre qu'un certain type de fichier dans la fen�tre
 	FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
 
-	MainView (ArrayList<String> imageList, int size, ActionListener imageListener)
+	MainView (ArrayList<GalleryImage> imageList, int size, ActionListener imageListener)
 	{
 
+		thumbSize = size;
+		this.imageList = imageList;
 		this.imageListener = imageListener;
 		//setPreferredSize(dim);
 		setLayout(new BorderLayout());
@@ -41,9 +43,9 @@ public class MainView extends JPanel {
 
 
 		//On cr�e un JPanel contenant les images et on lui attribue un Gridlayout de 3x3
-		JPanel panel = new JPanel(new GridLayout(3,3));
-		
-		panel.setLayout (new GridLayout(3, 3));
+		panel = new JPanel();
+
+
 		add(new JScrollPane(panel), BorderLayout.CENTER);
 		panel.setBackground(Color.BLACK);
 		
@@ -57,14 +59,6 @@ public class MainView extends JPanel {
 		 * On parcours la liste d'images et on cr�e un JButton ainsi qu'une ImageIcon qu'on passe en 
 		 * param�tre du JButton pour chaque images pr�sentes dans la liste
 		 */
-
-		for (String imgpath : imageList)
-		{
-			ImageButton image = new ImageButton(imgpath, size);
-			//image.setPreferredSize(new Dimension(size, size));
-			image.addActionListener(imageListener);
-			panel.add(image);
-		}
 
 		//On ajoute du bouton add
 		JButton btnAdd = new JButton("Ajouter");
@@ -111,6 +105,53 @@ public class MainView extends JPanel {
 				}
 			}
 		});
+
+		updateView();
+	}
+
+	public void updateView ()
+	{
+
+		panel.removeAll();
+
+
+		ArrayList<ImageButton> buttons = new ArrayList<ImageButton>();
+		for (GalleryImage galleryImage : imageList) {
+			ImageButton image = new ImageButton(galleryImage.getPath(), thumbSize);
+			image.addActionListener(imageListener);
+			buttons.add(image);
+
+		}
+
+
+		int count = buttons.size();
+		int cols = 2;
+		int rows = count / cols;
+
+
+		if (count % cols != 0) {
+			rows++;
+		}
+
+		panel.setLayout(new GridLayout(rows, cols));
+
+
+		for (ImageButton imgbtn : buttons) {
+			JPanel btnContainer = new JPanel();
+			imgbtn.setMargin(new Insets(10, 10, 10, 10));
+			btnContainer.add(imgbtn);
+			btnContainer.setBackground(Color.black);
+			panel.add(btnContainer);
+		}
+
+		int emptyCells = rows * cols - count;
+
+		for (int i = 0; i < emptyCells; i++) {
+			panel.add(new JLabel(""));
+		}
+
+		panel.validate();
+		panel.repaint();
 	}
 	
 	

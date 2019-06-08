@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -12,7 +13,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
+import contact.Contact;
 import main.Application;
+import main.Config;
+import main.Serializer;
 
 public class GalleryApp extends Application {
 
@@ -26,13 +30,26 @@ public class GalleryApp extends Application {
 	private static final String VIEW_IMAGE = "DETAIL_VIEW";
 
 	private JPanel routerPanel;
-	JPanel imageView;
+	ImageView imageView;
 
-	private ArrayList<String> imageList = new ArrayList<String>();
+	private ArrayList<GalleryImage> imageList;
 	
 
 	public GalleryApp()	{
 		super("Gallerie", "galerie.png");
+		imageList = new ArrayList<GalleryImage>();
+
+		try {
+			System.out.println(getDataPath() + "contacts.ser");
+			imageList = (ArrayList<GalleryImage>) Serializer.get(getDataPath() + "list.ser");
+		} catch (FileNotFoundException e) {
+			System.out.println("oops - Gallerie app could not open file list.ser");
+			System.out.println("\tThis can happen if there are still no image added.");
+			buildImageList();
+		} catch (Exception e) {
+			System.out.println("oops - Gallerie app could not open file list.ser");
+			e.printStackTrace();
+		}
 	}
 
 	public void onInit()
@@ -47,11 +64,11 @@ public class GalleryApp extends Application {
 		
 
 		//On ajoute les images à la liste
-		imageList.add("ressourcesContenu/Images/baseball.jpg");
-		imageList.add("ressourcesContenu/Images/basketball.jpg");
-		imageList.add("ressourcesContenu/Images/beach.jpg");
-		imageList.add("ressourcesContenu/Images/bmx.jpg");
-		imageList.add("ressourcesContenu/Images/hokkaido.jpg");
+		/*imageList.add(new GalleryImage("ressourcesContenu/Images/baseball.jpg"));
+		imageList.add(new GalleryImage("ressourcesContenu/Images/basketball.jpg"));
+		imageList.add(new GalleryImage("ressourcesContenu/Images/beach.jpg"));
+		imageList.add(new GalleryImage("ressourcesContenu/Images/bmx.jpg"));
+		imageList.add(new GalleryImage("ressourcesContenu/Images/hokkaido.jpg")); */
 
 
 		layout = new CardLayout();
@@ -59,13 +76,15 @@ public class GalleryApp extends Application {
 
 		routerPanel = new JPanel();
 		ImageBouttonListener ibl = new ImageBouttonListener();
+		CancelListener cancelListener = new CancelListener();
+
 		routerPanel.setLayout(layout);
 
 		int size = os.getAppScreenWidth() / 2;
 
 		MainView mainView = new MainView(imageList, size, ibl);
 
-		imageView = new JPanel();
+		imageView = new ImageView(cancelListener);
 
 		screen.add(routerPanel, BorderLayout.CENTER);
 
@@ -73,10 +92,39 @@ public class GalleryApp extends Application {
 		routerPanel.add(imageView, VIEW_IMAGE);
 	}
 
+
+	/**
+	 * Get the path for read/write files and data
+	 *
+	 * @return The path for read/write data dedicated to this application
+	 */
+	static String getDataPath ()
+	{
+		return Config.DATA_PATH + "/gallery/";
+	}
+
 	private void showImageDetail (String path)
 	{
-		// imageView.setImage(path);
+		imageView.setImage(path);
 		layout.show(routerPanel, VIEW_IMAGE);
+	}
+
+	private void buildImageList ()
+	{
+		String dir = "ressourcesContenu/Images";
+
+		File folder = new File(dir);
+		File[] listOfFiles = folder.listFiles();
+
+		for (int i = 0; i < listOfFiles.length; i++) {
+			if (listOfFiles[i].isFile()) {
+				String fname = "ressourcesContenu/Images/" + listOfFiles[i].getName();
+				GalleryImage galleryImage = new GalleryImage(fname);
+				imageList.add(galleryImage);
+				System.out.println(galleryImage.getPath());
+			}
+		}
+
 	}
 
 	/**
@@ -92,5 +140,18 @@ public class GalleryApp extends Application {
 			showImageDetail(cb.getPath());
 		}
 	}
-	
+
+
+	/**
+	 * Listener for cancel button in edit form
+	 */
+	class CancelListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed (ActionEvent actionEvent)
+		{
+			layout.show(routerPanel, VIEW_MAIN);
+		}
+	}
+
 }
