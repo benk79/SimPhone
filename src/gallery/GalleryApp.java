@@ -43,7 +43,7 @@ public class GalleryApp extends Application {
 
 	private JPanel routerPanel;
 	ImageView imageView;
-	MainView mainView;
+	ListView mainView;
 
 	private ArrayList<GalleryImage> imageList;
 	FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
@@ -97,7 +97,8 @@ public class GalleryApp extends Application {
 
 		int size = os.getAppScreenWidth() / 2;
 
-		mainView = new MainView(imageList, size, ibl, abl);
+		mainView = new ListView(imageList, size, ibl);
+		mainView.addMenuButton("Ajouter", abl);
 
 		imageView = new ImageView(cancelListener);
 
