@@ -26,23 +26,20 @@ public class MainView extends JPanel {
 	private ArrayList<GalleryImage> imageList;
 
 	private JPanel panel;
-	//Filtre utilis� pour ne montre qu'un certain type de fichier dans la fen�tre
-	FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
 
-	MainView (ArrayList<GalleryImage> imageList, int size, ActionListener imageListener)
+	MainView (ArrayList<GalleryImage> imageList, int size, ActionListener imageListener, ActionListener addListener)
 	{
 
 		thumbSize = size;
 		this.imageList = imageList;
 		this.imageListener = imageListener;
-		//setPreferredSize(dim);
+
 		setLayout(new BorderLayout());
 		
 		setBorder(new EmptyBorder(20, 5, 5, 5));
 		setBackground(Color.BLACK);
 
 
-		//On cr�e un JPanel contenant les images et on lui attribue un Gridlayout de 3x3
 		panel = new JPanel();
 
 
@@ -63,49 +60,7 @@ public class MainView extends JPanel {
 		//On ajoute du bouton add
 		JButton btnAdd = new JButton("Ajouter");
 		panel_button.add(btnAdd);
-		
-		//On attribue une action aux imagesButtons
-		btnAdd.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				//On instancie un JFileChooser pour pouvoir s�lectionner un fichier
-				JFileChooser fileChooser = new JFileChooser();
-
-				//On permet � l'utilisateur de s�lectionner plusieurs fichier dans la fen�tre
-				fileChooser.setMultiSelectionEnabled(true);
-
-				//On applique un filtre sur l'extension du fichier comme d�finit en haut de cette classe
-				fileChooser.setFileFilter(filter);
-
-				//Si l'utilisateur valide la selection, on continue
-				if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-					/*
-					 *On cr�e un tableau d'image avec les fichiers selectionn�s
-					 *(On est oblig� d'utiliser un tableau File[] car nous permettons la selection de plusieurs fichiers plus haut dans le code)
-					 *Si l'on ne permettait la selection que d'un fichier, File aurait suffit avec la m�thode getSelectedFile() au lieu de getSelectedFileS()
-					 */
-					File[] selectedImages = fileChooser.getSelectedFiles();
-
-					//On parcours tous les �l�ments du tableau pr�c�demment cr��
-					for(File selectedImage : selectedImages) {
-
-						//Pour chaque fichier selectionn�, on cr�e un JButton avec pour apparence une ImageIcon qui prend en param�tre le chemin absolut du fichier sur notre disque
-						//JButton imageButton = new JButton(new ImageIcon(selectedImage.getAbsolutePath()));
-						ImageButton image = new ImageButton(selectedImage.getAbsolutePath(), size);
-						//image.setPreferredSize(new Dimension(size, size));
-						panel.add(image);
-
-						//On ajoute le JButton au panel
-						//panel.add(imageButton);
-						
-						panel.revalidate();
-						panel.repaint();	
-					}
-				}
-			}
-		});
-
+		btnAdd.addActionListener(addListener);
 		updateView();
 	}
 
@@ -155,29 +110,4 @@ public class MainView extends JPanel {
 	}
 	
 	
-	/*
-	private void copyFile(String source) throws IOException {
-			  
-			    File copied = new File(source);
-			    
-				try (
-			      InputStream in = new BufferedInputStream(new FileInputStream(original));
-			      OutputStream out = new BufferedOutputStream(new FileOutputStream(copied))) {
-			    		byte[] buffer = new byte[1024];
-			    		int lengthRead;
-			    		while ((lengthRead = in.read(buffer)) > 0) {
-			    			out.write(buffer, 0, lengthRead);
-			    			out.flush();
-			        }
-			    }
-			  
-			}
-	*/
-	/*
-	public class ListenerImageClick implements ActionListener {
-
-	    public void actionPerformed(ActionEvent e) {
-	    	
-	    }
-	} */
 }
