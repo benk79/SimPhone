@@ -6,6 +6,18 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+
+
+import java.io.OutputStream;
+
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -31,9 +43,11 @@ public class GalleryApp extends Application {
 
 	private JPanel routerPanel;
 	ImageView imageView;
+	ListView mainView;
 
 	private ArrayList<GalleryImage> imageList;
-	
+	FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
+
 
 	public GalleryApp()	{
 		super("Gallerie", "galerie.png");
@@ -75,6 +89,7 @@ public class GalleryApp extends Application {
 
 
 		routerPanel = new JPanel();
+		AddBouttonListener abl = new AddBouttonListener();
 		ImageBouttonListener ibl = new ImageBouttonListener();
 		CancelListener cancelListener = new CancelListener();
 
@@ -82,7 +97,8 @@ public class GalleryApp extends Application {
 
 		int size = os.getAppScreenWidth() / 2;
 
-		MainView mainView = new MainView(imageList, size, ibl);
+		mainView = new ListView(imageList, size, ibl);
+		mainView.addMenuButton("Ajouter", abl);
 
 		imageView = new ImageView(cancelListener);
 
@@ -127,6 +143,28 @@ public class GalleryApp extends Application {
 
 	}
 
+	public void copyFile (String source, String destination)
+		throws IOException
+	{
+
+		File copied = new File(destination);
+		try (
+			InputStream in = new BufferedInputStream(
+				new FileInputStream(source));
+			OutputStream out = new BufferedOutputStream(
+				new FileOutputStream(copied))) {
+
+			byte[] buffer = new byte[1024];
+			int lengthRead;
+			while ((lengthRead = in.read(buffer)) > 0) {
+				out.write(buffer, 0, lengthRead);
+				out.flush();
+			}
+		}
+
+	}
+
+
 	/**
 	 * Listener for edit contact in list
 	 */
@@ -138,6 +176,50 @@ public class GalleryApp extends Application {
 			ImageButton cb = (ImageButton) actionEvent.getSource();
 
 			showImageDetail(cb.getPath());
+		}
+	}
+
+	/**
+	 * Listener for edit contact in list
+	 */
+	class AddBouttonListener implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed (ActionEvent arg0)
+		{
+			//On instancie un JFileChooser pour pouvoir s?lectionner un fichier
+			JFileChooser fileChooser = new JFileChooser();
+
+			//On permet ? l'utilisateur de s?lectionner plusieurs fichier dans la fen?tre
+			fileChooser.setMultiSelectionEnabled(true);
+
+			//On applique un filtre sur l'extension du fichier comme d?finit en haut de cette classe
+			fileChooser.setFileFilter(filter);
+
+			//Si l'utilisateur valide la selection, on continue
+			if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+				/*
+				 *On cr?e un tableau d'image avec les fichiers selectionn?s
+				 *(On est oblig? d'utiliser un tableau File[] car nous permettons la selection de plusieurs fichiers plus haut dans le code)
+				 *Si l'on ne permettait la selection que d'un fichier, File aurait suffit avec la m?thode getSelectedFile() au lieu de getSelectedFileS()
+				 */
+				File[] selectedImages = fileChooser.getSelectedFiles();
+
+				//On parcours tous les ?l?ments du tableau pr?c?demment cr??
+				for (File selectedImage : selectedImages) {
+
+					String newImagePath = selectedImage.getAbsolutePath();
+					String newImageName = Long.toString(System.currentTimeMillis());
+					try {
+						copyFile(newImagePath, "ressourcesContenu/Images/" + newImageName);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+					mainView.updateView();
+				}
+			}
 		}
 	}
 
