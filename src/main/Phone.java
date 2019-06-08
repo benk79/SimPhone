@@ -11,7 +11,7 @@ import javax.swing.*;
 public class Phone extends JPanel {
 
 	public JPanel  screen;
-	public JButton mainButton;
+	public ButtonIcon mainButton;
 	
 	private boolean powerState;
 	
@@ -107,7 +107,7 @@ public class Phone extends JPanel {
 
 
 		//
-		mainButton = new JButton("Home");
+		mainButton = new ButtonIcon("homeButton.png", "home");
 		bottomBorder.add(mainButton);		
 
 	}
@@ -119,7 +119,7 @@ public class Phone extends JPanel {
 		Dimension dimension = new Dimension(w, h);
 		
 		panel.setPreferredSize(dimension);
-		panel.setBackground(Color.red);
+		panel.setBackground(Color.black);
 
 		add(panel, place);		
 	}

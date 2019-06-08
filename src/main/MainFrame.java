@@ -15,18 +15,16 @@ public class MainFrame extends JFrame
 	public MainFrame()
 	{
 		
-		JButton buttonTurn = new JButton("Tourner");
+		
 		phone = new Phone();
 		
 		//
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		//
-		add(buttonTurn);
 		add(phone, BorderLayout.SOUTH);		
 
 		MainBouttonListener abl = new MainBouttonListener();
-		buttonTurn.addActionListener(abl);
 
 		//
 		pack();

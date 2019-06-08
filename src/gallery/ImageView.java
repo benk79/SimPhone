@@ -27,6 +27,8 @@ public class ImageView extends JPanel {
 		//panel_image.setBackground(Color.BLACK);
 		add(panel_image, BorderLayout.CENTER);
 		
+		
+		
 		//on cr�e un JPanel contenant les boutons de l'application
 		JPanel panel_button = new JPanel();
 		add(panel_button, BorderLayout.SOUTH);
@@ -46,8 +48,8 @@ public class ImageView extends JPanel {
 	}
 
 	
-	public void setImage(String image) {
-		this.image = image;
+	public void setImage(GalleryImage image) {
+		this.image = image.getPath();
 		updateImage();
 	}
 
@@ -57,5 +59,9 @@ public class ImageView extends JPanel {
 
 		System.out.println(image);
 		panel_image.add(new JLabel(image));
+		
+		ImageIcon imageFull = new ImageIcon(image);
+		JLabel img = new JLabel(imageFull);
+		add(img, BorderLayout.CENTER);
 	}
 }
