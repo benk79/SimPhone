@@ -119,9 +119,9 @@ public class GalleryApp extends Application {
 		return Config.DATA_PATH + "/gallery/";
 	}
 
-	private void showImageDetail (String path)
+	private void showImageDetail (GalleryImage img)
 	{
-		imageView.setImage(path);
+		imageView.setImage(img);
 		layout.show(routerPanel, VIEW_IMAGE);
 	}
 
@@ -175,7 +175,7 @@ public class GalleryApp extends Application {
 		{
 			ImageButton cb = (ImageButton) actionEvent.getSource();
 
-			showImageDetail(cb.getPath());
+			showImageDetail(cb.getImage());
 		}
 	}
 

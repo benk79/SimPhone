@@ -10,13 +10,13 @@ import java.awt.Image;
 
 public class ImageButton extends JButton {
 
-	private String path;
+	private GalleryImage image;
 
-	ImageButton (String path, int size)
+	ImageButton (GalleryImage image, int size)
 	{
 		//super(new ImageIcon(path));
 		size = 180;
-		this.path = path;
+		this.image = image;
 		setPreferredSize(new Dimension(size, size));
 
 		// createEmptyBorder(20, 20, 20, 20);
@@ -26,7 +26,7 @@ public class ImageButton extends JButton {
 		setBorderPainted(false);
 
 
-		ImageIcon icon = new ImageIcon(path);
+		ImageIcon icon = new ImageIcon(image.getPath());
 		Image img = icon.getImage();
 		int height = icon.getIconHeight();
 		int width = icon.getIconWidth();
@@ -50,8 +50,8 @@ public class ImageButton extends JButton {
 
 	}
 
-	public String getPath ()
+	public GalleryImage getImage ()
 	{
-		return path;
+		return image;
 	}
 }

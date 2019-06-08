@@ -11,7 +11,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class ImageView extends JPanel {
-	private String image;
+	private GalleryImage image;
 
 	private JPanel panel_image;
 
@@ -49,7 +49,7 @@ public class ImageView extends JPanel {
 
 	
 	public void setImage(GalleryImage image) {
-		this.image = image.getPath();
+		this.image = image;
 		updateImage();
 	}
 
@@ -57,11 +57,14 @@ public class ImageView extends JPanel {
 	{
 		panel_image.removeAll();
 
-		System.out.println(image);
-		panel_image.add(new JLabel(image));
+		System.out.println(image.getPath());
+		panel_image.add(new JLabel(image.getPath()));
 		
-		ImageIcon imageFull = new ImageIcon(image);
+		ImageIcon imageFull = new ImageIcon(image.getPath());
 		JLabel img = new JLabel(imageFull);
-		add(img, BorderLayout.CENTER);
+		panel_image.add(img, BorderLayout.CENTER);
+		
+		validate();
+		repaint();
 	}
 }
