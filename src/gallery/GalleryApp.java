@@ -20,6 +20,7 @@ import java.io.OutputStream;
 
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -50,7 +51,7 @@ public class GalleryApp extends Application {
 
 
 	public GalleryApp()	{
-		super("Gallerie", "galerie.png");
+		super("Gallerie", "Gallerie_V3.png");
 		imageList = new ArrayList<GalleryImage>();
 
 		try {
@@ -114,6 +115,7 @@ public class GalleryApp extends Application {
 	 *
 	 * @return The path for read/write data dedicated to this application
 	 */
+	
 	static String getDataPath ()
 	{
 		return Config.DATA_PATH + "/gallery/";
@@ -166,7 +168,7 @@ public class GalleryApp extends Application {
 
 
 	/**
-	 * Listener for edit contact in list
+	 * Listener for edit image in list
 	 */
 	class ImageBouttonListener implements ActionListener
 	{
@@ -180,7 +182,7 @@ public class GalleryApp extends Application {
 	}
 
 	/**
-	 * Listener for edit contact in list
+	 * Listener for add image in list
 	 */
 	class AddBouttonListener implements ActionListener
 	{
@@ -236,4 +238,41 @@ public class GalleryApp extends Application {
 		}
 	}
 
+	/**
+	 * Listener for black/white button in edit form
+	 
+	class BlackAndWhiteListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed (ActionEvent actionEvent)
+		{
+			try {
+
+	            File input = new File("C:/Users/Louise/git/SimPhone/ressourcesContenu/Images/bmx.jpg");
+	            BufferedImage image = ImageIO.read(input);
+
+	            BufferedImage result = new BufferedImage(
+	                    image.getWidth(),
+	                    image.getHeight(),
+	                    BufferedImage.TYPE_BYTE_BINARY);
+
+	            Graphics2D graphic = result.createGraphics();
+	            graphic.drawImage(image, 0, 0, Color.WHITE, null);
+	            graphic.dispose();
+
+	            File output = new File("C:/Users/Louise/git/SimPhone/ressourcesContenu/Images/bmx2.jpg");
+	            ImageIO.write(result, "jpg", output);
+
+	        }  catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        
+	        }
+		}
+		*/
+	
+	
+	
+	
+	
 }
