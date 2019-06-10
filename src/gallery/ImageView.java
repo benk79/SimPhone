@@ -46,7 +46,7 @@ public class ImageView extends JPanel {
 		panel_button.setBackground(Color.BLACK);
 
 		//On ajoute du bouton annuler
-		JButton btnCancel = new JButton("Annuler");
+		JButton btnCancel = new JButton("Retour");
 		panel_button.add(btnCancel);
 		btnCancel.addActionListener(cancelListener);
 
