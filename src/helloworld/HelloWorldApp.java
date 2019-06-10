@@ -2,11 +2,14 @@ package helloworld;
 
 import javax.swing.*;
 
+import contact.ListSelectView;
 import main.Application;
 
 import contact.ContactApp;
 import contact.Contact;
 import contact.ContactButton;
+import main.SelectionListener;
+import main.SeletionPanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,10 +37,12 @@ public class HelloWorldApp extends Application {
 		os.addLoadedAppsListener(loadedAppsListener);
 	}
 
-	JPanel selectionPanel;
+	ListSelectView selectionPanel;
 	JLabel selectedContact;
-	ContactAppSelectListener selectListener;
-	ContactAppCancelListener cancelListener;
+	//ContactAppSelectListener selectListener;
+	//ContactAppCancelListener cancelListener;
+
+	SelectionListener contactSelectionListener;
 
 	private void addContactSelection ()
 	{
@@ -46,11 +51,17 @@ public class HelloWorldApp extends Application {
 		screen.add(selectContactBtn);
 		screen.add(selectedContact);
 
-		selectListener = new ContactAppSelectListener();
-		cancelListener = new ContactAppCancelListener();
+		contactSelectionListener = new SelectContactListener();
+
+
+		//selectListener = new ContactAppSelectListener();
+		//cancelListener = new ContactAppCancelListener();
 
 		SelectBtnListener selectBtnListener = new SelectBtnListener();
 		selectContactBtn.addActionListener(selectBtnListener);
+
+		selectionPanel = contactApp.getSelectContactPanel();
+		selectionPanel.addSelectionListener(contactSelectionListener);
 
 	}
 
@@ -59,7 +70,7 @@ public class HelloWorldApp extends Application {
 		public void actionPerformed (ActionEvent event)
 		{
 			System.out.println("select contact click");
-			selectionPanel = contactApp.getSelectContactPanel(selectListener, cancelListener);
+			selectionPanel.updateList();
 			screen.add(selectionPanel);
 
 			screen.validate();
@@ -82,6 +93,31 @@ public class HelloWorldApp extends Application {
 		}
 	}
 
+	private class SelectContactListener implements SelectionListener
+	{
+
+		@Override
+		public void onSelect (Object o)
+		{
+			Contact c = (Contact) o;
+
+			selectedContact.setText(c.toString());
+			screen.remove(selectionPanel);
+			screen.validate();
+			screen.repaint();
+		}
+
+		@Override
+		public void onCancel ()
+		{
+			System.out.println("onCancel triggered");
+			screen.remove(selectionPanel);
+			screen.validate();
+			screen.repaint();
+		}
+	}
+
+	/*
 	private class ContactAppSelectListener implements ActionListener
 	{
 		public void actionPerformed (ActionEvent event)
@@ -105,6 +141,6 @@ public class HelloWorldApp extends Application {
 			screen.validate();
 			screen.repaint();
 		}
-	}
+	}*/
 
 }

@@ -2,5 +2,5 @@ package main;
 
 public interface SeletionPanel
 {
-	public abstract void addSelectionListener (SelectionListener selectionListener);
+	abstract void addSelectionListener (SelectionListener selectionListener);
 }

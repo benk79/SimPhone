@@ -9,8 +9,8 @@ import javax.swing.*;
 /**
  * Abstract class for building JPanel views with the list of contacts
  *
- * @author Benjamin Keller
- * @version 1.0.1
+ * @author Louise Bretz, Benjamin Keller
+ * @version 1.0.
  */
 abstract class ListView extends JPanel
 {

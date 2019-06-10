@@ -1,5 +1,9 @@
 package contact;
 
+import main.SelectionListener;
+import main.SeletionPanel;
+
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
@@ -9,11 +13,12 @@ import java.awt.event.ActionListener;
  * @author Benjamin Keller
  * @version 1.0.0
  */
-class ListSelectView extends ListView
+public class ListSelectView extends ListView implements SeletionPanel
 {
 	private static final String LABEL_SELECT = "Select";
 	private static final String LABEL_CANCEL = "Cancel";
 
+	private SelectionListener selectionListener;
 
 	/**
 	 * Listener for the select contact button
@@ -24,24 +29,19 @@ class ListSelectView extends ListView
 	/**
 	 * Listener for the select contact button
 	 */
-	private ActionListener cancelListener;
+	//private ActionListener cancelListener;
 
 
 	/**
 	 * Constructor of the list select view
 	 *
 	 * @param contactApp     Reference to the application
-	 * @param selectListener Listener for the select contact button
-	 * @param cancelListener Listener for the cancel button
 	 */
-	ListSelectView (ContactApp contactApp,
-			ActionListener selectListener,
-			ActionListener cancelListener)
+	ListSelectView (ContactApp contactApp)
 	{
 		super(contactApp);
 
-		this.selectListener = selectListener;
-		this.cancelListener = cancelListener;
+		selectListener = new SelectListener();
 
 		initListView();
 	}
@@ -55,6 +55,12 @@ class ListSelectView extends ListView
 	@Override
 	protected void addContactButtons (Contact contact)
 	{
+		/*ActionListener selectListener = actionEvent -> {
+			ContactButton cb = (ContactButton) actionEvent.getSource();
+			Contact c = cb.getContact();
+
+			selectionListener.onSelect(c);
+		}; */
 		addContactButton(contact, LABEL_SELECT, selectListener);
 	}
 
@@ -65,8 +71,44 @@ class ListSelectView extends ListView
 	@Override
 	protected void addMenuButtons ()
 	{
-
+		ActionListener cancelListener = new CancelListener();
 		addMenuButton(LABEL_CANCEL, cancelListener);
 	}
 
+	@Override
+	public void addSelectionListener (SelectionListener selectionListener)
+	{
+		this.selectionListener = selectionListener;
+	}
+
+	@Override
+	public void updateList()
+	{
+		super.updateList();
+	}
+
+	class SelectListener implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed (ActionEvent actionEvent)
+		{
+			if (selectionListener != null) {
+				ContactButton cb = (ContactButton) actionEvent.getSource();
+				selectionListener.onSelect(cb.getContact());
+			}
+		}
+	}
+
+	class CancelListener implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed (ActionEvent actionEvent)
+		{
+			if (selectionListener != null) {
+				selectionListener.onCancel();
+			}
+		}
+	}
 }
