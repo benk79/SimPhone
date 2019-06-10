@@ -6,10 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 
-import main.Application;
-import main.Config;
-import main.SeletionPanel;
-import main.Serializer;
+import gallery.GalleryApp;
+import gallery.GalleryImage;
+import main.*;
 
 import javax.swing.*;
 
@@ -61,6 +60,13 @@ public class ContactApp extends Application
 	 *  Detail view of contact to edit
 	 */
 	private EditView detailView;
+
+	/**
+	 * View to select an image
+	 */
+	private gallery.ListSelectView imageSelectView;
+
+	private GalleryApp galleryApp;
 
 
 	/**
@@ -120,6 +126,9 @@ public class ContactApp extends Application
 		CancelListener cancelListener = new CancelListener();
 
 		detailView = new EditView(saveContactListener, cancelListener);
+
+
+
 
 
 		/*
@@ -313,4 +322,52 @@ public class ContactApp extends Application
 		}
 	}
 
+	private class LoadedAppsListener implements ActionListener
+	{
+		public void actionPerformed (ActionEvent event)
+		{
+
+			try {
+				galleryApp = (GalleryApp) os.getLoadedApp(GalleryApp.class);
+
+
+				/*
+				 * Image select View
+				 */
+
+				SelectImageListener selectImageListener = new SelectImageListener();
+
+				imageSelectView = galleryApp.getSelectContactPanel();
+				imageSelectView.addSelectionListener(selectImageListener);
+
+			} catch (ClassNotFoundException e) {
+				System.out.println("Could not find ");
+			}
+
+		}
+	}
+
+	private class SelectImageListener implements SelectionListener
+	{
+
+		@Override
+		public void onSelect (Object o)
+		{
+			GalleryImage image = (GalleryImage) o;
+
+			/*selectedImage.setText(c.toString());
+			screen.remove(selectionPanel);
+			screen.validate();
+			screen.repaint();*/
+		}
+
+		@Override
+		public void onCancel ()
+		{
+			System.out.println("onCancel triggered");
+			/* screen.remove(selectionPanel);
+			screen.validate();
+			screen.repaint();*/
+		}
+	}
 }

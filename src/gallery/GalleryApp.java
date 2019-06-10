@@ -112,11 +112,9 @@ public class GalleryApp extends Application {
 	/**
 	 * Provide ListSelectView as JPanel to other applications to select a contact
 	 *
-	 * @param selectListener Listener for the select contact button
-	 * @param cancelListener Listener for the cancel button
 	 * @return JPanel with contact selection options
 	 */
-	public ListSelectView getSelectContactPanel (ActionListener selectListener, ActionListener cancelListener)
+	public ListSelectView getSelectContactPanel ()
 	{
 		ListSelectView selectView = new ListSelectView(imageList);
 

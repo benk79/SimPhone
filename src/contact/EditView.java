@@ -1,5 +1,7 @@
 package contact;
 
+import gallery.GalleryImage;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -50,6 +52,9 @@ class EditView extends JPanel
 
 
 	private JTextField dateTextField;
+
+
+	private GalleryImage image;
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -114,6 +119,9 @@ class EditView extends JPanel
 		gbc.gridy = 0;
 
 		//
+		//imagePanel = new JPanel();
+
+
 		addTextField(firstNameField, "First name: ");
 		addTextField(lastNameField, "Last name: ");
 		addTextField(phoneNumberField, "Phone number: ");
@@ -140,6 +148,19 @@ class EditView extends JPanel
 		this.contact = contact;
 
 		setViewValues();
+	}
+
+	/**
+	 * Link an image to save with the contact
+	 *
+	 * @param img GalleryImage for the contact
+	 */
+	void setImage (GalleryImage img)
+	{
+		image = img;
+		System.out.println(image.getPath());
+
+		//setViewValues();
 	}
 
 
