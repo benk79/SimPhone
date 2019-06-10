@@ -86,12 +86,13 @@ public class GalleryApp extends Application {
 
 
 		layout = new CardLayout();
+		routerPanel = new JPanel();
+
 		routerPanel.setLayout(layout);
 
 		int size = os.getAppScreenWidth() / 2;
 
 
-		routerPanel = new JPanel();
 		AddBouttonListener abl = new AddBouttonListener();
 		ImageBouttonListener ibl = new ImageBouttonListener();
 		CancelListener cancelListener = new CancelListener();
