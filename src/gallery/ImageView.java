@@ -24,10 +24,12 @@ public class ImageView extends JPanel {
 	private JPanel panel_image;
 	private BlackAndWhiteListener blackAndWhiteListener ;
 	private JButton btnModify ;
+	private GalleryApp galleryApp;
 
-	ImageView (ActionListener cancelListener)
+	ImageView (GalleryApp galleryApp, ActionListener cancelListener)
 	{
-		
+		this.galleryApp = galleryApp;
+
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(20, 5, 5, 5));
 		setBackground(Color.BLACK);
@@ -54,14 +56,16 @@ public class ImageView extends JPanel {
 		
 		btnModify = new JButton("Modifier");
 		panel_button.add(btnModify);
-		
-		
+
+		blackAndWhiteListener = new BlackAndWhiteListener();
+		btnModify.addActionListener(blackAndWhiteListener);
+
 		
 	}
 	
 	
 	
-	public BlackAndWhiteListener getBlackAndWhiteListener() {
+	/* public BlackAndWhiteListener getBlackAndWhiteListener() {
 		return blackAndWhiteListener;
 	}
 
@@ -69,7 +73,7 @@ public class ImageView extends JPanel {
 
 	public void setBlackAndWhiteListener(BlackAndWhiteListener blackAndWhiteListener) {
 		this.blackAndWhiteListener = blackAndWhiteListener;
-	}
+	} */
 
 
 
@@ -113,9 +117,7 @@ public class ImageView extends JPanel {
 		panel_image.setForeground(Color.WHITE);
 		panel_image.add(imagelabel, BorderLayout.CENTER);
 		
-		blackAndWhiteListener = new BlackAndWhiteListener(this.image, this);
-		btnModify.addActionListener(blackAndWhiteListener);
-		
+
 		validate();
 		repaint();
 	}
@@ -123,10 +125,10 @@ public class ImageView extends JPanel {
 	/**
 	 * Listener for black/white button in edit form
 	*/
-	
-	static class BlackAndWhiteListener implements ActionListener
+
+	class BlackAndWhiteListener implements ActionListener
 	{
-		
+		/*
 		GalleryImage image ; 
 		ImageView imageview ;
 		
@@ -135,29 +137,29 @@ public class ImageView extends JPanel {
 			this.imageview = imageview ;
 			
 		}	
-		
+		*/
 		@Override
 		public void actionPerformed (ActionEvent actionEvent)
 		{
 			try {
-				
 
-				System.out.println(this.image.getPath());
-	            
-				File input = new File(this.image.getPath());
-				
-				BufferedImage image = ImageIO.read(input);
+
+				System.out.println(image.getPath());
+
+				File input = new File(image.getPath());
+
+				BufferedImage bufferedImage = ImageIO.read(input);
 
 	            BufferedImage result = new BufferedImage(
-	                    image.getWidth(),
-	                    image.getHeight(),
+			    bufferedImage.getWidth(),
+			    bufferedImage.getHeight(),
 	                    BufferedImage.TYPE_BYTE_BINARY);
 
 	            Graphics2D graphic = result.createGraphics();
-	            graphic.drawImage(image, 0, 0, Color.WHITE, null);
+				graphic.drawImage(bufferedImage, 0, 0, Color.WHITE, null);
 	            graphic.dispose();
-	            
-	            String newpath = this.image.getPath().substring(0,this.image.getPath().indexOf(".")).concat("2.jpg");
+
+				String newpath = image.getPath().substring(0, image.getPath().indexOf(".")).concat("-bw.jpg");
 
 	            File output = new File(newpath);
 	            ImageIO.write(result, "jpg", output);
@@ -165,7 +167,10 @@ public class ImageView extends JPanel {
 	          
 	            
 	           GalleryImage modifyImage = new GalleryImage(newpath);
-	           this.imageview.setImage(modifyImage);
+				galleryApp.addImage(modifyImage);
+				// GalleryImage  galleryImage = new GalleryImage(newImagePath);
+				//imageList.add(galleryImage);
+				setImage(modifyImage);
 
 	        }  catch (IOException e) {
 	            e.printStackTrace();

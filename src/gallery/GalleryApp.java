@@ -101,9 +101,9 @@ public class GalleryApp extends Application {
 		int size = os.getAppScreenWidth() / 2;
 
 		mainView = new ListMainView (imageList, size, ibl);
-		mainView.addMenuButton("Ajouter", abl);
+		//mainView.addMenuButton("Ajouter", abl);
 
-		imageView = new ImageView(cancelListener);
+		imageView = new ImageView(this, cancelListener);
 
 		screen.add(routerPanel, BorderLayout.CENTER);
 
@@ -123,10 +123,10 @@ public class GalleryApp extends Application {
 		return Config.DATA_PATH + "/gallery/";
 	}
 
-	private void showImageDetail (GalleryImage img)
+	void showImageDetail (GalleryImage img)
 	{
 		imageView.setImage(img);
-		imageView.setBlackAndWhiteListener(new BlackAndWhiteListener(img, imageView));
+		//imageView.setBlackAndWhiteListener(new BlackAndWhiteListener(img, imageView));
 		layout.show(routerPanel, VIEW_IMAGE);
 
 	}
@@ -215,20 +215,28 @@ public class GalleryApp extends Application {
 				//On parcours tous les ?l?ments du tableau pr?c?demment cr??
 				for (File selectedImage : selectedImages) {
 
-					String newImagePath = selectedImage.getAbsolutePath();
+					String loadImagePath = selectedImage.getAbsolutePath();
 					String newImageName = Long.toString(System.currentTimeMillis());
+					String newImagePath = "ressourcesContenu/Images/" + newImageName + ".jpg";
 					try {
-						copyFile(newImagePath, "ressourcesContenu/Images/" + newImageName);
+						copyFile(loadImagePath, newImagePath);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 
+					GalleryImage galleryImage = new GalleryImage(newImagePath);
+					imageList.add(galleryImage);
 					mainView.updateView();
 				}
 			}
 		}
 	}
 
+	void addImage (GalleryImage img)
+	{
+		imageList.add(img);
+		mainView.updateView();
+	}
 
 	/**
 	 * Listener for cancel button in edit form
