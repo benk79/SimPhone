@@ -130,7 +130,7 @@ public class OS {
 
 		appCards.setLayout(new CardLayout());
 		appCards.setPreferredSize(dimension);
-		appCards.setBackground(Color.CYAN);
+		appCards.setBackground(Color.black);
 		
 		phone.screen.add(appCards, BorderLayout.SOUTH);
 		

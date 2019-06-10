@@ -9,8 +9,10 @@ import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 @SuppressWarnings("serial")
@@ -27,9 +29,16 @@ public class NotificationBar extends JPanel {
 		setPreferredSize(dimension);
 		setBackground(Color.black);
 		
+		ImageIcon swiss = new ImageIcon("ressourcesSystem/swisscom.png");
+		JLabel img = new JLabel(swiss);
+		add(img, BorderLayout.WEST);
 		
-		JLabel timeLabel = new JLabel("");
-		add(timeLabel, BorderLayout.EAST);
+		ImageIcon battery = new ImageIcon("ressourcesSystem/battery.png");
+		JLabel img2 = new JLabel(battery);
+		add(img2, BorderLayout.EAST);
+		
+		JLabel timeLabel = new JLabel("", SwingConstants.CENTER);
+		add(timeLabel, BorderLayout.CENTER);
 
 		timeLabel.setForeground(Color.white);
 		

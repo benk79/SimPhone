@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 
 import main.Application;
 import main.Config;
+import main.SeletionPanel;
 import main.Serializer;
 
 import javax.swing.*;
@@ -135,15 +136,24 @@ public class ContactApp extends Application
 	/**
 	 * Provide ListSelectView as JPanel to other applications to select a contact
 	 *
-	 * @param selectListener Listener for the select contact button
-	 * @param cancelListener Listener for the cancel button
-	 * @return JPanel with contact selection options
+	 * @return SeletionPanel with contact selection options
 	 */
-	public JPanel getSelectContactPanel (ActionListener selectListener, ActionListener cancelListener)
+	public ListSelectView getSelectContactPanel ()
 	{
-		return new ListSelectView(this, selectListener, cancelListener);
+		return new ListSelectView(this);
 	}
 
+	/**
+	 * Provide ListSelectView as JPanel to other applications to select a contact
+	 *
+	 * @return SeletionPanel with contact selection options
+	 * @deprecated
+	 */
+	public SeletionPanel getSelectContactPanel (ActionListener onSelect, ActionListener onCancel)
+	{
+
+		return new ListSelectView(this);
+	}
 
 	/**
 	 * Get the path for read/write files and data
