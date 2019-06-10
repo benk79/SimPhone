@@ -27,6 +27,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 import contact.Contact;
+import gallery.ImageView.BlackAndWhiteListener;
 import main.Application;
 import main.Config;
 import main.Serializer;
@@ -44,14 +45,14 @@ public class GalleryApp extends Application {
 
 	private JPanel routerPanel;
 	ImageView imageView;
-	ListMainView mainView;
+	ListView mainView;
 
 	private ArrayList<GalleryImage> imageList;
 	FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
 
 
 	public GalleryApp()	{
-		super("Gallerie", "Gallerie_V3.png");
+		super("Gallerie", "galerie.png");
 		imageList = new ArrayList<GalleryImage>();
 
 		try {
@@ -87,19 +88,20 @@ public class GalleryApp extends Application {
 
 
 		layout = new CardLayout();
+
+
 		routerPanel = new JPanel();
+		AddBouttonListener abl = new AddBouttonListener();
+		ImageBouttonListener ibl = new ImageBouttonListener();
+		CancelListener cancelListener = new CancelListener();
+		
 
 		routerPanel.setLayout(layout);
 
 		int size = os.getAppScreenWidth() / 2;
 
-
-		AddBouttonListener abl = new AddBouttonListener();
-		ImageBouttonListener ibl = new ImageBouttonListener();
-		CancelListener cancelListener = new CancelListener();
-
-
-		mainView = new ListMainView(imageList, ibl, abl);
+		mainView = new ListMainView (imageList, size, ibl);
+		mainView.addMenuButton("Ajouter", abl);
 
 		imageView = new ImageView(cancelListener);
 
@@ -109,20 +111,6 @@ public class GalleryApp extends Application {
 		routerPanel.add(imageView, VIEW_IMAGE);
 	}
 
-
-	/**
-	 * Provide ListSelectView as JPanel to other applications to select a contact
-	 *
-	 * @param selectListener Listener for the select contact button
-	 * @param cancelListener Listener for the cancel button
-	 * @return JPanel with contact selection options
-	 */
-	public ListSelectView getSelectContactPanel (ActionListener selectListener, ActionListener cancelListener)
-	{
-		ListSelectView selectView = new ListSelectView(imageList);
-
-		return selectView;
-	}
 
 	/**
 	 * Get the path for read/write files and data
@@ -138,7 +126,9 @@ public class GalleryApp extends Application {
 	private void showImageDetail (GalleryImage img)
 	{
 		imageView.setImage(img);
+		imageView.setBlackAndWhiteListener(new BlackAndWhiteListener(img, imageView));
 		layout.show(routerPanel, VIEW_IMAGE);
+
 	}
 
 	private void buildImageList ()
@@ -159,7 +149,8 @@ public class GalleryApp extends Application {
 
 	}
 
-	public void copyFile (String source, String destination) throws IOException
+	public void copyFile (String source, String destination)
+		throws IOException
 	{
 
 		File copied = new File(destination);
@@ -247,42 +238,15 @@ public class GalleryApp extends Application {
 		@Override
 		public void actionPerformed (ActionEvent actionEvent)
 		{
+			
 			layout.show(routerPanel, VIEW_MAIN);
+	
+		
 		}
 	}
 
-	/**
-	 * Listener for black/white button in edit form
-	 
-	class BlackAndWhiteListener implements ActionListener
-	{
-		@Override
-		public void actionPerformed (ActionEvent actionEvent)
-		{
-			try {
-
-	            File input = new File("C:/Users/Louise/git/SimPhone/ressourcesContenu/Images/bmx.jpg");
-	            BufferedImage image = ImageIO.read(input);
-
-	            BufferedImage result = new BufferedImage(
-	                    image.getWidth(),
-	                    image.getHeight(),
-	                    BufferedImage.TYPE_BYTE_BINARY);
-
-	            Graphics2D graphic = result.createGraphics();
-	            graphic.drawImage(image, 0, 0, Color.WHITE, null);
-	            graphic.dispose();
-
-	            File output = new File("C:/Users/Louise/git/SimPhone/ressourcesContenu/Images/bmx2.jpg");
-	            ImageIO.write(result, "jpg", output);
-
-	        }  catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	        
-	        }
-		}
-		*/
+	
+		
 	
 	
 	

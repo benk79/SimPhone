@@ -5,10 +5,16 @@ package gallery;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -16,6 +22,8 @@ public class ImageView extends JPanel {
 	private GalleryImage image;
 
 	private JPanel panel_image;
+	private BlackAndWhiteListener blackAndWhiteListener ;
+	private JButton btnModify ;
 
 	ImageView (ActionListener cancelListener)
 	{
@@ -44,14 +52,31 @@ public class ImageView extends JPanel {
 		JButton btnDelete = new JButton("Supprimer");
 		panel_button.add(btnDelete);
 		
-		JButton btnModify = new JButton("Modifier");
+		btnModify = new JButton("Modifier");
 		panel_button.add(btnModify);
+		
+		
+		
+	}
+	
+	
+	
+	public BlackAndWhiteListener getBlackAndWhiteListener() {
+		return blackAndWhiteListener;
 	}
 
-	
+
+
+	public void setBlackAndWhiteListener(BlackAndWhiteListener blackAndWhiteListener) {
+		this.blackAndWhiteListener = blackAndWhiteListener;
+	}
+
+
+
 	public void setImage(GalleryImage image) {
 		this.image = image;
 		updateImage();
+		
 	}
 
 	public void updateImage ()
@@ -88,9 +113,64 @@ public class ImageView extends JPanel {
 		panel_image.setForeground(Color.WHITE);
 		panel_image.add(imagelabel, BorderLayout.CENTER);
 		
-		
+		blackAndWhiteListener = new BlackAndWhiteListener(this.image, this);
+		btnModify.addActionListener(blackAndWhiteListener);
 		
 		validate();
 		repaint();
 	}
+	
+	/**
+	 * Listener for black/white button in edit form
+	*/
+	
+	static class BlackAndWhiteListener implements ActionListener
+	{
+		
+		GalleryImage image ; 
+		ImageView imageview ;
+		
+		public BlackAndWhiteListener (GalleryImage image, ImageView imageview) {
+			this.image = image ; 
+			this.imageview = imageview ;
+			
+		}	
+		
+		@Override
+		public void actionPerformed (ActionEvent actionEvent)
+		{
+			try {
+				
+
+				System.out.println(this.image.getPath());
+	            
+				File input = new File(this.image.getPath());
+				
+				BufferedImage image = ImageIO.read(input);
+
+	            BufferedImage result = new BufferedImage(
+	                    image.getWidth(),
+	                    image.getHeight(),
+	                    BufferedImage.TYPE_BYTE_BINARY);
+
+	            Graphics2D graphic = result.createGraphics();
+	            graphic.drawImage(image, 0, 0, Color.WHITE, null);
+	            graphic.dispose();
+	            
+	            String newpath = this.image.getPath().substring(0,this.image.getPath().indexOf(".")).concat("2.jpg");
+
+	            File output = new File(newpath);
+	            ImageIO.write(result, "jpg", output);
+	            
+	          
+	            
+	           GalleryImage modifyImage = new GalleryImage(newpath);
+	           this.imageview.setImage(modifyImage);
+
+	        }  catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        
+	        }
+		}
 }
