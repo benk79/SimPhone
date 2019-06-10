@@ -6,11 +6,9 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class ListView extends JPanel
+abstract public class ListView extends JPanel
 {
 	private ActionListener imageListener;
-
-	private int thumbSize;
 
 	private ArrayList<GalleryImage> imageList;
 
@@ -18,13 +16,16 @@ public class ListView extends JPanel
 
 	private JPanel panel_button;
 
-	public ListView (ArrayList<GalleryImage> imageList, int size, ActionListener imageListener)
+	public ListView (ArrayList<GalleryImage> imageList)
 	{
-
-		thumbSize = size;
 		this.imageList = imageList;
-		this.imageListener = imageListener;
+	}
 
+	/**
+	 * Initialize the list view.
+	 */
+	void initListView ()
+	{
 		setLayout(new BorderLayout());
 
 		setBorder(new EmptyBorder(20, 5, 5, 5));
@@ -42,15 +43,7 @@ public class ListView extends JPanel
 		add(panel_button, BorderLayout.SOUTH);
 		panel_button.setBackground(Color.BLACK);
 
-
-		/*
-		 * On parcours la liste d'images et on cr�e un JButton ainsi qu'une ImageIcon qu'on passe en
-		 * param�tre du JButton pour chaque images pr�sentes dans la liste
-		 */
-
-		//On ajoute du bouton add
 		updateView();
-
 	}
 
 	protected void addMenuButton (String Label, ActionListener listener)
@@ -69,7 +62,7 @@ public class ListView extends JPanel
 
 		ArrayList<ImageButton> buttons = new ArrayList<ImageButton>();
 		for (GalleryImage galleryImage : imageList) {
-			ImageButton image = new ImageButton(galleryImage, thumbSize);
+			ImageButton image = new ImageButton(galleryImage);
 			image.addActionListener(imageListener);
 			buttons.add(image);
 
@@ -106,4 +99,9 @@ public class ListView extends JPanel
 		panel.repaint();
 	}
 
+
+	public void setImageListener (ActionListener imageListener)
+	{
+		this.imageListener = imageListener;
+	}
 }

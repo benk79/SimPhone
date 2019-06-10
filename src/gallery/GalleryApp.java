@@ -44,7 +44,7 @@ public class GalleryApp extends Application {
 
 	private JPanel routerPanel;
 	ImageView imageView;
-	ListView mainView;
+	ListMainView mainView;
 
 	private ArrayList<GalleryImage> imageList;
 	FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
@@ -87,19 +87,19 @@ public class GalleryApp extends Application {
 
 
 		layout = new CardLayout();
-
-
 		routerPanel = new JPanel();
-		AddBouttonListener abl = new AddBouttonListener();
-		ImageBouttonListener ibl = new ImageBouttonListener();
-		CancelListener cancelListener = new CancelListener();
 
 		routerPanel.setLayout(layout);
 
 		int size = os.getAppScreenWidth() / 2;
 
-		mainView = new ListView(imageList, size, ibl);
-		mainView.addMenuButton("Ajouter", abl);
+
+		AddBouttonListener abl = new AddBouttonListener();
+		ImageBouttonListener ibl = new ImageBouttonListener();
+		CancelListener cancelListener = new CancelListener();
+
+
+		mainView = new ListMainView(imageList, ibl, abl);
 
 		imageView = new ImageView(cancelListener);
 
@@ -109,6 +109,20 @@ public class GalleryApp extends Application {
 		routerPanel.add(imageView, VIEW_IMAGE);
 	}
 
+
+	/**
+	 * Provide ListSelectView as JPanel to other applications to select a contact
+	 *
+	 * @param selectListener Listener for the select contact button
+	 * @param cancelListener Listener for the cancel button
+	 * @return JPanel with contact selection options
+	 */
+	public ListSelectView getSelectContactPanel (ActionListener selectListener, ActionListener cancelListener)
+	{
+		ListSelectView selectView = new ListSelectView(imageList);
+
+		return selectView;
+	}
 
 	/**
 	 * Get the path for read/write files and data
@@ -145,8 +159,7 @@ public class GalleryApp extends Application {
 
 	}
 
-	public void copyFile (String source, String destination)
-		throws IOException
+	public void copyFile (String source, String destination) throws IOException
 	{
 
 		File copied = new File(destination);
