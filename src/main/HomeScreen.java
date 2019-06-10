@@ -33,7 +33,7 @@ public class HomeScreen extends JPanel {
 		
 		setLayout(homeScreenLayout);
 		setPreferredSize(new Dimension(sw, sh));
-		setBackground(Color.green);
+		setBackground(Color.black);
 	}
 	
 	
