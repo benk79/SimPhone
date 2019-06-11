@@ -6,10 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 
-import main.Application;
-import main.Config;
-import main.SeletionPanel;
-import main.Serializer;
+import gallery.GalleryApp;
+import gallery.GalleryImage;
+import main.*;
 
 import javax.swing.*;
 
@@ -31,6 +30,12 @@ public class ContactApp extends Application
 	 * Name of detail view for card layout
 	 */
 	private static final String DETAIL_VIEW = "DETAIL";
+
+
+	/**
+	 * Name of detail view for card layout
+	 */
+	private static final String IMAGE_VIEW = "IMAGE";
 
 
 	/**
@@ -62,6 +67,13 @@ public class ContactApp extends Application
 	 */
 	private EditView detailView;
 
+	/**
+	 * View to select an image
+	 */
+	private gallery.ListSelectView imageSelectView;
+
+	private GalleryApp galleryApp;
+
 
 	/**
 	 * Constructor of the ContactApp class
@@ -90,6 +102,9 @@ public class ContactApp extends Application
 	 */
 	public void onInit ()
 	{
+		LoadedAppsListener loadedAppsListener = new LoadedAppsListener();
+		os.addLoadedAppsListener(loadedAppsListener);
+
 		layout = new CardLayout();
 
 		screen.setLayout(layout);
@@ -119,7 +134,10 @@ public class ContactApp extends Application
 		SaveContactListener saveContactListener = new SaveContactListener();
 		CancelListener cancelListener = new CancelListener();
 
-		detailView = new EditView(saveContactListener, cancelListener);
+		detailView = new EditView(this, saveContactListener, cancelListener);
+
+
+
 
 
 		/*
@@ -171,9 +189,15 @@ public class ContactApp extends Application
 	 *
 	 * @return contact list
 	 */
-	Contact[] getContactList ()
+	public Contact[] getContactList ()
 	{
 		return contactList;
+	}
+
+
+	void showImageSelectionPanel ()
+	{
+		showView(IMAGE_VIEW);
 	}
 
 
@@ -313,4 +337,63 @@ public class ContactApp extends Application
 		}
 	}
 
+	private class LoadedAppsListener implements ActionListener
+	{
+		public void actionPerformed (ActionEvent event)
+		{
+
+			try {
+				galleryApp = (GalleryApp) os.getLoadedApp(GalleryApp.class);
+
+
+				/*
+				 * Image select View
+				 */
+
+				SelectImageListener selectImageListener = new SelectImageListener();
+
+				imageSelectView = galleryApp.getSelectContactPanel();
+				imageSelectView.addSelectionListener(selectImageListener);
+
+				screen.add(imageSelectView, IMAGE_VIEW);
+				screen.validate();
+				screen.repaint();
+
+				//showView(IMAGE_VIEW);
+
+				System.out.println("gallery App linked to contacts");
+
+			} catch (ClassNotFoundException e) {
+				System.out.println("Could not find ");
+			}
+
+		}
+	}
+
+	private class SelectImageListener implements SelectionListener
+	{
+
+		@Override
+		public void onSelect (Object o)
+		{
+			GalleryImage image = (GalleryImage) o;
+			detailView.setImage(image);
+			showView(DETAIL_VIEW);
+
+			/*selectedImage.setText(c.toString());
+			screen.remove(selectionPanel);
+			screen.validate();
+			screen.repaint();*/
+		}
+
+		@Override
+		public void onCancel ()
+		{
+			System.out.println("onCancel triggered");
+			showView(DETAIL_VIEW);
+			/* screen.remove(selectionPanel);
+			screen.validate();
+			screen.repaint();*/
+		}
+	}
 }

@@ -11,36 +11,19 @@ import main.OS.AppBouttonListener;
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame
 {
-	private Phone phone; 
 	public MainFrame()
 	{
-		
-		
-		phone = new Phone();
+		Phone phone = new Phone();
 		
 		//
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		//
-		add(phone, BorderLayout.SOUTH);		
-
-		MainBouttonListener abl = new MainBouttonListener();
+		add(phone, BorderLayout.SOUTH);
 
 		//
 		pack();
 		
 	}
 
-	
-
-	public class MainBouttonListener implements ActionListener
-	{
-		
-		@Override
-		public void actionPerformed (ActionEvent e)
-		{
-			// phone.powerOnOff();
-		}
-	
-	} 		
 }

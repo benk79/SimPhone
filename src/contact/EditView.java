@@ -1,9 +1,17 @@
 package contact;
 
+import gallery.GalleryImage;
+import gallery.ImageButton;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -44,6 +52,20 @@ class EditView extends JPanel
 	private JTextField phoneNumberField;
 
 
+	private ContactApp contactApp;
+
+	private JTextField dateTextField;
+
+	private JButton imageChooseBtn;
+
+
+	private GalleryImage image;
+
+	JPanel imagePanel;
+
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+
 	/**
 	 * GridBagConstraints used to build the form
 	 */
@@ -63,10 +85,11 @@ class EditView extends JPanel
 	 * @param savedListener Listener for the save button
 	 * @param cancelListener Listener for the cancel button
 	 */
-	EditView (ActionListener savedListener,
+	EditView (ContactApp contactApp,
+		  ActionListener savedListener,
 		  ActionListener cancelListener)
 	{
-		// this.contact = new Contact();
+		this.contactApp = contactApp;
 		savedContactListener = savedListener;
 
 
@@ -78,6 +101,9 @@ class EditView extends JPanel
 		lastNameField = new JTextField(20);
 		emailField = new JTextField(20);
 		phoneNumberField = new JTextField(20);
+
+		dateTextField = new JTextField(20);
+		dateTextField.setColumns(20);
 
 		//
 		JButton saveButton = new JButton("Save");
@@ -101,10 +127,29 @@ class EditView extends JPanel
 		gbc.gridy = 0;
 
 		//
+		imagePanel = new JPanel();
+		gbc.gridwidth = 2;
+
+		//imagePanel.setBackground(Color.yellow);
+		add(imagePanel, gbc);
+
+		imageChooseBtn = new JButton("Choose an image");
+
+		ChooseImageListener chooseImageListener = new ChooseImageListener();
+		imageChooseBtn.setPreferredSize(new Dimension(400, 400));
+		imageChooseBtn.addActionListener(chooseImageListener);
+		imagePanel.add(imageChooseBtn);
+
+		//
+		gbc.gridy++;
+		gbc.gridwidth = 1;
+
+		//
 		addTextField(firstNameField, "First name: ");
 		addTextField(lastNameField, "Last name: ");
 		addTextField(phoneNumberField, "Phone number: ");
 		addTextField(emailField, "Email address: ");
+		addTextField(dateTextField, "Birth date: ");
 
 		//
 		gbc.gridx = 0;
@@ -126,6 +171,27 @@ class EditView extends JPanel
 		this.contact = contact;
 
 		setViewValues();
+	}
+
+	/**
+	 * Link an image to save with the contact
+	 *
+	 * @param img GalleryImage for the contact
+	 */
+	void setImage (GalleryImage img)
+	{
+		image = img;
+		System.out.println(image.getPath());
+
+		//GalleryImage galleryImage = new GalleryImage()
+		imageChooseBtn = new ImageButton(img);
+
+		imagePanel.removeAll();
+		imagePanel.add(imageChooseBtn);
+
+		revalidate();
+		repaint();
+		//setViewValues();
 	}
 
 
@@ -167,8 +233,29 @@ class EditView extends JPanel
 		lastNameField.setText(contact.getLastName());
 		emailField.setText(contact.getEmail());
 		phoneNumberField.setText(contact.getPhoneNumber());
+		// dateTextField.setValue(new Date());
 	}
 
+
+	private boolean validDate (String test)
+	{
+		//String test = "02/01/20";
+		//String format = "dd/MM/yyyy";
+		//SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+		dateFormat.setLenient(false);
+		try {
+			Date date = dateFormat.parse(test);
+			if (!dateFormat.format(date).equals(test)) {
+				return false;
+				//throw new ParseException(test + " is not a valid format for " + format, 0);
+			}
+			return true;
+		} catch (ParseException ex) {
+			return false;
+			//ex.printStackTrace();
+		}
+
+	}
 
 	/**
 	 * When clicking on save button, set contact properties with
@@ -179,12 +266,38 @@ class EditView extends JPanel
 		@Override
 		public void actionPerformed (ActionEvent actionEvent)
 		{
+			ArrayList<String> errors = new ArrayList<String>();
+
+			String dateString = dateTextField.getText();
+
+			if (!dateString.equals("")) {
+				if (!validDate(dateString)) {
+					errors.add("Birth date is not in a valid format (dd.mm.yyyy)");
+					System.out.println("Birth date is not in a valid format (dd.mm.yyyy)");
+					return;
+				}
+				// contact.setDate()
+			}
+
 			contact.setEmail(emailField.getText());
 			contact.setFirstName(firstNameField.getText());
 			contact.setPhoneNumber(phoneNumberField.getText());
 			contact.setLastName(lastNameField.getText());
 
+
+			System.out.println(dateTextField.getText());
+
 			savedContactListener.actionPerformed(actionEvent);
+		}
+	}
+
+	class ChooseImageListener implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed (ActionEvent actionEvent)
+		{
+			contactApp.showImageSelectionPanel();
 		}
 	}
 }

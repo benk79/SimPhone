@@ -22,6 +22,7 @@ public class ListSelectView extends ListView implements SeletionPanel
 	{
 		super(imageList);
 		selectListener = new SelectListener();
+		setImageListener(selectListener);
 
 		initListView();
 

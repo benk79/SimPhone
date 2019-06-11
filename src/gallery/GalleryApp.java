@@ -114,6 +114,18 @@ public class GalleryApp extends Application {
 
 
 	/**
+	 * Provide ListSelectView as JPanel to other applications to select a contact
+	 *
+	 * @return JPanel with contact selection options
+	 */
+	public ListSelectView getSelectContactPanel ()
+	{
+		ListSelectView selectView = new ListSelectView(imageList);
+
+		return selectView;
+	}
+
+	/**
 	 * Get the path for read/write files and data
 	 *
 	 * @return The path for read/write data dedicated to this application
