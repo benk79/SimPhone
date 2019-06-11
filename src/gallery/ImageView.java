@@ -57,7 +57,7 @@ public class ImageView extends JPanel
 		btnCancel.addActionListener(cancelListener);
 
 		//On ajoute du bouton supprimer et le bouton modifier
-		ButtonIcon btnDelete = new ButtonIcon("delete.png");
+		ButtonIcon btnDelete = new ButtonIcon("delete2.png");
 		panel_button.add(btnDelete);
 
 		btnModify = new ButtonIcon("blackAndWhite.png");

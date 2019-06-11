@@ -59,7 +59,7 @@ class EditView extends JPanel
 
 	private ImageButton imageChooseBtn;
 
-	private String defaultPicture = "ressourcesSystem/man-user.jpg";
+	private String defaultPicture = "ressourcesSystem/man-user2.png";
 
 	private GalleryImage defaultImage;
 
@@ -134,7 +134,8 @@ class EditView extends JPanel
 		imagePanel = new JPanel();
 		gbc.gridwidth = 2;
 
-		//imagePanel.setBackground(Color.yellow);
+		imagePanel.setBackground(Color.BLACK);
+		
 		add(imagePanel, gbc);
 
 //		imageChooseBtn = new JButton("Choose an image");
@@ -155,11 +156,11 @@ class EditView extends JPanel
 		gbc.gridwidth = 1;
 
 		//
-		addTextField(firstNameField, "First name: ");
-		addTextField(lastNameField, "Last name: ");
-		addTextField(phoneNumberField, "Phone number: ");
-		addTextField(emailField, "Email address: ");
-		addTextField(dateTextField, "Birth date (jj.mm.aaaa): ");
+		addTextField(firstNameField, "Prénom : ");
+		addTextField(lastNameField, "Nom : ");
+		addTextField(phoneNumberField, "Numéro de tél. : ");
+		addTextField(emailField, "Email : ");
+		addTextField(dateTextField, "Date de naissance (jj.mm.aaaa) : ");
 
 		//
 		gbc.weighty = 1;
@@ -233,8 +234,11 @@ class EditView extends JPanel
 		gbc.anchor = GridBagConstraints.LINE_START;
 
 		gbc.gridx = 0;
-		add(new JLabel(label), gbc);
-
+		JLabel labeltext = new JLabel(label);
+		labeltext.setForeground(Color.WHITE);
+		labeltext.setBackground(Color.BLACK);
+		add(labeltext, gbc);
+		
 		gbc.anchor = GridBagConstraints.LINE_END;
 
 		gbc.gridx = 1;

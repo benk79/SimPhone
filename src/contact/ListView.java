@@ -57,7 +57,8 @@ abstract class ListView extends JPanel
 	void updateList ()
 	{
 		list.removeAll();
-
+		
+	
 		//
 		listGbc = new GridBagConstraints();
 		listGbc.fill = GridBagConstraints.HORIZONTAL;
@@ -75,6 +76,9 @@ abstract class ListView extends JPanel
 
 		//
 		listGbc.weighty = 1;
+		list.setBackground(Color.BLACK);
+		list.setForeground(Color.WHITE);
+
 		list.add(new JLabel(""), listGbc);
 
 		//
@@ -144,10 +148,14 @@ abstract class ListView extends JPanel
 
 		//
 		list = new JPanel(new GridBagLayout());
+		list.setBackground(Color.BLACK);
+		list.setForeground(Color.WHITE);
 		add(new JScrollPane(list));
 
 		//
 		menu = new JPanel();
+		menu.setBackground(Color.BLACK);
+		menu.setForeground(Color.WHITE);
 		addMenuButtons();
 		add(menu, BorderLayout.SOUTH);
 
@@ -168,7 +176,10 @@ abstract class ListView extends JPanel
 		//
 		listGbc.gridx = 0;
 		listGbc.weightx = 1;
-		list.add(new JLabel(name), listGbc);
+		JLabel tagName = new JLabel(name);
+		tagName.setFont(new Font("Arial", Font.PLAIN, 17));
+		tagName.setForeground(Color.WHITE);
+		list.add(tagName, listGbc);
 
 		//
 		listGbc.weightx = 0;

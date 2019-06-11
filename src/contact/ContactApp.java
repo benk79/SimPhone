@@ -1,6 +1,7 @@
 package contact;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -125,7 +126,8 @@ public class ContactApp extends Application
 		DeleteListener deleteListener = new DeleteListener();
 
 		listView = new ListMainView(this, newContact, editBouttonListener, deleteListener);
-
+		listView.setForeground(Color.WHITE);
+		listView.setBackground(Color.BLACK);
 
 		/*
 		 * Detail View
@@ -135,8 +137,8 @@ public class ContactApp extends Application
 		CancelListener cancelListener = new CancelListener();
 
 		detailView = new EditView(this, saveContactListener, cancelListener);
-
-
+		detailView.setForeground(Color.WHITE);
+		detailView.setBackground(Color.BLACK);
 
 
 
