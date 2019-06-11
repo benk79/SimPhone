@@ -100,7 +100,7 @@ public class GalleryApp extends Application {
 
 		int size = os.getAppScreenWidth() / 2;
 
-		mainView = new ListMainView (imageList, size, ibl);
+		mainView = new ListMainView(imageList, size, ibl, abl);
 		//mainView.addMenuButton("Ajouter", abl);
 
 		imageView = new ImageView(this, cancelListener);
