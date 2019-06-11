@@ -29,15 +29,16 @@ public class NotificationBar extends JPanel {
 		setPreferredSize(dimension);
 		setBackground(Color.black);
 		
-		ImageIcon swiss = new ImageIcon("ressourcesSystem/swisscom.png");
-		JLabel img = new JLabel(swiss);
+		//ImageIcon swiss = new ImageIcon("ressourcesSystem/swisscom.png");
+		JLabel img = new JLabel("  Swisscom");
+		img.setForeground(Color.WHITE);
 		add(img, BorderLayout.WEST);
 		
 		ImageIcon battery = new ImageIcon("ressourcesSystem/battery.png");
 		JLabel img2 = new JLabel(battery);
 		add(img2, BorderLayout.EAST);
 		
-		JLabel timeLabel = new JLabel("", SwingConstants.CENTER);
+		JLabel timeLabel = new JLabel("  ", SwingConstants.CENTER);
 		add(timeLabel, BorderLayout.CENTER);
 
 		timeLabel.setForeground(Color.white);

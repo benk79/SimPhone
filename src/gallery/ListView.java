@@ -37,8 +37,9 @@ abstract public class ListView extends JPanel
 
 		panel = new JPanel();
 
-
-		add(new JScrollPane(panel), BorderLayout.CENTER);
+		JScrollPane scroll = new JScrollPane(panel);
+		add(scroll, BorderLayout.CENTER);
+		scroll.getVerticalScrollBar().setBackground(Color.black);
 		panel.setBackground(Color.BLACK);
 
 		//on cr�e un JPanel contenant les boutons de l'application
@@ -51,8 +52,7 @@ abstract public class ListView extends JPanel
 
 	protected void addMenuButton (String Label, ActionListener listener)
 	{
-		//ButtonIcon btn = new ButtonIcon("add.png", "Label");
-		JButton btn = new JButton(Label);
+		ButtonIcon btn = new ButtonIcon("add.png", "Label");
 		panel_button.add(btn);
 		btn.addActionListener(listener);
 	}

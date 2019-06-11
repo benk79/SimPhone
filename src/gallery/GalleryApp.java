@@ -73,10 +73,11 @@ public class GalleryApp extends Application {
 		screen.setLayout(new BorderLayout());
 		
 		// on gère le titre de l'application		
-		JLabel title = new JLabel("Gallerie", SwingConstants.CENTER);
-		title.setForeground(Color.WHITE);	
-		title.setFont(new Font("Arial", Font.PLAIN, 20));
-		screen.add(title, BorderLayout.NORTH);
+		//JLabel title = new JLabel("Gallerie", SwingConstants.CENTER);
+		//title.setForeground(Color.WHITE);	
+		//title.setBackground(Color.GREEN);
+		//title.setFont(new Font("Arial", Font.PLAIN, 20));
+		//screen.add(title, BorderLayout.NORTH);
 		
 
 		//On ajoute les images à la liste
