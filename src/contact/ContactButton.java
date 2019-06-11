@@ -2,6 +2,8 @@ package contact;
 
 import javax.swing.JButton;
 
+import main.ButtonIcon;
+
 
 /**
  * The ContactButton extends JButton and has a Contact linked to it
@@ -10,7 +12,7 @@ import javax.swing.JButton;
  * @author Benjamin Keller
  * @version 1.0.0
  */
-public class ContactButton extends JButton
+public class ContactButton extends ButtonIcon
 {
 	/**
 	 * Contact attached to the button
@@ -24,9 +26,9 @@ public class ContactButton extends JButton
 	 * @param contact Contact to attach to the button
 	 * @param text    Text to display in the button
 	 */
-	public ContactButton (Contact contact, String text)
+	public ContactButton (Contact contact, String way)
 	{
-		super(text);
+		super(way);
 		this.contact = contact;
 	}
 

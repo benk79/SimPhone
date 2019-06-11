@@ -2,6 +2,7 @@ package contact;
 
 import gallery.GalleryImage;
 import gallery.ImageButton;
+import main.ButtonIcon;
 
 import javax.swing.*;
 import java.awt.*;
@@ -109,12 +110,12 @@ class EditView extends JPanel
 		dateTextField.setColumns(20);
 
 		//
-		JButton saveButton = new JButton("Save");
+		ButtonIcon saveButton = new ButtonIcon("save2.png");
 		SaveContactListener saveContactListener = new SaveContactListener();
 		saveButton.addActionListener(saveContactListener);
 
 		//
-		JButton cancelButton = new JButton("Cancel");
+		ButtonIcon cancelButton = new ButtonIcon("return.png");
 		cancelButton.addActionListener(cancelListener);
 
 
