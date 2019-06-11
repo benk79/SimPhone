@@ -51,7 +51,11 @@ class EditView extends JPanel
 	private JTextField phoneNumberField;
 
 
+	private ContactApp contactApp;
+
 	private JTextField dateTextField;
+
+	private JButton imageChooseBtn;
 
 
 	private GalleryImage image;
@@ -78,10 +82,11 @@ class EditView extends JPanel
 	 * @param savedListener Listener for the save button
 	 * @param cancelListener Listener for the cancel button
 	 */
-	EditView (ActionListener savedListener,
+	EditView (ContactApp contactApp,
+		  ActionListener savedListener,
 		  ActionListener cancelListener)
 	{
-		// this.contact = new Contact();
+		this.contactApp = contactApp;
 		savedContactListener = savedListener;
 
 
@@ -119,9 +124,22 @@ class EditView extends JPanel
 		gbc.gridy = 0;
 
 		//
-		//imagePanel = new JPanel();
+		JPanel imagePanel = new JPanel();
+		gbc.gridwidth = 2;
 
+		imagePanel.setBackground(Color.yellow);
+		add(imagePanel, gbc);
 
+		imageChooseBtn = new JButton("Choose an image");
+
+		imageChooseBtn.setPreferredSize(new Dimension(400, 400));
+		imagePanel.add(imageChooseBtn);
+
+		//
+		gbc.gridy++;
+		gbc.gridwidth = 1;
+
+		//
 		addTextField(firstNameField, "First name: ");
 		addTextField(lastNameField, "Last name: ");
 		addTextField(phoneNumberField, "Phone number: ");
@@ -159,7 +177,6 @@ class EditView extends JPanel
 	{
 		image = img;
 		System.out.println(image.getPath());
-
 		//setViewValues();
 	}
 
@@ -257,6 +274,16 @@ class EditView extends JPanel
 			System.out.println(dateTextField.getText());
 
 			savedContactListener.actionPerformed(actionEvent);
+		}
+	}
+
+	class ChooseImageListener implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed (ActionEvent actionEvent)
+		{
+			contactApp.showImageSelectionPanel();
 		}
 	}
 }

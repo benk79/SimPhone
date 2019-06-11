@@ -125,7 +125,7 @@ public class ContactApp extends Application
 		SaveContactListener saveContactListener = new SaveContactListener();
 		CancelListener cancelListener = new CancelListener();
 
-		detailView = new EditView(saveContactListener, cancelListener);
+		detailView = new EditView(this, saveContactListener, cancelListener);
 
 
 
@@ -183,6 +183,12 @@ public class ContactApp extends Application
 	public Contact[] getContactList ()
 	{
 		return contactList;
+	}
+
+
+	void showImageSelectionPanel ()
+	{
+
 	}
 
 
@@ -339,6 +345,8 @@ public class ContactApp extends Application
 
 				imageSelectView = galleryApp.getSelectContactPanel();
 				imageSelectView.addSelectionListener(selectImageListener);
+
+				screen.add(listView, LIST_VIEW);
 
 			} catch (ClassNotFoundException e) {
 				System.out.println("Could not find ");
