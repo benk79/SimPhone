@@ -13,6 +13,6 @@ public class ListMainView extends ListView
 
 		initListView();
 
-		addMenuButton("Ajouter", addListener);
+		addMenuButton("add.png", addListener);
 	}
 }

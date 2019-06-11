@@ -48,15 +48,15 @@ public class ImageView extends JPanel {
 		panel_button.setBackground(Color.BLACK);
 
 		//On ajoute du bouton annuler
-		ButtonIcon btnCancel = new ButtonIcon("return.png", "Retour");
+		ButtonIcon btnCancel = new ButtonIcon("return.png");
 		panel_button.add(btnCancel);
 		btnCancel.addActionListener(cancelListener);
 
 		//On ajoute du bouton supprimer et le bouton modifier
-		ButtonIcon btnDelete = new ButtonIcon("delete.png", "Supprimer");
+		ButtonIcon btnDelete = new ButtonIcon("delete.png");
 		panel_button.add(btnDelete);
-		
-		btnModify = new ButtonIcon("blackAndWhite.png", "Modifier");
+
+		btnModify = new ButtonIcon("blackAndWhite.png");
 		panel_button.add(btnModify);
 
 		blackAndWhiteListener = new BlackAndWhiteListener();

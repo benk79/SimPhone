@@ -50,9 +50,9 @@ abstract public class ListView extends JPanel
 		updateView();
 	}
 
-	protected void addMenuButton (String Label, ActionListener listener)
+	protected void addMenuButton (String way, ActionListener listener)
 	{
-		ButtonIcon btn = new ButtonIcon("add.png", "Label");
+		ButtonIcon btn = new ButtonIcon(way);
 		panel_button.add(btn);
 		btn.addActionListener(listener);
 	}

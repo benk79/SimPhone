@@ -107,7 +107,7 @@ public class Phone extends JPanel {
 
 
 		//
-		mainButton = new ButtonIcon("homeButton.png", "home");
+		mainButton = new ButtonIcon("homeButton.png");
 		bottomBorder.add(mainButton);		
 
 	}

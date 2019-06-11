@@ -8,8 +8,8 @@ import javax.swing.*;
 public class ButtonIcon extends JButton {
 	
 	private String imagePath = "ressourcesSystem/";
-	
-	public ButtonIcon(String way, String appName)
+
+	public ButtonIcon (String way)
 	{
 		String path;
 		String projectPath;

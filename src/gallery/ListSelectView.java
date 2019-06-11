@@ -27,7 +27,7 @@ public class ListSelectView extends ListView implements SeletionPanel
 		initListView();
 
 		ActionListener cancelListener = new CancelListener();
-		addMenuButton("Annuler", cancelListener);
+		addMenuButton("return.png", cancelListener);
 
 	}
 
