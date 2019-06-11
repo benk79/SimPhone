@@ -13,6 +13,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -273,6 +275,10 @@ class EditView extends JPanel
 		lastNameField.setText(contact.getLastName());
 		emailField.setText(contact.getEmail());
 		phoneNumberField.setText(contact.getPhoneNumber());
+		
+		
+		
+		
 
 		Date birthDate = contact.getBirthDate();
 		if (birthDate != null) {
@@ -329,6 +335,7 @@ class EditView extends JPanel
 	 * When clicking on save button, set contact properties with
 	 * actual values in the form.
 	 */
+	
 	class SaveContactListener implements ActionListener
 	{
 		@Override
@@ -343,14 +350,55 @@ class EditView extends JPanel
 				if (birthDate == null) {
 					errors.add("Birth date is not in a valid format (dd.mm.yyyy)");
 					System.out.println("Birth date is not in a valid format (dd.mm.yyyy)");
+					dateTextField.setBackground(Color.RED);
 					return;
 				}
 				dateFormat.setLenient(false);
 				contact.setBirthDate(birthDate);
+				dateTextField.setBackground(Color.WHITE);
 			} else {
 				contact.setBirthDate(null);
+				dateTextField.setBackground(Color.WHITE);
 			}
-
+			
+			// First name required
+			if (firstNameField.getText().isEmpty()) {
+				firstNameField.setBackground(Color.red);
+				errors.add("First name is required");
+				System.out.println("First name is required");
+				return;
+			}
+			else 
+				firstNameField.setBackground(Color.WHITE);
+			
+		
+			// Adress mail valid
+			Pattern pattern = Pattern.compile (
+					"([a-zA-Z0-9_\\-\\.]+)@((\\[a-z]{1,3}\\.[a-z]"
+					 + "{1,3}\\.[a-z]{1,3}\\.)|(([a-zA-Z\\-]+\\.)+))"
+					 + "([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)",
+					Pattern.MULTILINE);
+			
+					Matcher m=pattern.matcher(emailField.getText());
+					firstNameField.setBackground(Color.WHITE);
+					boolean b=m.matches();
+					if(emailField.getText().length()>0)
+						{
+							if(b==true)
+								{
+									emailField.setBackground(Color.WHITE);
+								}
+					else
+						{
+						 errors.add("Invalid Email");
+						 emailField.setBackground(Color.red);
+						 System.out.println("Invalid Email");
+						 return;
+						}
+				
+					}  
+				
+			
 			String imagePath = image.getPath();
 			if (!imagePath.equals(defaultPicture))
 				contact.setImage(imagePath);
