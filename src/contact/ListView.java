@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import main.ButtonIcon;
+
 
 /**
  * Abstract class for building JPanel views with the list of contacts
@@ -116,7 +118,7 @@ abstract class ListView extends JPanel
 		list.add(contactButton, listGbc);
 		listGbc.gridx++;
 	}
-
+	
 
 	/**
 	 * Add a button to the bottom menu of the list
@@ -126,7 +128,7 @@ abstract class ListView extends JPanel
 	 */
 	void addMenuButton (String label, ActionListener actionListener)
 	{
-		JButton button = new JButton(label);
+		ButtonIcon button = new ButtonIcon(label);
 		button.addActionListener(actionListener);
 
 		menu.add(button);

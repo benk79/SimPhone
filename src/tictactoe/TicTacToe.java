@@ -3,6 +3,7 @@ package tictactoe;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,7 +15,7 @@ import main.Config;
 public class TicTacToe extends Application
 {
 
-	private JPanel gamePanel = new JPanel(new GridLayout());
+	private PanelMain gamePanel = new PanelMain();
 	
 
 	public TicTacToe()
@@ -24,7 +25,7 @@ public class TicTacToe extends Application
 		//
 		screen.setLayout(new BorderLayout());
 
-		screen.add(new JLabel("<html><h1>" + getName() + "</h1></html>"));
+		//screen.add(new JLabel("<html><h1>" + getName() + "</h1></html>"));
 
 		int phoneWidth = Config.SCREEN_WIDTH;
 
@@ -32,6 +33,9 @@ public class TicTacToe extends Application
 
 		screen.add(new JLabel("Morpion"), BorderLayout.NORTH);
 		screen.add(gamePanel, BorderLayout.CENTER);
+		
+		
+		
 
 	}
 

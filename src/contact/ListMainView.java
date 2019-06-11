@@ -11,9 +11,9 @@ import java.awt.event.ActionListener;
  */
 public class ListMainView extends ListView
 {
-	private static final String LABEL_ADD = "New contact";
-	private static final String LABEL_EDIT = "Edit";
-	private static final String LABEL_DELETE = "Delete";
+	private static final String LABEL_ADD = "addContact.png";
+	private static final String LABEL_EDIT = "edit.png";
+	private static final String LABEL_DELETE = "delete.png";
 
 	/**
 	 * Listener for the edit contact button (main mode)
