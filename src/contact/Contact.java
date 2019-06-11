@@ -58,6 +58,12 @@ public class Contact implements Serializable
 
 
 	/**
+	 * Birth date
+	 */
+	private String image;
+
+
+	/**
 	 * Get unique id of contact
 	 *
 	 * @return Unique id
@@ -174,6 +180,16 @@ public class Contact implements Serializable
 	}
 
 
+	public String getImage ()
+	{
+		return image;
+	}
+
+	public void setImage (String image)
+	{
+		this.image = image;
+	}
+
 	/**
 	 * @return String representing the contact
 	 */
@@ -184,5 +200,15 @@ public class Contact implements Serializable
 			+ "\nLast name: " + lastName
 			+ "\nPhone number: " + phoneNumber
 			+ "\nEmail: " + email;
+	}
+
+	public Date getBirthDate ()
+	{
+		return birthDate;
+	}
+
+	public void setBirthDate (Date birthDate)
+	{
+		this.birthDate = birthDate;
 	}
 }

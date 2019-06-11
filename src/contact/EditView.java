@@ -56,8 +56,11 @@ class EditView extends JPanel
 
 	private JTextField dateTextField;
 
-	private JButton imageChooseBtn;
+	private ImageButton imageChooseBtn;
 
+	private String defaultPicture = "ressourcesSystem/man-user.jpg";
+
+	private GalleryImage defaultImage;
 
 	private GalleryImage image;
 
@@ -133,10 +136,11 @@ class EditView extends JPanel
 		//imagePanel.setBackground(Color.yellow);
 		add(imagePanel, gbc);
 
-		imageChooseBtn = new JButton("Choose an image");
-
+//		imageChooseBtn = new JButton("Choose an image");
+		defaultImage = new GalleryImage(defaultPicture);
+		imageChooseBtn = new ImageButton(defaultImage, 400);
 		ChooseImageListener chooseImageListener = new ChooseImageListener();
-		imageChooseBtn.setPreferredSize(new Dimension(400, 400));
+		//imageChooseBtn.setPreferredSize(new Dimension(400, 400));
 		imageChooseBtn.addActionListener(chooseImageListener);
 		imagePanel.add(imageChooseBtn);
 
@@ -149,14 +153,19 @@ class EditView extends JPanel
 		addTextField(lastNameField, "Last name: ");
 		addTextField(phoneNumberField, "Phone number: ");
 		addTextField(emailField, "Email address: ");
-		addTextField(dateTextField, "Birth date: ");
+		addTextField(dateTextField, "Birth date (jj.mm.aaaa): ");
+
+		//
+		gbc.weighty = 1;
 
 		//
 		gbc.gridx = 0;
+		gbc.anchor = GridBagConstraints.LAST_LINE_START;
 		add(cancelButton, gbc);
 
 		//
 		gbc.gridx = 1;
+		gbc.anchor = GridBagConstraints.LAST_LINE_END;
 		add(saveButton, gbc);
 	}
 
@@ -184,10 +193,11 @@ class EditView extends JPanel
 		System.out.println(image.getPath());
 
 		//GalleryImage galleryImage = new GalleryImage()
-		imageChooseBtn = new ImageButton(img);
+		//imageChooseBtn = new ImageButton(img, 400);
+		imageChooseBtn.setImage(image);
 
-		imagePanel.removeAll();
-		imagePanel.add(imageChooseBtn);
+		//imagePanel.removeAll();
+		//imagePanel.add(imageChooseBtn);
 
 		revalidate();
 		repaint();
@@ -214,8 +224,12 @@ class EditView extends JPanel
 	 */
 	private void addTextField (JTextField field, String label)
 	{
+		gbc.anchor = GridBagConstraints.LINE_START;
+
 		gbc.gridx = 0;
 		add(new JLabel(label), gbc);
+
+		gbc.anchor = GridBagConstraints.LINE_END;
 
 		gbc.gridx = 1;
 		add(field, gbc);
@@ -229,11 +243,29 @@ class EditView extends JPanel
 	 */
 	private void setViewValues ()
 	{
+		String img = contact.getImage();
+
+		if (img == null)
+			img = defaultPicture;
+
+		image = new GalleryImage(img);
+
+		setImage(image);
+
+		//if (contact)
 		firstNameField.setText(contact.getFirstName());
 		lastNameField.setText(contact.getLastName());
 		emailField.setText(contact.getEmail());
 		phoneNumberField.setText(contact.getPhoneNumber());
-		// dateTextField.setValue(new Date());
+
+		Date birthDate = contact.getBirthDate();
+		if (birthDate != null) {
+			dateFormat.setLenient(false);
+			dateTextField.setText(dateFormat.format(contact.getBirthDate()));
+
+		} else {
+			dateTextField.setText("");
+		}
 	}
 
 
@@ -257,6 +289,26 @@ class EditView extends JPanel
 
 	}
 
+	private Date stringToDate (String test)
+	{
+		//String test = "02/01/20";
+		//String format = "dd/MM/yyyy";
+		//SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+		dateFormat.setLenient(false);
+		try {
+			Date date = dateFormat.parse(test);
+			if (!dateFormat.format(date).equals(test)) {
+				return null;
+				//throw new ParseException(test + " is not a valid format for " + format, 0);
+			}
+			return date;
+		} catch (ParseException ex) {
+			return null;
+			//ex.printStackTrace();
+		}
+
+	}
+
 	/**
 	 * When clicking on save button, set contact properties with
 	 * actual values in the form.
@@ -271,13 +323,21 @@ class EditView extends JPanel
 			String dateString = dateTextField.getText();
 
 			if (!dateString.equals("")) {
-				if (!validDate(dateString)) {
+				Date birthDate = stringToDate(dateString);
+				if (birthDate == null) {
 					errors.add("Birth date is not in a valid format (dd.mm.yyyy)");
 					System.out.println("Birth date is not in a valid format (dd.mm.yyyy)");
 					return;
 				}
-				// contact.setDate()
+				dateFormat.setLenient(false);
+				contact.setBirthDate(birthDate);
+			} else {
+				contact.setBirthDate(null);
 			}
+
+			String imagePath = image.getPath();
+			if (!imagePath.equals(defaultPicture))
+				contact.setImage(imagePath);
 
 			contact.setEmail(emailField.getText());
 			contact.setFirstName(firstNameField.getText());

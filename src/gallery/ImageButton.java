@@ -12,12 +12,14 @@ public class ImageButton extends JButton {
 
 	private GalleryImage image;
 
-	public ImageButton (GalleryImage image)
+	private int thumbsize;
+
+	public ImageButton (GalleryImage image, int thumbsize)
 	{
+		this.thumbsize = thumbsize;
 		//super(new ImageIcon(path));
-		int size = 180;
-		this.image = image;
-		setPreferredSize(new Dimension(size, size));
+		//int size = 180;
+		setPreferredSize(new Dimension(thumbsize, thumbsize));
 
 		// createEmptyBorder(20, 20, 20, 20);
 		// setMargin(new Insets(10, 10, 10, 10));
@@ -26,13 +28,21 @@ public class ImageButton extends JButton {
 		setBorderPainted(false);
 
 
+		setImage(image);
+
+	}
+
+	public void setImage (GalleryImage image)
+	{
+		this.image = image;
+
 		ImageIcon icon = new ImageIcon(image.getPath());
 		Image img = icon.getImage();
 		int height = icon.getIconHeight();
 		int width = icon.getIconWidth();
 
 		Image newimg;
-		int thumbsize = size;
+		//int thumbsize = size;
 
 		if (height > width) {
 			int newWidth = thumbsize;
@@ -47,8 +57,9 @@ public class ImageButton extends JButton {
 		icon = new ImageIcon(newimg);
 
 		setIcon(icon);
-
 	}
+
+
 
 	public GalleryImage getImage ()
 	{

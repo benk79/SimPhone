@@ -65,8 +65,10 @@ abstract public class ListView extends JPanel
 
 
 		ArrayList<ImageButton> buttons = new ArrayList<ImageButton>();
+
+
 		for (GalleryImage galleryImage : imageList) {
-			ImageButton image = new ImageButton(galleryImage);
+			ImageButton image = new ImageButton(galleryImage, 180);
 			image.addActionListener(imageListener);
 			buttons.add(image);
 
