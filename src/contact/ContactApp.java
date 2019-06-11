@@ -33,6 +33,12 @@ public class ContactApp extends Application
 
 
 	/**
+	 * Name of detail view for card layout
+	 */
+	private static final String IMAGE_VIEW = "IMAGE";
+
+
+	/**
 	 *  List of contacts
 	 */
 	private Contact[] contactList;
@@ -96,6 +102,9 @@ public class ContactApp extends Application
 	 */
 	public void onInit ()
 	{
+		LoadedAppsListener loadedAppsListener = new LoadedAppsListener();
+		os.addLoadedAppsListener(loadedAppsListener);
+
 		layout = new CardLayout();
 
 		screen.setLayout(layout);
@@ -188,7 +197,7 @@ public class ContactApp extends Application
 
 	void showImageSelectionPanel ()
 	{
-
+		showView(IMAGE_VIEW);
 	}
 
 
@@ -346,7 +355,13 @@ public class ContactApp extends Application
 				imageSelectView = galleryApp.getSelectContactPanel();
 				imageSelectView.addSelectionListener(selectImageListener);
 
-				screen.add(listView, LIST_VIEW);
+				screen.add(imageSelectView, IMAGE_VIEW);
+				screen.validate();
+				screen.repaint();
+
+				//showView(IMAGE_VIEW);
+
+				System.out.println("gallery App linked to contacts");
 
 			} catch (ClassNotFoundException e) {
 				System.out.println("Could not find ");
@@ -362,6 +377,8 @@ public class ContactApp extends Application
 		public void onSelect (Object o)
 		{
 			GalleryImage image = (GalleryImage) o;
+			detailView.setImage(image);
+			showView(DETAIL_VIEW);
 
 			/*selectedImage.setText(c.toString());
 			screen.remove(selectionPanel);
@@ -373,6 +390,7 @@ public class ContactApp extends Application
 		public void onCancel ()
 		{
 			System.out.println("onCancel triggered");
+			showView(DETAIL_VIEW);
 			/* screen.remove(selectionPanel);
 			screen.validate();
 			screen.repaint();*/

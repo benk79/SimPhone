@@ -12,7 +12,7 @@ public class ImageButton extends JButton {
 
 	private GalleryImage image;
 
-	ImageButton (GalleryImage image)
+	public ImageButton (GalleryImage image)
 	{
 		//super(new ImageIcon(path));
 		int size = 180;

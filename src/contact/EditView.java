@@ -1,6 +1,7 @@
 package contact;
 
 import gallery.GalleryImage;
+import gallery.ImageButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -59,6 +60,8 @@ class EditView extends JPanel
 
 
 	private GalleryImage image;
+
+	JPanel imagePanel;
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -124,15 +127,17 @@ class EditView extends JPanel
 		gbc.gridy = 0;
 
 		//
-		JPanel imagePanel = new JPanel();
+		imagePanel = new JPanel();
 		gbc.gridwidth = 2;
 
-		imagePanel.setBackground(Color.yellow);
+		//imagePanel.setBackground(Color.yellow);
 		add(imagePanel, gbc);
 
 		imageChooseBtn = new JButton("Choose an image");
 
+		ChooseImageListener chooseImageListener = new ChooseImageListener();
 		imageChooseBtn.setPreferredSize(new Dimension(400, 400));
+		imageChooseBtn.addActionListener(chooseImageListener);
 		imagePanel.add(imageChooseBtn);
 
 		//
@@ -177,6 +182,15 @@ class EditView extends JPanel
 	{
 		image = img;
 		System.out.println(image.getPath());
+
+		//GalleryImage galleryImage = new GalleryImage()
+		imageChooseBtn = new ImageButton(img);
+
+		imagePanel.removeAll();
+		imagePanel.add(imageChooseBtn);
+
+		revalidate();
+		repaint();
 		//setViewValues();
 	}
 
