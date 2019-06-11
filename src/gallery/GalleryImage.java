@@ -15,11 +15,16 @@ public class GalleryImage
 
 	private String path;
 
-	private ArrayList<Contact> people;
+	private ArrayList<Integer> peopleIds;
 
-	public GalleryImage (String path)
+	public GalleryImage (String path) throws Exception
 	{
+		File imageFile = new File(path);
+		if (!imageFile.isFile())
+			throw new Exception("File not found");
 		this.path = path;
+
+		peopleIds = new ArrayList<Integer>();
 	}
 
 	public Integer getId ()
@@ -40,15 +45,34 @@ public class GalleryImage
 		return path;
 	}
 
-	public ArrayList<Contact> getPeople ()
-	{
-		return people;
-	}
 
+	/*
 	public void setPeople (ArrayList<Contact> people)
 	{
 		this.people = people;
+	} */
+
+	public void removePeople (Integer id)
+	{
+		peopleIds.remove(id);
 	}
+
+	public void removePeople (Contact contact)
+	{
+		peopleIds.remove(contact.getId());
+	}
+
+	public void addPeople (Contact contact)
+	{
+		peopleIds.add(contact.getId());
+	}
+
+
+	public ArrayList<Integer> getPeopleIds ()
+	{
+		return peopleIds;
+	}
+
 
 	public BufferedImage getThumbnail (int size)
 	{

@@ -137,7 +137,12 @@ class EditView extends JPanel
 		add(imagePanel, gbc);
 
 //		imageChooseBtn = new JButton("Choose an image");
-		defaultImage = new GalleryImage(defaultPicture);
+		try {
+			defaultImage = new GalleryImage(defaultPicture);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		imageChooseBtn = new ImageButton(defaultImage, 400);
 		ChooseImageListener chooseImageListener = new ChooseImageListener();
 		//imageChooseBtn.setPreferredSize(new Dimension(400, 400));
@@ -248,7 +253,13 @@ class EditView extends JPanel
 		if (img == null)
 			img = defaultPicture;
 
-		image = new GalleryImage(img);
+		try {
+			image = new GalleryImage(img);
+		} catch (Exception e) {
+			image = defaultImage;
+			contact.setImage(null);
+			//e.printStackTrace();
+		}
 
 		setImage(image);
 

@@ -27,9 +27,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 import contact.Contact;
+import contact.ContactApp;
 import gallery.ImageView.BlackAndWhiteListener;
+import helloworld.HelloWorldApp;
 import main.Application;
 import main.Config;
+import main.SelectionListener;
 import main.Serializer;
 
 public class GalleryApp extends Application {
@@ -42,6 +45,7 @@ public class GalleryApp extends Application {
 
 	private static final String VIEW_MAIN = "MAIN_VIEW";
 	private static final String VIEW_IMAGE = "DETAIL_VIEW";
+	private static final String VIEW_CONTACTS = "CONTACT_VIEW";
 
 	private JPanel routerPanel;
 	ImageView imageView;
@@ -50,6 +54,10 @@ public class GalleryApp extends Application {
 	private ArrayList<GalleryImage> imageList;
 	FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
 
+
+	private ContactApp contactApp;
+
+	private contact.ListSelectView contactSelectView;
 
 	public GalleryApp()	{
 		super("Gallerie", "galerie.png");
@@ -110,6 +118,10 @@ public class GalleryApp extends Application {
 
 		routerPanel.add(mainView, VIEW_MAIN);
 		routerPanel.add(imageView, VIEW_IMAGE);
+
+		LoadedAppsListener loadedAppsListener = new LoadedAppsListener();
+		os.addLoadedAppsListener(loadedAppsListener);
+
 	}
 
 
@@ -139,7 +151,41 @@ public class GalleryApp extends Application {
 	void showImageDetail (GalleryImage img)
 	{
 		imageView.setImage(img);
+		setImageViewContactList(img);
 		//imageView.setBlackAndWhiteListener(new BlackAndWhiteListener(img, imageView));
+		layout.show(routerPanel, VIEW_IMAGE);
+
+	}
+
+	private void setImageViewContactList (GalleryImage galleryImage)
+	{
+		ArrayList<Contact> contacts = new ArrayList<>();
+		//ArrayList<Integer> peopleIds = galleryImage.getPeopleIds();
+
+		for (Integer cId : galleryImage.getPeopleIds()) {
+			try {
+				Contact c = contactApp.getContact(cId);
+				contacts.add(c);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		imageView.setContactArrayList(contacts);
+		//for ()
+		//imageView.setContactArrayList();
+	}
+
+	private void addImageContact (GalleryImage galleryImage, Contact contact)
+	{
+
+		galleryImage.addPeople(contact);
+
+		setImageViewContactList(galleryImage);
+	}
+
+	void showImageDetail ()
+	{
 		layout.show(routerPanel, VIEW_IMAGE);
 
 	}
@@ -153,13 +199,22 @@ public class GalleryApp extends Application {
 
 		for (int i = 0; i < listOfFiles.length; i++) {
 			if (listOfFiles[i].isFile()) {
-				String fname = "ressourcesContenu/Images/" + listOfFiles[i].getName();
-				GalleryImage galleryImage = new GalleryImage(fname);
-				imageList.add(galleryImage);
-				System.out.println(galleryImage.getPath());
+				String fname = dir + "/" + listOfFiles[i].getName();
+				try {
+					GalleryImage galleryImage = new GalleryImage(fname);
+					imageList.add(galleryImage);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
+	}
+
+	void showContactSelectionPanel ()
+	{
+		contactSelectView.updateList();
+		layout.show(routerPanel, VIEW_CONTACTS);
 	}
 
 	public void copyFile (String source, String destination)
@@ -237,8 +292,14 @@ public class GalleryApp extends Application {
 						e.printStackTrace();
 					}
 
-					GalleryImage galleryImage = new GalleryImage(newImagePath);
-					imageList.add(galleryImage);
+					GalleryImage galleryImage = null;
+					try {
+						galleryImage = new GalleryImage(newImagePath);
+						imageList.add(galleryImage);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
 					mainView.updateView();
 				}
 			}
@@ -266,10 +327,74 @@ public class GalleryApp extends Application {
 		}
 	}
 
-	
-		
-	
-	
+
+	private class LoadedAppsListener implements ActionListener
+	{
+		public void actionPerformed (ActionEvent event)
+		{
+
+			try {
+				contactApp = (ContactApp) os.getLoadedApp(ContactApp.class);
+
+
+				/*
+				 * Image select View
+				 */
+
+				SelectContactListener selectContactListener = new SelectContactListener();
+
+				contactSelectView = contactApp.getSelectContactPanel();
+				contactSelectView.addSelectionListener(selectContactListener);
+
+				routerPanel.add(contactSelectView, VIEW_CONTACTS);
+				routerPanel.validate();
+				routerPanel.repaint();
+
+				//showView(IMAGE_VIEW);
+
+				System.out.println("contact App linked to gallery");
+
+			} catch (ClassNotFoundException e) {
+				System.out.println("Could not find ");
+			}
+
+		}
+	}
+
+
+	private class SelectContactListener implements SelectionListener
+	{
+
+		@Override
+		public void onSelect (Object o)
+		{
+			Contact contact = (Contact) o;
+
+			//imageView.setImage(image);
+			//showView(VIEW_IMAGE);
+
+			addImageContact(imageView.getImage(), contact);
+
+			//imageView.updateView();
+			showImageDetail();
+
+			/*selectedImage.setText(c.toString());
+			screen.remove(selectionPanel);
+			screen.validate();
+			screen.repaint();*/
+		}
+
+		@Override
+		public void onCancel ()
+		{
+			System.out.println("onCancel triggered");
+			showImageDetail();
+			//showView(DETAIL_VIEW);
+			/* screen.remove(selectionPanel);
+			screen.validate();
+			screen.repaint();*/
+		}
+	}
 	
 	
 	

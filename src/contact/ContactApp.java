@@ -195,6 +195,19 @@ public class ContactApp extends Application
 	}
 
 
+	public Contact getContact (int id) throws Exception
+	{
+		System.out.println(id);
+		if (contactList.length <= id)
+			throw new Exception("Contact never existed");
+
+		if (contactList[id] == null)
+			throw new Exception("Contact not found");
+
+		return contactList[id];
+	}
+
+
 	void showImageSelectionPanel ()
 	{
 		showView(IMAGE_VIEW);

@@ -1,7 +1,6 @@
 package gallery;
 
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,20 +12,25 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import contact.Contact;
 import main.ButtonIcon;
 
-public class ImageView extends JPanel {
+public class ImageView extends JPanel
+{
 	private GalleryImage image;
 
 	private JPanel panel_image;
-	private BlackAndWhiteListener blackAndWhiteListener ;
-	private ButtonIcon btnModify ;
+	private BlackAndWhiteListener blackAndWhiteListener;
+	private ButtonIcon btnModify;
 	private GalleryApp galleryApp;
+
+	private ArrayList<Contact> contactArrayList;
 
 	ImageView (GalleryApp galleryApp, ActionListener cancelListener)
 	{
@@ -35,13 +39,13 @@ public class ImageView extends JPanel {
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(20, 5, 5, 5));
 		setBackground(Color.BLACK);
-		
+
 		//on cr�e le panel contenant l'image pleine �cran
 		panel_image = new JPanel();
 		panel_image.setBackground(Color.BLACK);
 		add(panel_image, BorderLayout.CENTER);
-		
-			
+
+
 		//on cr�e un JPanel contenant les boutons de l'application
 		JPanel panel_button = new JPanel();
 		add(panel_button, BorderLayout.SOUTH);
@@ -58,11 +62,16 @@ public class ImageView extends JPanel {
 
 		btnModify = new ButtonIcon("blackAndWhite.png");
 		panel_button.add(btnModify);
-
 		blackAndWhiteListener = new BlackAndWhiteListener();
 		btnModify.addActionListener(blackAndWhiteListener);
 
-		
+
+		ButtonIcon btnSelectContact = new ButtonIcon("add.png");
+		panel_button.add(btnSelectContact);
+		SelectContactListener selectContactListener = new SelectContactListener();
+		btnSelectContact.addActionListener(selectContactListener);
+
+
 	}
 	
 	
@@ -78,11 +87,24 @@ public class ImageView extends JPanel {
 	} */
 
 
-
-	public void setImage(GalleryImage image) {
+	public void setImage (GalleryImage image)
+	{
 		this.image = image;
 		updateImage();
-		
+
+	}
+
+	public void setContactArrayList (ArrayList<Contact> contactArrayList)
+	{
+		this.contactArrayList = contactArrayList;
+		updateContactList();
+
+	}
+
+
+	private void updateContactList ()
+	{
+
 	}
 
 	public void updateImage ()
@@ -94,12 +116,12 @@ public class ImageView extends JPanel {
 		chemin.setBackground(Color.BLACK);
 		chemin.setForeground(Color.WHITE);
 		panel_image.add(chemin);
-		
+
 		ImageIcon icon = new ImageIcon(image.getPath());
 		Image img = icon.getImage();
 		int height = icon.getIconHeight();
 		int width = icon.getIconWidth();
-		
+
 		Image newimg;
 		if (height > width) {
 			int newWidth = 400;
@@ -118,15 +140,20 @@ public class ImageView extends JPanel {
 		panel_image.setBackground(Color.BLACK);
 		panel_image.setForeground(Color.WHITE);
 		panel_image.add(imagelabel, BorderLayout.CENTER);
-		
+
 
 		validate();
 		repaint();
 	}
-	
+
+	public GalleryImage getImage ()
+	{
+		return image;
+	}
+
 	/**
 	 * Listener for black/white button in edit form
-	*/
+	 */
 
 	class BlackAndWhiteListener implements ActionListener
 	{
@@ -152,32 +179,43 @@ public class ImageView extends JPanel {
 
 				BufferedImage bufferedImage = ImageIO.read(input);
 
-	            BufferedImage result = new BufferedImage(
-			    bufferedImage.getWidth(),
-			    bufferedImage.getHeight(),
-	                    BufferedImage.TYPE_BYTE_BINARY);
+				BufferedImage result = new BufferedImage(
+					bufferedImage.getWidth(),
+					bufferedImage.getHeight(),
+					BufferedImage.TYPE_BYTE_BINARY);
 
-	            Graphics2D graphic = result.createGraphics();
+				Graphics2D graphic = result.createGraphics();
 				graphic.drawImage(bufferedImage, 0, 0, Color.WHITE, null);
-	            graphic.dispose();
+				graphic.dispose();
 
 				String newpath = image.getPath().substring(0, image.getPath().indexOf(".")).concat("-bw.jpg");
 
-	            File output = new File(newpath);
-	            ImageIO.write(result, "jpg", output);
-	            
-	          
-	            
-	           GalleryImage modifyImage = new GalleryImage(newpath);
+				File output = new File(newpath);
+				ImageIO.write(result, "jpg", output);
+
+
+				GalleryImage modifyImage = new GalleryImage(newpath);
 				galleryApp.addImage(modifyImage);
 				// GalleryImage  galleryImage = new GalleryImage(newImagePath);
 				//imageList.add(galleryImage);
 				setImage(modifyImage);
 
-	        }  catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	        
-	        }
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 		}
+	}
+
+	class SelectContactListener implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed (ActionEvent actionEvent)
+		{
+			galleryApp.showContactSelectionPanel();
+		}
+	}
+
+
 }

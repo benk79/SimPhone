@@ -95,10 +95,10 @@ public class Contact implements Serializable
 		}
 
 		id = contactIdIncrement;
-		contactIdIncrement++;
+		// contactIdIncrement++;
 
 		try {
-			Serializer.set(incrementIdFile, contactIdIncrement);
+			Serializer.set(incrementIdFile, contactIdIncrement + 1);
 		} catch (Exception e) {
 			System.out.println("oops");
 			e.printStackTrace();
