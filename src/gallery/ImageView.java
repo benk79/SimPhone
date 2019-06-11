@@ -18,12 +18,14 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import main.ButtonIcon;
+
 public class ImageView extends JPanel {
 	private GalleryImage image;
 
 	private JPanel panel_image;
 	private BlackAndWhiteListener blackAndWhiteListener ;
-	private JButton btnModify ;
+	private ButtonIcon btnModify ;
 	private GalleryApp galleryApp;
 
 	ImageView (GalleryApp galleryApp, ActionListener cancelListener)
@@ -46,15 +48,15 @@ public class ImageView extends JPanel {
 		panel_button.setBackground(Color.BLACK);
 
 		//On ajoute du bouton annuler
-		JButton btnCancel = new JButton("Retour");
+		ButtonIcon btnCancel = new ButtonIcon("return.png", "Retour");
 		panel_button.add(btnCancel);
 		btnCancel.addActionListener(cancelListener);
 
 		//On ajoute du bouton supprimer et le bouton modifier
-		JButton btnDelete = new JButton("Supprimer");
+		ButtonIcon btnDelete = new ButtonIcon("delete.png", "Supprimer");
 		panel_button.add(btnDelete);
 		
-		btnModify = new JButton("Modifier");
+		btnModify = new ButtonIcon("blackAndWhite.png", "Modifier");
 		panel_button.add(btnModify);
 
 		blackAndWhiteListener = new BlackAndWhiteListener();

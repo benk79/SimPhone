@@ -2,6 +2,9 @@ package gallery;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import main.ButtonIcon;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -48,6 +51,7 @@ abstract public class ListView extends JPanel
 
 	protected void addMenuButton (String Label, ActionListener listener)
 	{
+		//ButtonIcon btn = new ButtonIcon("add.png", "Label");
 		JButton btn = new JButton(Label);
 		panel_button.add(btn);
 		btn.addActionListener(listener);
