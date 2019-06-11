@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 public class ListMainView extends ListView
 {
-	public ListMainView (ArrayList<GalleryImage> imageList, int size, ActionListener addListener)
+	public ListMainView (ArrayList<GalleryImage> imageList, int size, ActionListener imageListener, ActionListener addListener)
 	{
 		super(imageList);
 
-		setImageListener(addListener);
+		setImageListener(imageListener);
 
 		initListView();
 
