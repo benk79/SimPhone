@@ -13,6 +13,7 @@ import main.SeletionPanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -28,7 +29,7 @@ public class HelloWorldApp extends Application {
 		JLabel titleLabel = new JLabel("<html><h1>" + getName() + "</h1></html>");
 		titleLabel.setForeground(Color.WHITE);
 		screen.add(titleLabel);
-
+		
 
 		// JPanel selectPanel
 	}
@@ -37,6 +38,8 @@ public class HelloWorldApp extends Application {
 	{
 		LoadedAppsListener loadedAppsListener = new LoadedAppsListener();
 		os.addLoadedAppsListener(loadedAppsListener);
+		screen.validate();
+		screen.repaint();
 	}
 
 	ListSelectView selectionPanel;
@@ -60,7 +63,7 @@ public class HelloWorldApp extends Application {
 		screen.add(selectContactBtn);
 		screen.add(selectedContact);
 		screen.setBackground(Color.BLACK);
-
+		
 		contactSelectionListener = new SelectContactListener();
 
 
@@ -99,6 +102,9 @@ public class HelloWorldApp extends Application {
 			} catch (ClassNotFoundException e) {
 				System.out.println("Could not find ");
 			}
+			
+			screen.validate();
+			screen.repaint();
 
 		}
 	}
@@ -112,17 +118,16 @@ public class HelloWorldApp extends Application {
 			Contact c = (Contact) o;
 			selectedContact.setForeground(Color.WHITE);
 			selectedContact.setText(c.toString() );
-			selectedContact.setPreferredSize(new Dimension(400, 400)); 
-			/**
-			selectedContact.setText(c.toString() + "Hello " + c.getFirstName());
-			selectedContactText.setForeground(Color.WHITE);
-			selectedContactText.setText("Hello, je m'appelle " + c.getFirstName() + c.getLastName()
-									+ "\nMon email est : " + c.getEmail() 
-									+ "\nMon numéro de téléphone est : " + c.getPhoneNumber());
+			selectedContact.setPreferredSize(new Dimension(350, 400)); 
 			
-			selectedContact.add(selectedContactText);
-			
-			**/
+			Font police = new Font("Arial", Font.PLAIN, 17);
+			selectedContact.setFont(police);
+			selectedContact.setText("<html>Hello, je m'appelle " + c.getFirstName() + " " + c.getLastName() + "<br/>"
+			+ "\nMon email est : " + c.getEmail() + "<br/>" 
+			+ "\nMon numéro de téléphone est : " + c.getPhoneNumber() + "<br/>" 
+			+ "Je suis né le " + c.getBirthDate() + "<br/>" 
+			+ " Mon image de profil se trouve : " + c.getImage() + "</html>");
+
 			
 			screen.remove(selectionPanel);
 			screen.validate();
