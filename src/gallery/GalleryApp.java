@@ -167,9 +167,7 @@ public class GalleryApp extends Application
 	 */
 	public ListSelectView getSelectContactPanel ()
 	{
-		ListSelectView selectView = new ListSelectView(imageList);
-
-		return selectView;
+		return new ListSelectView(imageList);
 	}
 
 
