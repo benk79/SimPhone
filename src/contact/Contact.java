@@ -1,6 +1,8 @@
 package contact;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,6 +64,9 @@ public class Contact implements Serializable
 	 * Birth date
 	 */
 	private String image;
+
+
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
 
 	/**
@@ -257,13 +262,43 @@ public class Contact implements Serializable
 		return birthDate;
 	}
 
+	public String getStringBirthDate ()
+	{
+		String dateString;
+		if (birthDate != null) {
+			dateFormat.setLenient(false);
+			dateString = dateFormat.format(birthDate);
+
+		} else {
+			dateString = "";
+		}
+		return dateString;
+	}
+
 	public void setBirthDate (Date birthDate) throws Exception
 	{
-			if (birthDate == null) {
-				throw new Exception("Birth date is not in a valid format (dd.mm.yyyy)");
-			}
-		
-		
 		this.birthDate = birthDate;
+	}
+
+
+	public void setBirthDate (String birthDate) throws Exception
+	{
+		if (birthDate.equals("")) {
+			this.birthDate = null;
+			return;
+		}
+
+		dateFormat.setLenient(false);
+		try {
+			Date date = dateFormat.parse(birthDate);
+			if (!dateFormat.format(date).equals(birthDate)) {
+				throw new Exception("Invalid format for date, should be jj.mm.aaaa");
+			}
+
+			this.birthDate = date;
+		} catch (ParseException ex) {
+			throw new Exception("Invalid format for date, should be jj.mm.aaaa");
+		}
+
 	}
 }

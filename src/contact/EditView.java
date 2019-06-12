@@ -88,7 +88,7 @@ class EditView extends JPanel
 	/**
 	 * Constructor of the edit view
 	 *
-	 * @param savedListener Listener for the save button
+	 * @param savedListener  Listener for the save button
 	 * @param cancelListener Listener for the cancel button
 	 */
 	EditView (ContactApp contactApp,
@@ -137,7 +137,7 @@ class EditView extends JPanel
 		gbc.gridwidth = 2;
 
 		imagePanel.setBackground(Color.BLACK);
-		
+
 		add(imagePanel, gbc);
 
 //		imageChooseBtn = new JButton("Choose an image");
@@ -240,7 +240,7 @@ class EditView extends JPanel
 		labeltext.setForeground(Color.WHITE);
 		labeltext.setBackground(Color.BLACK);
 		add(labeltext, gbc);
-		
+
 		gbc.anchor = GridBagConstraints.LINE_END;
 
 		gbc.gridx = 1;
@@ -275,67 +275,15 @@ class EditView extends JPanel
 		lastNameField.setText(contact.getLastName());
 		emailField.setText(contact.getEmail());
 		phoneNumberField.setText(contact.getPhoneNumber());
-		
-		
-		
-		
 
-		Date birthDate = contact.getBirthDate();
-		if (birthDate != null) {
-			dateFormat.setLenient(false);
-			dateTextField.setText(dateFormat.format(contact.getBirthDate()));
-
-		} else {
-			dateTextField.setText("");
-		}
-	}
-
-
-	private boolean validDate (String test)
-	{
-		//String test = "02/01/20";
-		//String format = "dd/MM/yyyy";
-		//SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-		dateFormat.setLenient(false);
-		try {
-			Date date = dateFormat.parse(test);
-			if (!dateFormat.format(date).equals(test)) {
-				return false;
-				//throw new ParseException(test + " is not a valid format for " + format, 0);
-			}
-			return true;
-		} catch (ParseException ex) {
-			return false;
-			//ex.printStackTrace();
-		}
-
-	}
-
-	private Date stringToDate (String test)
-	{
-		//String test = "02/01/20";
-		//String format = "dd/MM/yyyy";
-		//SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-		dateFormat.setLenient(false);
-		try {
-			Date date = dateFormat.parse(test);
-			if (!dateFormat.format(date).equals(test)) {
-				return null;
-				//throw new ParseException(test + " is not a valid format for " + format, 0);
-			}
-			return date;
-		} catch (ParseException ex) {
-			return null;
-			//ex.printStackTrace();
-		}
-
+		String birthDate = contact.getStringBirthDate();
+		dateTextField.setText(birthDate);
 	}
 
 	/**
 	 * When clicking on save button, set contact properties with
 	 * actual values in the form.
 	 */
-	
 	class SaveContactListener implements ActionListener
 	{
 		@Override
@@ -343,8 +291,7 @@ class EditView extends JPanel
 		{
 			ArrayList<String> errors = new ArrayList<String>();
 
-				
-					
+
 			// First name required
 			try {
 				contact.setFirstName(firstNameField.getText());
@@ -354,31 +301,28 @@ class EditView extends JPanel
 				errors.add(e.getMessage());
 				System.out.println(e.getMessage());
 				return;
-				// e.printStackTrace();
 			}
 
-			
-			
+
 			// Validation Phone Number
 			try {
 				contact.setPhoneNumber(phoneNumberField.getText());
 				phoneNumberField.setBackground(Color.WHITE);
-										
+
 			} catch (Exception e) {
 				phoneNumberField.setBackground(Color.red);
 				errors.add(e.getMessage());
 				System.out.println(e.getMessage());
 				return;
 				// e.printStackTrace();
-				}
-			
-			
-			
+			}
+
+
 			// Validation Email
 			try {
 				contact.setEmail(emailField.getText());
 				emailField.setBackground(Color.WHITE);
-				
+
 			} catch (Exception e) {
 				emailField.setBackground(Color.red);
 				errors.add(e.getMessage());
@@ -386,27 +330,25 @@ class EditView extends JPanel
 				return;
 				// e.printStackTrace();
 			}
-			
-			
-			
+
+
 			//Date validation
 			try {
-					Date birthDate = stringToDate(dateTextField.getText());
-					contact.setBirthDate(birthDate);
-					dateTextField.setBackground(Color.WHITE);
-				} catch (Exception e) {
-					dateTextField.setBackground(Color.red);
-					errors.add(e.getMessage());
-					System.out.println(e.getMessage());
-					return;
-					// e.printStackTrace();
-				}
-			
-		
+				contact.setBirthDate(dateTextField.getText());
+				dateTextField.setBackground(Color.WHITE);
+			} catch (Exception e) {
+				dateTextField.setBackground(Color.red);
+				errors.add(e.getMessage());
+				System.out.println(e.getMessage());
+				return;
+				// e.printStackTrace();
+			}
+
+
 			String imagePath = image.getPath();
 			if (!imagePath.equals(defaultPicture))
 				contact.setImage(imagePath);
-			
+
 			contact.setLastName(lastNameField.getText());
 
 
