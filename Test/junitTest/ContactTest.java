@@ -17,10 +17,10 @@ class ContactTest {
 
 
 	@Test
-	void testExplicitToString()
+	void testExplicitToString() throws Exception
 	{
 		
-		String firstname = "Jean-Michel";
+		String firstname = "";
 		String lastname = "Dujardin";
 		String email ="jeanmi@gmail.com";
 		String phoneNumber ="027395935";
@@ -43,6 +43,7 @@ class ContactTest {
 		System.out.println(expected);
 		System.out.println(actual);
 		assertTrue(expected.equals(actual));
+	
 		
 	}
 				

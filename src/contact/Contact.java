@@ -3,6 +3,8 @@ package contact;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import main.Serializer;
 
@@ -159,8 +161,27 @@ public class Contact implements Serializable
 	/**
 	 * @param email Email address
 	 */
-	public void setEmail (String email)
+	public void setEmail (String email) throws Exception
 	{
+		
+		Pattern pattern = Pattern.compile (
+				"([a-zA-Z0-9_\\-\\.]+)@((\\[a-z]{1,3}\\.[a-z]"
+				 + "{1,3}\\.[a-z]{1,3}\\.)|(([a-zA-Z\\-]+\\.)+))"
+				 + "([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)",
+				Pattern.MULTILINE);
+		
+		Matcher m=pattern.matcher(email);
+		boolean b = true ;
+		b=m.matches();
+		
+		if (email.isEmpty()){
+			
+		}
+		else 
+			if(b==false) {
+			throw new Exception("Invalid mail");
+		}
+				
 		this.email = email;
 	}
 
@@ -176,9 +197,28 @@ public class Contact implements Serializable
 
 	/**
 	 * @param phoneNumber Phone number
+	 * @throws Exception 
 	 */
-	public void setPhoneNumber (String phoneNumber)
+	public void setPhoneNumber (String phoneNumber) throws Exception
 	{
+		Pattern pattern = Pattern.compile (
+				"([0-9]{10})",
+				Pattern.MULTILINE);
+		
+		Matcher m=pattern.matcher(phoneNumber);
+		boolean b=m.matches();
+		
+		if (phoneNumber.isEmpty()){
+			
+		}
+		else {
+			if (b==false) 
+			{
+			throw new Exception("Invalid phone number, 10 numbers without -");
+			}
+		}
+		
+		
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -210,8 +250,13 @@ public class Contact implements Serializable
 		return birthDate;
 	}
 
-	public void setBirthDate (Date birthDate)
+	public void setBirthDate (Date birthDate) throws Exception
 	{
+			if (birthDate == null) {
+				throw new Exception("Birth date is not in a valid format (dd.mm.yyyy)");
+			}
+		
+		
 		this.birthDate = birthDate;
 	}
 }

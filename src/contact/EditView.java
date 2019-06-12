@@ -343,24 +343,8 @@ class EditView extends JPanel
 		{
 			ArrayList<String> errors = new ArrayList<String>();
 
-			String dateString = dateTextField.getText();
-
-			if (!dateString.equals("")) {
-				Date birthDate = stringToDate(dateString);
-				if (birthDate == null) {
-					errors.add("Birth date is not in a valid format (dd.mm.yyyy)");
-					System.out.println("Birth date is not in a valid format (dd.mm.yyyy)");
-					dateTextField.setBackground(Color.RED);
-					return;
-				}
-				dateFormat.setLenient(false);
-				contact.setBirthDate(birthDate);
-				dateTextField.setBackground(Color.WHITE);
-			} else {
-				contact.setBirthDate(null);
-				dateTextField.setBackground(Color.WHITE);
-			}
-			
+				
+					
 			// First name required
 			try {
 				contact.setFirstName(firstNameField.getText());
@@ -373,55 +357,60 @@ class EditView extends JPanel
 				// e.printStackTrace();
 			}
 
-			/*
-			if (firstNameField.getText().isEmpty()) {
-				firstNameField.setBackground(Color.red);
-				errors.add("First name is required");
-				System.out.println("First name is required");
+			
+			
+			// Validation Phone Number
+			try {
+				contact.setPhoneNumber(phoneNumberField.getText());
+				phoneNumberField.setBackground(Color.WHITE);
+										
+			} catch (Exception e) {
+				phoneNumberField.setBackground(Color.red);
+				errors.add(e.getMessage());
+				System.out.println(e.getMessage());
 				return;
+				// e.printStackTrace();
+				}
+			
+			
+			
+			// Validation Email
+			try {
+				contact.setEmail(emailField.getText());
+				emailField.setBackground(Color.WHITE);
+				
+			} catch (Exception e) {
+				emailField.setBackground(Color.red);
+				errors.add(e.getMessage());
+				System.out.println(e.getMessage());
+				return;
+				// e.printStackTrace();
 			}
-			else 
-				firstNameField.setBackground(Color.WHITE);
-			*/
+			
+			
+			
+			//Date validation
+			try {
+					Date birthDate = stringToDate(dateTextField.getText());
+					contact.setBirthDate(birthDate);
+					dateTextField.setBackground(Color.WHITE);
+				} catch (Exception e) {
+					dateTextField.setBackground(Color.red);
+					errors.add(e.getMessage());
+					System.out.println(e.getMessage());
+					return;
+					// e.printStackTrace();
+				}
+			
 		
-			// Adress mail valid
-			Pattern pattern = Pattern.compile (
-					"([a-zA-Z0-9_\\-\\.]+)@((\\[a-z]{1,3}\\.[a-z]"
-					 + "{1,3}\\.[a-z]{1,3}\\.)|(([a-zA-Z\\-]+\\.)+))"
-					 + "([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)",
-					Pattern.MULTILINE);
-			
-					Matcher m=pattern.matcher(emailField.getText());
-					firstNameField.setBackground(Color.WHITE);
-					boolean b=m.matches();
-					if(emailField.getText().length()>0)
-						{
-							if(b==true)
-								{
-									emailField.setBackground(Color.WHITE);
-								}
-					else
-						{
-						 errors.add("Invalid Email");
-						 emailField.setBackground(Color.red);
-						 System.out.println("Invalid Email");
-						 return;
-						}
-				
-					}  
-				
-			
 			String imagePath = image.getPath();
 			if (!imagePath.equals(defaultPicture))
 				contact.setImage(imagePath);
-
-			contact.setEmail(emailField.getText());
-
-			contact.setPhoneNumber(phoneNumberField.getText());
+			
 			contact.setLastName(lastNameField.getText());
 
 
-			System.out.println(dateTextField.getText());
+			//System.out.println(dateTextField.getText());
 
 			savedContactListener.actionPerformed(actionEvent);
 		}
