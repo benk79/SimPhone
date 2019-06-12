@@ -354,6 +354,8 @@ public class GalleryApp extends Application {
 
 				System.out.println("contact App linked to gallery");
 
+				imageView.setContactApp(contactApp);
+
 			} catch (ClassNotFoundException e) {
 				System.out.println("Could not find ");
 			}
