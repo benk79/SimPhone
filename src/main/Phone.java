@@ -117,9 +117,9 @@ public class Phone extends JPanel {
 	private void addDeviceBorderPanel (JPanel panel, int w, int h, String place)
 	{
 		Dimension dimension = new Dimension(w, h);
-		
+		Color gris = new Color(65, 65, 65);
 		panel.setPreferredSize(dimension);
-		panel.setBackground(Color.black);
+		panel.setBackground(gris);
 
 		add(panel, place);		
 	}
