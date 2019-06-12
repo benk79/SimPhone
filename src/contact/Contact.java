@@ -120,8 +120,11 @@ public class Contact implements Serializable
 	/**
 	 * @param firstName First name
 	 */
-	public void setFirstName (String firstName)
+	public void setFirstName (String firstName) throws Exception
 	{
+		if (firstName.isEmpty())
+			throw new Exception("First name is required");
+
 		this.firstName = firstName;
 	}
 

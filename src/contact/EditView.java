@@ -158,9 +158,9 @@ class EditView extends JPanel
 		gbc.gridwidth = 1;
 
 		//
-		addTextField(firstNameField, "Prénom : ");
+		addTextField(firstNameField, "Prï¿½nom : ");
 		addTextField(lastNameField, "Nom : ");
-		addTextField(phoneNumberField, "Numéro de tél. : ");
+		addTextField(phoneNumberField, "Numï¿½ro de tï¿½l. : ");
 		addTextField(emailField, "Email : ");
 		addTextField(dateTextField, "Date de naissance (jj.mm.aaaa) : ");
 
@@ -362,6 +362,18 @@ class EditView extends JPanel
 			}
 			
 			// First name required
+			try {
+				contact.setFirstName(firstNameField.getText());
+				firstNameField.setBackground(Color.WHITE);
+			} catch (Exception e) {
+				firstNameField.setBackground(Color.red);
+				errors.add(e.getMessage());
+				System.out.println(e.getMessage());
+				return;
+				// e.printStackTrace();
+			}
+
+			/*
 			if (firstNameField.getText().isEmpty()) {
 				firstNameField.setBackground(Color.red);
 				errors.add("First name is required");
@@ -370,7 +382,7 @@ class EditView extends JPanel
 			}
 			else 
 				firstNameField.setBackground(Color.WHITE);
-			
+			*/
 		
 			// Adress mail valid
 			Pattern pattern = Pattern.compile (
@@ -404,7 +416,7 @@ class EditView extends JPanel
 				contact.setImage(imagePath);
 
 			contact.setEmail(emailField.getText());
-			contact.setFirstName(firstNameField.getText());
+
 			contact.setPhoneNumber(phoneNumberField.getText());
 			contact.setLastName(lastNameField.getText());
 
