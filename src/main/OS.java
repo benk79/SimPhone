@@ -18,7 +18,8 @@ public class OS {
 			"tictactoe.TicTacToe",
 			"calendar.calendarApp",
 			"contact.ContactApp",
-			"gallery.GalleryApp"
+			"gallery.GalleryApp",
+			"calculator.CalculatorApp"
 		};
 	
 	private Phone phone;
