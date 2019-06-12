@@ -246,6 +246,7 @@ public class ImageView extends JPanel
 		public void onSelect (Object o)
 		{
 			image.removePeople((Contact) o);
+			galleryApp.writeFile();
 			galleryApp.setImageViewContactList(image);
 		}
 
