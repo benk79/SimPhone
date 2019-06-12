@@ -276,6 +276,12 @@ class EditView extends JPanel
 		emailField.setText(contact.getEmail());
 		phoneNumberField.setText(contact.getPhoneNumber());
 
+		firstNameField.setBackground(Color.WHITE);
+		lastNameField.setBackground(Color.WHITE);
+		emailField.setBackground(Color.WHITE);
+		phoneNumberField.setBackground(Color.WHITE);
+		dateTextField.setBackground(Color.WHITE);
+
 		String birthDate = contact.getStringBirthDate();
 		dateTextField.setText(birthDate);
 	}
