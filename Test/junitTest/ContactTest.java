@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import contact.Contact;
 
 /**
- * Cette classe test JUNIT nous permet de tester si les entrée String sont correctes
+ * This JUNIT test class allows us to test if the String inputs are correct
  * @author Louise Bretz, Benjamin Keller
  *
  */
@@ -17,14 +17,14 @@ class ContactTest {
 
 
 	@Test
-	void testExplicitToString()
+	void testExplicitToString() throws Exception
 	{
 		
-		String firstname = "Jean-Michel";
+		String firstname = "Jean";
 		String lastname = "Dujardin";
 		String email ="jeanmi@gmail.com";
 		String phoneNumber ="027395935";
-		Date birthDate = null ;
+		Date birthDate = "20.02.1965" ;
 		String image="null";
 		
 		String expected = firstname + ";" + lastname + ";" + email + ";" + phoneNumber + ";" + birthDate + ";" + image;
@@ -43,6 +43,7 @@ class ContactTest {
 		System.out.println(expected);
 		System.out.println(actual);
 		assertTrue(expected.equals(actual));
+	
 		
 	}
 				
