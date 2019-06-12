@@ -154,7 +154,7 @@ public class GalleryApp extends Application {
 	 * @return The path for read/write data dedicated to this application
 	 */
 	
-	static String getDataPath ()
+	protected static String getDataPath ()
 	{
 		return Config.DATA_PATH + "/gallery/";
 	}
@@ -319,14 +319,14 @@ public class GalleryApp extends Application {
 		}
 	}
 
-	void addImage (GalleryImage img)
+	protected void addImage (GalleryImage img)
 	{
 		imageList.add(img);
 		writeFile();
 		mainView.updateView();
 	}
 
-	void removeImage (GalleryImage image)
+	protected void removeImage (GalleryImage image)
 	{
 		imageList.remove(image);
 		writeFile();
