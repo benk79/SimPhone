@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
  */
 public class ListSelectView extends ListView implements SeletionPanel
 {
-	private static final String LABEL_SELECT = "Select";
+	private static final String LABEL_SELECT = "tag.png";
 	private static final String LABEL_CANCEL = "return.png";
 
 	private SelectionListener selectionListener;

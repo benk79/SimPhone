@@ -11,6 +11,8 @@ import contact.ContactButton;
 import main.SelectionListener;
 import main.SeletionPanel;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -24,7 +26,7 @@ public class HelloWorldApp extends Application {
 
 		//
 		JLabel titleLabel = new JLabel("<html><h1>" + getName() + "</h1></html>");
-
+		titleLabel.setForeground(Color.WHITE);
 		screen.add(titleLabel);
 
 
@@ -39,6 +41,7 @@ public class HelloWorldApp extends Application {
 
 	ListSelectView selectionPanel;
 	JLabel selectedContact;
+	JTextArea selectedContactText;
 	//ContactAppSelectListener selectListener;
 	//ContactAppCancelListener cancelListener;
 
@@ -47,9 +50,16 @@ public class HelloWorldApp extends Application {
 	private void addContactSelection ()
 	{
 		JButton selectContactBtn = new JButton("Select a contact");
-		selectedContact = new JLabel();
+		selectContactBtn.setBackground(Color.YELLOW);
+		selectContactBtn.setForeground(Color.BLACK);
+		
+		
+		selectedContactText = new JTextArea ();
+		selectedContact = new JLabel ();
+		
 		screen.add(selectContactBtn);
 		screen.add(selectedContact);
+		screen.setBackground(Color.BLACK);
 
 		contactSelectionListener = new SelectContactListener();
 
@@ -100,8 +110,20 @@ public class HelloWorldApp extends Application {
 		public void onSelect (Object o)
 		{
 			Contact c = (Contact) o;
-
-			selectedContact.setText(c.toString());
+			selectedContact.setForeground(Color.WHITE);
+			selectedContact.setText(c.toString() );
+			selectedContact.setPreferredSize(new Dimension(400, 400)); 
+			/**
+			selectedContact.setText(c.toString() + "Hello " + c.getFirstName());
+			selectedContactText.setForeground(Color.WHITE);
+			selectedContactText.setText("Hello, je m'appelle " + c.getFirstName() + c.getLastName()
+									+ "\nMon email est : " + c.getEmail() 
+									+ "\nMon numéro de téléphone est : " + c.getPhoneNumber());
+			
+			selectedContact.add(selectedContactText);
+			
+			**/
+			
 			screen.remove(selectionPanel);
 			screen.validate();
 			screen.repaint();
