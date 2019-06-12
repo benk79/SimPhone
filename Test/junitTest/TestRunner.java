@@ -20,7 +20,6 @@ class ContactTest {
 	void testExplicitToString()
 	{
 		
-		String id = "1";
 		String firstname = "Jean-Michel";
 		String lastname = "Dujardin";
 		String email ="jeanmi@gmail.com";
@@ -28,7 +27,9 @@ class ContactTest {
 		Date birthDate = null ;
 		String image="null";
 		
-		String expected = id+ ";"+ firstname+ ";" + lastname+";" +email + ";"+phoneNumber+ ";"+birthDate+ ";"+image;
+		String expected = firstname + ";" + lastname + ";" + email + ";" + phoneNumber + ";" + birthDate + ";" + image;
+		
+		
 		Contact contact = new Contact();
 		contact.setFirstName(firstname);
 		contact.setLastName(lastname);
@@ -38,7 +39,7 @@ class ContactTest {
 		contact.setImage(image);
 		
 			
-		String actual = contact.toString();
+		String actual = contact.getFirstName() + ";" + contact.getLastName() + ";" + contact.getEmail() + ";" + contact.getPhoneNumber() + ";" + contact.getBirthDate() + ";" + contact.getImage();
 		System.out.println(expected);
 		System.out.println(actual);
 		assertTrue(expected.equals(actual));
