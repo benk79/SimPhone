@@ -1,7 +1,6 @@
 package contact;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -111,6 +110,8 @@ public class Contact implements Serializable
 
 
 	/**
+	 * Get first name of contact
+	 *
 	 * @return First name
 	 */
 	public String getFirstName ()
@@ -120,6 +121,8 @@ public class Contact implements Serializable
 
 
 	/**
+	 * Set first name of contact
+	 *
 	 * @param firstName First name
 	 */
 	public void setFirstName (String firstName) throws Exception
@@ -132,6 +135,8 @@ public class Contact implements Serializable
 
 
 	/**
+	 * Get last name of contact
+	 *
 	 * @return Last name
 	 */
 	public String getLastName ()
@@ -141,6 +146,8 @@ public class Contact implements Serializable
 
 
 	/**
+	 * Set last name of contact
+	 *
 	 * @param lastName Last name
 	 */
 	public void setLastName (String lastName)
