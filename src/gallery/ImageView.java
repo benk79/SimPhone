@@ -58,7 +58,10 @@ public class ImageView extends JPanel
 
 		//On ajoute du bouton supprimer et le bouton modifier
 		ButtonIcon btnDelete = new ButtonIcon("delete2.png");
+		DeleteImageListener dil = new DeleteImageListener();
+		btnDelete.addActionListener(dil);
 		panel_button.add(btnDelete);
+
 
 		btnModify = new ButtonIcon("blackAndWhite.png");
 		panel_button.add(btnModify);
@@ -70,7 +73,6 @@ public class ImageView extends JPanel
 		panel_button.add(btnSelectContact);
 		SelectContactListener selectContactListener = new SelectContactListener();
 		btnSelectContact.addActionListener(selectContactListener);
-
 
 	}
 	
@@ -106,6 +108,8 @@ public class ImageView extends JPanel
 	void setContactApp (ContactApp contactApp)
 	{
 		contactPanel = new ContactListView(contactApp);
+		DeleteContactListener dcl = new DeleteContactListener();
+		contactPanel.addSelectionListener(dcl);
 		add(contactPanel, BorderLayout.CENTER);
 	}
 
@@ -203,14 +207,25 @@ public class ImageView extends JPanel
 
 				GalleryImage modifyImage = new GalleryImage(newpath);
 				galleryApp.addImage(modifyImage);
+				galleryApp.showImageDetail(modifyImage);
 				// GalleryImage  galleryImage = new GalleryImage(newImagePath);
 				//imageList.add(galleryImage);
-				setImage(modifyImage);
+				//setImage(modifyImage);
 
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
+		}
+	}
+
+	class DeleteImageListener implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed (ActionEvent actionEvent)
+		{
+			galleryApp.removeImage(image);
 		}
 	}
 
@@ -230,7 +245,9 @@ public class ImageView extends JPanel
 		@Override
 		public void onSelect (Object o)
 		{
-
+			image.removePeople((Contact) o);
+			galleryApp.writeFile();
+			galleryApp.setImageViewContactList(image);
 		}
 
 		@Override

@@ -64,7 +64,7 @@ public class GalleryApp extends Application {
 		imageList = new ArrayList<GalleryImage>();
 
 		try {
-			System.out.println(getDataPath() + "contacts.ser");
+			//System.out.println(getDataPath() + "contacts.ser");
 			imageList = (ArrayList<GalleryImage>) Serializer.get(getDataPath() + "list.ser");
 		} catch (FileNotFoundException e) {
 			System.out.println("oops - Gallerie app could not open file list.ser");
@@ -74,6 +74,17 @@ public class GalleryApp extends Application {
 			System.out.println("oops - Gallerie app could not open file list.ser");
 			e.printStackTrace();
 		}
+	}
+
+	void writeFile ()
+	{
+		try {
+			Serializer.set(getDataPath() + "list.ser", imageList);
+		} catch (Exception e) {
+			System.out.println("oops");
+			e.printStackTrace();
+		}
+
 	}
 
 	public void onInit()
@@ -157,7 +168,7 @@ public class GalleryApp extends Application {
 
 	}
 
-	private void setImageViewContactList (GalleryImage galleryImage)
+	void setImageViewContactList (GalleryImage galleryImage)
 	{
 		ArrayList<Contact> contacts = new ArrayList<>();
 		//ArrayList<Integer> peopleIds = galleryImage.getPeopleIds();
@@ -180,7 +191,7 @@ public class GalleryApp extends Application {
 	{
 
 		galleryImage.addPeople(contact);
-
+		writeFile();
 		setImageViewContactList(galleryImage);
 	}
 
@@ -295,12 +306,14 @@ public class GalleryApp extends Application {
 					GalleryImage galleryImage = null;
 					try {
 						galleryImage = new GalleryImage(newImagePath);
-						imageList.add(galleryImage);
+						addImage(galleryImage);
+						//imageList.add(galleryImage);
+						//writeFile();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 
-					mainView.updateView();
+					// mainView.updateView();
 				}
 			}
 		}
@@ -309,7 +322,18 @@ public class GalleryApp extends Application {
 	void addImage (GalleryImage img)
 	{
 		imageList.add(img);
+		writeFile();
 		mainView.updateView();
+	}
+
+	void removeImage (GalleryImage image)
+	{
+		imageList.remove(image);
+		writeFile();
+		mainView.updateView();
+		layout.show(routerPanel, VIEW_MAIN);
+		File file = new File(image.getPath());
+		file.delete();
 	}
 
 	/**
