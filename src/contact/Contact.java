@@ -261,7 +261,7 @@ public class Contact implements Serializable
 	{
 		return birthDate;
 	}
-
+	
 	public String getStringBirthDate ()
 	{
 		String dateString;

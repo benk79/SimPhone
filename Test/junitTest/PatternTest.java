@@ -73,5 +73,29 @@ class PatternTest {
 		
 	}
 	
+	@Test
+	void testDate() throws Exception {
+		
+		try {
+		String date = "20051996";
+		Contact contact1 = new Contact();
+		contact1.setBirthDate(date);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());	}
+		
+	
+		String email2 = "25.05.1996";
+		Contact contact2 = new Contact();
+		contact2.setBirthDate(email2);
+		
+		
+		try {
+			String date = "20.20.2010";
+			Contact contact3 = new Contact();
+			contact3.setBirthDate(date);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());	}
+	}
+	
 	
 }

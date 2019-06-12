@@ -22,12 +22,11 @@ class ContactTest {
 		
 		String firstname = "Jean";
 		String lastname = "Dujardin";
-		String email ="jeanmi@gmail.com";
-		String phoneNumber ="027395935";
-		Date birthDate = "20.02.1965" ;
+		String email = "jeanmi@gmail.com";
+		String phoneNumber = "027395935";
 		String image="null";
 		
-		String expected = firstname + ";" + lastname + ";" + email + ";" + phoneNumber + ";" + birthDate + ";" + image;
+		String expected = firstname + ";" + lastname + ";" + email + ";" + phoneNumber  + ";" + image;
 		
 		
 		Contact contact = new Contact();
@@ -35,11 +34,11 @@ class ContactTest {
 		contact.setLastName(lastname);
 		contact.setEmail(email);
 		contact.setPhoneNumber(phoneNumber);
-		contact.setBirthDate(birthDate);
 		contact.setImage(image);
 		
 			
-		String actual = contact.getFirstName() + ";" + contact.getLastName() + ";" + contact.getEmail() + ";" + contact.getPhoneNumber() + ";" + contact.getBirthDate() + ";" + contact.getImage();
+		String actual = contact.getFirstName() + ";" + contact.getLastName() + 
+				";" + contact.getEmail() + ";" + contact.getPhoneNumber()  + ";" + contact.getImage();
 		System.out.println(expected);
 		System.out.println(actual);
 		assertTrue(expected.equals(actual));
