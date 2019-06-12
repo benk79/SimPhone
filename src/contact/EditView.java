@@ -158,9 +158,9 @@ class EditView extends JPanel
 		gbc.gridwidth = 1;
 
 		//
-		addTextField(firstNameField, "Prï¿½nom : ");
+		addTextField(firstNameField, "Prénom : ");
 		addTextField(lastNameField, "Nom : ");
-		addTextField(phoneNumberField, "Numï¿½ro de tï¿½l. : ");
+		addTextField(phoneNumberField, "Numéro de tél. : ");
 		addTextField(emailField, "Email : ");
 		addTextField(dateTextField, "Date de naissance (jj.mm.aaaa) : ");
 
