@@ -45,57 +45,58 @@ public class GalleryApp extends Application
 
 
 	/**
-	 *
+	 * Main view name used by card layout
 	 */
 	private static final String VIEW_MAIN = "MAIN_VIEW";
 
 	/**
-	 *
+	 * Image view name used by card layout
 	 */
 	private static final String VIEW_IMAGE = "DETAIL_VIEW";
 
 	/**
-	 *
+	 * Contact selection view name used by card layout
 	 */
 	private static final String VIEW_CONTACTS = "CONTACT_VIEW";
 
 	/**
-	 *
+	 * Panel used with card layout to navigate between views
 	 */
 	private JPanel routerPanel;
 
 	/**
-	 *
+	 * Image view
 	 */
 	private ImageView imageView;
 
 	/**
-	 *
+	 * List view
 	 */
 	private ListView mainView;
 
 	/**
-	 *
-	 */
-	private ArrayList<GalleryImage> imageList;
-
-	/**
-	 *
-	 */
-	private FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
-
-	/**
-	 *
-	 */
-	private ContactApp contactApp;
-
-	/**
-	 *
+	 * Contact selection view
 	 */
 	private contact.ListSelectView contactSelectView;
 
 	/**
-	 *
+	 * List of images
+	 */
+	private ArrayList<GalleryImage> imageList;
+
+	/**
+	 * Filter to select image type files
+	 */
+	private FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
+
+	/**
+	 * Contact application to be linked
+	 */
+	private ContactApp contactApp;
+
+
+	/**
+	 * Constructor of the class
 	 */
 	public GalleryApp ()
 	{
@@ -217,6 +218,12 @@ public class GalleryApp extends Application
 	}
 
 
+	/**
+	 * Tag a contact for an image
+	 *
+	 * @param galleryImage Image to which add a contact
+	 * @param contact Contact to tag
+	 */
 	private void addImageContact (GalleryImage galleryImage, Contact contact)
 	{
 		galleryImage.addPeople(contact);
@@ -224,12 +231,19 @@ public class GalleryApp extends Application
 		setImageViewContactList(galleryImage);
 	}
 
+
+	/**
+	 * Show image panel. Image of the panel has to be set before
+	 */
 	private void showImageDetail ()
 	{
 		layout.show(routerPanel, VIEW_IMAGE);
-
 	}
 
+
+	/**
+	 * Build imageList from folder content if no data file has been set previously
+	 */
 	private void buildImageList ()
 	{
 		String dir = "ressourcesContenu/Images";
@@ -251,12 +265,24 @@ public class GalleryApp extends Application
 
 	}
 
+
+	/**
+	 * Show contact selection view
+	 */
 	void showContactSelectionPanel ()
 	{
 		contactSelectView.updateList();
 		layout.show(routerPanel, VIEW_CONTACTS);
 	}
 
+
+	/**
+	 * Copy a file from a source to a destination
+	 *
+	 * @param source File to be copied
+	 * @param destination New file name
+	 * @throws IOException If there is any problem copying the file
+	 */
 	private void copyFile (String source, String destination)
 		throws IOException
 	{
@@ -284,6 +310,11 @@ public class GalleryApp extends Application
 	class ImageBouttonListener implements ActionListener
 	{
 
+		/**
+		 * Action performed when clicking on an image in the main view
+		 *
+		 * @param actionEvent event attached to the image button in the main view
+		 */
 		@Override
 		public void actionPerformed (ActionEvent actionEvent)
 		{
@@ -293,12 +324,18 @@ public class GalleryApp extends Application
 		}
 	}
 
+
 	/**
 	 * Listener for add image in list
 	 */
 	class AddBouttonListener implements ActionListener
 	{
 
+		/**
+		 * Action performed when clicking on an image in the main view
+		 *
+		 * @param arg0 Event attached  to the add button in the main view
+		 */
 		@Override
 		public void actionPerformed (ActionEvent arg0)
 		{
@@ -334,14 +371,26 @@ public class GalleryApp extends Application
 		}
 	}
 
-	private void addImage (GalleryImage img)
+
+	/**
+	 * Add an image in the gallery application
+	 *
+	 * @param img Image to add in the gallery application
+	 */
+	void addImage (GalleryImage img)
 	{
 		imageList.add(img);
 		writeFile();
 		mainView.updateView();
 	}
 
-	private void removeImage (GalleryImage image)
+
+	/**
+	 * Remove an image in the gallery application
+	 *
+	 * @param image Image to remove in the gallery application
+	 */
+	void removeImage (GalleryImage image)
 	{
 		imageList.remove(image);
 		writeFile();
@@ -351,11 +400,18 @@ public class GalleryApp extends Application
 		file.delete();
 	}
 
+
 	/**
 	 * Listener for cancel button in edit form
 	 */
-	class CancelListener implements ActionListener
+	private class CancelListener implements ActionListener
 	{
+
+		/**
+		 * Action performed when clicking on cancel button in edit form
+		 *
+		 * @param actionEvent event attached to the cancel button in edit form
+		 */
 		@Override
 		public void actionPerformed (ActionEvent actionEvent)
 		{
@@ -364,6 +420,9 @@ public class GalleryApp extends Application
 	}
 
 
+	/**
+	 *
+	 */
 	private class LoadedAppsListener implements ActionListener
 	{
 		public void actionPerformed (ActionEvent event)

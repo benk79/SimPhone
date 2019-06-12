@@ -40,6 +40,18 @@ public class ContactListView extends ListSelectView
 
 
 	/**
+	 * Set the list of contacts for this view
+	 *
+	 * @param contacts Contact list to show in this view
+	 */
+	void setList (ArrayList<Contact> contacts)
+	{
+		_contactList = contacts;
+		updateList();
+	}
+
+
+	/**
 	 * Override the method of SelectView to show a menu button
 	 */
 	@Override
@@ -78,17 +90,5 @@ public class ContactListView extends ListSelectView
 		}
 
 		return contacts;
-	}
-
-
-	/**
-	 * Set the list of contacts for this view
-	 *
-	 * @param contacts Contact list to show in this view
-	 */
-	void setList (ArrayList<Contact> contacts)
-	{
-		_contactList = contacts;
-		updateList();
 	}
 }
