@@ -35,36 +35,74 @@ import main.Config;
 import main.SelectionListener;
 import main.Serializer;
 
-public class GalleryApp extends Application {
-
+public class GalleryApp extends Application
+{
 
 	/**
 	 * Card layout to switch between views
 	 */
 	private CardLayout layout;
 
+
+	/**
+	 *
+	 */
 	private static final String VIEW_MAIN = "MAIN_VIEW";
+
+	/**
+	 *
+	 */
 	private static final String VIEW_IMAGE = "DETAIL_VIEW";
+
+	/**
+	 *
+	 */
 	private static final String VIEW_CONTACTS = "CONTACT_VIEW";
 
+	/**
+	 *
+	 */
 	private JPanel routerPanel;
-	ImageView imageView;
-	ListView mainView;
 
+	/**
+	 *
+	 */
+	private ImageView imageView;
+
+	/**
+	 *
+	 */
+	private ListView mainView;
+
+	/**
+	 *
+	 */
 	private ArrayList<GalleryImage> imageList;
-	FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
 
+	/**
+	 *
+	 */
+	private FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
 
+	/**
+	 *
+	 */
 	private ContactApp contactApp;
 
+	/**
+	 *
+	 */
 	private contact.ListSelectView contactSelectView;
 
-	public GalleryApp()	{
+	/**
+	 *
+	 */
+	public GalleryApp ()
+	{
 		super("Gallerie", "galerie.png");
 		imageList = new ArrayList<GalleryImage>();
 
 		try {
-			//System.out.println(getDataPath() + "contacts.ser");
 			imageList = (ArrayList<GalleryImage>) Serializer.get(getDataPath() + "list.ser");
 		} catch (FileNotFoundException e) {
 			System.out.println("oops - Gallerie app could not open file list.ser");
@@ -76,6 +114,10 @@ public class GalleryApp extends Application {
 		}
 	}
 
+
+	/**
+	 * Save data of imageList to file
+	 */
 	void writeFile ()
 	{
 		try {
@@ -84,60 +126,42 @@ public class GalleryApp extends Application {
 			System.out.println("oops");
 			e.printStackTrace();
 		}
-
-	}
-
-	public void onInit()
-	{
-		screen.setLayout(new BorderLayout());
-		
-		// on gère le titre de l'application		
-		//JLabel title = new JLabel("Gallerie", SwingConstants.CENTER);
-		//title.setForeground(Color.WHITE);	
-		//title.setBackground(Color.GREEN);
-		//title.setFont(new Font("Arial", Font.PLAIN, 20));
-		//screen.add(title, BorderLayout.NORTH);
-		
-
-		//On ajoute les images à la liste
-		/*imageList.add(new GalleryImage("ressourcesContenu/Images/baseball.jpg"));
-		imageList.add(new GalleryImage("ressourcesContenu/Images/basketball.jpg"));
-		imageList.add(new GalleryImage("ressourcesContenu/Images/beach.jpg"));
-		imageList.add(new GalleryImage("ressourcesContenu/Images/bmx.jpg"));
-		imageList.add(new GalleryImage("ressourcesContenu/Images/hokkaido.jpg")); */
-
-
-		layout = new CardLayout();
-
-
-		routerPanel = new JPanel();
-		AddBouttonListener abl = new AddBouttonListener();
-		ImageBouttonListener ibl = new ImageBouttonListener();
-		CancelListener cancelListener = new CancelListener();
-		
-
-		routerPanel.setLayout(layout);
-
-		int size = os.getAppScreenWidth() / 2;
-
-		mainView = new ListMainView(imageList, size, ibl, abl);
-		//mainView.addMenuButton("Ajouter", abl);
-
-		imageView = new ImageView(this, cancelListener);
-
-		screen.add(routerPanel, BorderLayout.CENTER);
-
-		routerPanel.add(mainView, VIEW_MAIN);
-		routerPanel.add(imageView, VIEW_IMAGE);
-
-		LoadedAppsListener loadedAppsListener = new LoadedAppsListener();
-		os.addLoadedAppsListener(loadedAppsListener);
-
 	}
 
 
 	/**
-	 * Provide ListSelectView as JPanel to other applications to select a contact
+	 * Called by os when Application.os has been set
+	 */
+	public void onInit ()
+	{
+		screen.setLayout(new BorderLayout());
+		layout = new CardLayout();
+
+		routerPanel = new JPanel();
+		routerPanel.setLayout(layout);
+		screen.add(routerPanel, BorderLayout.CENTER);
+
+		//
+		ImageBouttonListener ibl = new ImageBouttonListener();
+		AddBouttonListener abl = new AddBouttonListener();
+		mainView = new ListMainView(imageList, ibl, abl);
+
+		//
+		CancelListener cancelListener = new CancelListener();
+		imageView = new ImageView(this, cancelListener);
+
+		//
+		routerPanel.add(mainView, VIEW_MAIN);
+		routerPanel.add(imageView, VIEW_IMAGE);
+
+		//
+		LoadedAppsListener loadedAppsListener = new LoadedAppsListener();
+		os.addLoadedAppsListener(loadedAppsListener);
+	}
+
+
+	/**
+	 * Provide ListSelectView as JPanel to other applications to select an image
 	 *
 	 * @return JPanel with contact selection options
 	 */
@@ -148,30 +172,39 @@ public class GalleryApp extends Application {
 		return selectView;
 	}
 
+
 	/**
 	 * Get the path for read/write files and data
 	 *
 	 * @return The path for read/write data dedicated to this application
 	 */
-	
-	static String getDataPath ()
+	private String getDataPath ()
 	{
 		return Config.DATA_PATH + "/gallery/";
 	}
 
+
+	/**
+	 * Show the image view (and set image)
+	 *
+	 * @param img Image to show in the view
+	 */
 	void showImageDetail (GalleryImage img)
 	{
 		imageView.setImage(img);
 		setImageViewContactList(img);
-		//imageView.setBlackAndWhiteListener(new BlackAndWhiteListener(img, imageView));
 		layout.show(routerPanel, VIEW_IMAGE);
-
 	}
 
+
+	/**
+	 * Set the image of the image view
+	 *
+	 * @param galleryImage Image to set in the view
+	 */
 	void setImageViewContactList (GalleryImage galleryImage)
 	{
 		ArrayList<Contact> contacts = new ArrayList<>();
-		//ArrayList<Integer> peopleIds = galleryImage.getPeopleIds();
 
 		for (Integer cId : galleryImage.getPeopleIds()) {
 			try {
@@ -183,19 +216,17 @@ public class GalleryApp extends Application {
 		}
 
 		imageView.setContactArrayList(contacts);
-		//for ()
-		//imageView.setContactArrayList();
 	}
+
 
 	private void addImageContact (GalleryImage galleryImage, Contact contact)
 	{
-
 		galleryImage.addPeople(contact);
 		writeFile();
 		setImageViewContactList(galleryImage);
 	}
 
-	void showImageDetail ()
+	private void showImageDetail ()
 	{
 		layout.show(routerPanel, VIEW_IMAGE);
 
@@ -228,7 +259,7 @@ public class GalleryApp extends Application {
 		layout.show(routerPanel, VIEW_CONTACTS);
 	}
 
-	public void copyFile (String source, String destination)
+	private void copyFile (String source, String destination)
 		throws IOException
 	{
 
@@ -246,7 +277,6 @@ public class GalleryApp extends Application {
 				out.flush();
 			}
 		}
-
 	}
 
 
@@ -255,6 +285,7 @@ public class GalleryApp extends Application {
 	 */
 	class ImageBouttonListener implements ActionListener
 	{
+
 		@Override
 		public void actionPerformed (ActionEvent actionEvent)
 		{
@@ -273,25 +304,15 @@ public class GalleryApp extends Application {
 		@Override
 		public void actionPerformed (ActionEvent arg0)
 		{
-			//On instancie un JFileChooser pour pouvoir s?lectionner un fichier
 			JFileChooser fileChooser = new JFileChooser();
 
-			//On permet ? l'utilisateur de s?lectionner plusieurs fichier dans la fen?tre
 			fileChooser.setMultiSelectionEnabled(true);
 
-			//On applique un filtre sur l'extension du fichier comme d?finit en haut de cette classe
 			fileChooser.setFileFilter(filter);
 
-			//Si l'utilisateur valide la selection, on continue
 			if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-				/*
-				 *On cr?e un tableau d'image avec les fichiers selectionn?s
-				 *(On est oblig? d'utiliser un tableau File[] car nous permettons la selection de plusieurs fichiers plus haut dans le code)
-				 *Si l'on ne permettait la selection que d'un fichier, File aurait suffit avec la m?thode getSelectedFile() au lieu de getSelectedFileS()
-				 */
 				File[] selectedImages = fileChooser.getSelectedFiles();
 
-				//On parcours tous les ?l?ments du tableau pr?c?demment cr??
 				for (File selectedImage : selectedImages) {
 
 					String loadImagePath = selectedImage.getAbsolutePath();
@@ -307,13 +328,9 @@ public class GalleryApp extends Application {
 					try {
 						galleryImage = new GalleryImage(newImagePath);
 						addImage(galleryImage);
-						//imageList.add(galleryImage);
-						//writeFile();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-
-					// mainView.updateView();
 				}
 			}
 		}
@@ -344,10 +361,7 @@ public class GalleryApp extends Application {
 		@Override
 		public void actionPerformed (ActionEvent actionEvent)
 		{
-			
 			layout.show(routerPanel, VIEW_MAIN);
-	
-		
 		}
 	}
 
@@ -356,14 +370,8 @@ public class GalleryApp extends Application {
 	{
 		public void actionPerformed (ActionEvent event)
 		{
-
 			try {
 				contactApp = (ContactApp) os.getLoadedApp(ContactApp.class);
-
-
-				/*
-				 * Image select View
-				 */
 
 				SelectContactListener selectContactListener = new SelectContactListener();
 
@@ -374,16 +382,11 @@ public class GalleryApp extends Application {
 				routerPanel.validate();
 				routerPanel.repaint();
 
-				//showView(IMAGE_VIEW);
-
-				System.out.println("contact App linked to gallery");
-
 				imageView.setContactApp(contactApp);
 
 			} catch (ClassNotFoundException e) {
 				System.out.println("Could not find ");
 			}
-
 		}
 	}
 
@@ -395,19 +398,8 @@ public class GalleryApp extends Application {
 		public void onSelect (Object o)
 		{
 			Contact contact = (Contact) o;
-
-			//imageView.setImage(image);
-			//showView(VIEW_IMAGE);
-
 			addImageContact(imageView.getImage(), contact);
-
-			//imageView.updateView();
 			showImageDetail();
-
-			/*selectedImage.setText(c.toString());
-			screen.remove(selectionPanel);
-			screen.validate();
-			screen.repaint();*/
 		}
 
 		@Override
@@ -415,13 +407,7 @@ public class GalleryApp extends Application {
 		{
 			System.out.println("onCancel triggered");
 			showImageDetail();
-			//showView(DETAIL_VIEW);
-			/* screen.remove(selectionPanel);
-			screen.validate();
-			screen.repaint();*/
 		}
 	}
-	
-	
-	
+
 }
