@@ -61,7 +61,13 @@ public class ListSelectView extends ListView implements SeletionPanel
 
 			selectionListener.onSelect(c);
 		}; */
-		addContactButton(contact, LABEL_SELECT, selectListener);
+		String label = getSelectLabel();
+		addContactButton(contact, label, selectListener);
+	}
+
+	protected String getSelectLabel ()
+	{
+		return LABEL_SELECT;
 	}
 
 

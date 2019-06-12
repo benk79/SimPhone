@@ -27,6 +27,12 @@ public class ContactListView extends ListSelectView
 	{
 	}
 
+
+	protected String getSelectLabel ()
+	{
+		return LABEL_SELECT;
+	}
+
 	protected Contact[] getList ()
 	{
 		if (_contactList == null)
