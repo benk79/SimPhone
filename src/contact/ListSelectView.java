@@ -15,8 +15,8 @@ import java.awt.event.ActionListener;
  */
 public class ListSelectView extends ListView implements SeletionPanel
 {
-	private static final String LABEL_SELECT = "tag.png";
-	private static final String LABEL_CANCEL = "return.png";
+	protected String LABEL_SELECT = "tag.png";
+	protected String LABEL_CANCEL = "return.png";
 
 	private SelectionListener selectionListener;
 
@@ -37,7 +37,7 @@ public class ListSelectView extends ListView implements SeletionPanel
 	 *
 	 * @param contactApp     Reference to the application
 	 */
-	ListSelectView (ContactApp contactApp)
+	public ListSelectView (ContactApp contactApp)
 	{
 		super(contactApp);
 

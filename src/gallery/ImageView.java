@@ -1,12 +1,7 @@
 package gallery;
 
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -19,7 +14,9 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import contact.Contact;
+import contact.ContactApp;
 import main.ButtonIcon;
+import main.SelectionListener;
 
 public class ImageView extends JPanel
 {
@@ -32,6 +29,9 @@ public class ImageView extends JPanel
 
 	private ArrayList<Contact> contactArrayList;
 
+	private ContactListView contactPanel;
+	private GridBagConstraints listGbc;
+
 	ImageView (GalleryApp galleryApp, ActionListener cancelListener)
 	{
 		this.galleryApp = galleryApp;
@@ -43,7 +43,7 @@ public class ImageView extends JPanel
 		//on cr�e le panel contenant l'image pleine �cran
 		panel_image = new JPanel();
 		panel_image.setBackground(Color.BLACK);
-		add(panel_image, BorderLayout.CENTER);
+		add(panel_image, BorderLayout.NORTH);
 
 
 		//on cr�e un JPanel contenant les boutons de l'application
@@ -96,11 +96,18 @@ public class ImageView extends JPanel
 
 	public void setContactArrayList (ArrayList<Contact> contactArrayList)
 	{
+		System.out.println("Set contact list in image view");
 		this.contactArrayList = contactArrayList;
+		contactPanel.setList(contactArrayList);
 		updateContactList();
-
 	}
 
+
+	void setContactApp (ContactApp contactApp)
+	{
+		contactPanel = new ContactListView(contactApp);
+		add(contactPanel, BorderLayout.CENTER);
+	}
 
 	private void updateContactList ()
 	{
@@ -214,6 +221,22 @@ public class ImageView extends JPanel
 		public void actionPerformed (ActionEvent actionEvent)
 		{
 			galleryApp.showContactSelectionPanel();
+		}
+	}
+
+	class DeleteContactListener implements SelectionListener
+	{
+
+		@Override
+		public void onSelect (Object o)
+		{
+
+		}
+
+		@Override
+		public void onCancel ()
+		{
+
 		}
 	}
 

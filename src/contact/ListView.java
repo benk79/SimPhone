@@ -51,6 +51,12 @@ abstract class ListView extends JPanel
 	}
 
 
+	protected Contact[] getList ()
+	{
+		return contactApp.getContactList();
+	}
+
+
 	/**
 	 * Update content of list with current array of contacts
 	 */
@@ -67,7 +73,7 @@ abstract class ListView extends JPanel
 		listGbc.gridx = 0;
 
 		//
-		for (Contact contact : contactApp.getContactList()) {
+		for (Contact contact : getList()) {
 			if (contact != null) {
 				addContact(contact);
 				listGbc.gridy++;
