@@ -334,14 +334,14 @@ public class GalleryApp extends Application
 		}
 	}
 
-	void addImage (GalleryImage img)
+	private void addImage (GalleryImage img)
 	{
 		imageList.add(img);
 		writeFile();
 		mainView.updateView();
 	}
 
-	void removeImage (GalleryImage image)
+	private void removeImage (GalleryImage image)
 	{
 		imageList.remove(image);
 		writeFile();
