@@ -421,10 +421,17 @@ public class GalleryApp extends Application
 
 
 	/**
-	 *
+	 * Listener to use when all applications are loaded
 	 */
 	private class LoadedAppsListener implements ActionListener
 	{
+
+		/**
+		 * Action performedby os when all applications are loaded
+		 *
+		 * @param event event attached to the cancel button in edit form
+		 */
+		@Override
 		public void actionPerformed (ActionEvent event)
 		{
 			try {
@@ -448,6 +455,9 @@ public class GalleryApp extends Application
 	}
 
 
+	/**
+	 * Listener to use from contact selection panel to tag a contact in an image
+	 */
 	private class SelectContactListener implements SelectionListener
 	{
 
