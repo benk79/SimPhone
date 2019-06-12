@@ -157,7 +157,7 @@ public class GalleryApp extends Application {
 
 	}
 
-	private void setImageViewContactList (GalleryImage galleryImage)
+	void setImageViewContactList (GalleryImage galleryImage)
 	{
 		ArrayList<Contact> contacts = new ArrayList<>();
 		//ArrayList<Integer> peopleIds = galleryImage.getPeopleIds();
@@ -310,6 +310,15 @@ public class GalleryApp extends Application {
 	{
 		imageList.add(img);
 		mainView.updateView();
+	}
+
+	void removeImage (GalleryImage image)
+	{
+		imageList.remove(image);
+		mainView.updateView();
+		layout.show(routerPanel, VIEW_MAIN);
+		File file = new File(image.getPath());
+		file.delete();
 	}
 
 	/**
