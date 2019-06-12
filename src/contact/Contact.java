@@ -202,7 +202,7 @@ public class Contact implements Serializable
 	public void setPhoneNumber (String phoneNumber) throws Exception
 	{
 		Pattern pattern = Pattern.compile (
-				"([0-9]{10})",
+				"([0-9]{3,10})",
 				Pattern.MULTILINE);
 		
 		Matcher m=pattern.matcher(phoneNumber);
